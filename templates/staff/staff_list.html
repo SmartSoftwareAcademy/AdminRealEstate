@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="wrapper p-2 m-2">
+  <h1 class="mt-4">Staff</h1>
+
+  <!-- Create New staff Button -->
+  <a href="{% url 'staff-create' %}" class="btn btn-primary mb-3" >
+    Create New staff
+  </a>
+
+  <!-- staff List -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Net Salary</th>
+        <th>Join Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for staff in staff %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ staff.user }}</td>
+        <td>{{ staff.mobile_number }}</td>
+        <td>{{ staff.salary_details.first }}</td>
+        <td>{{ staff.date_of_joining }}</td>
+        <td>
+            <a class="d-inline-block" href="{% url 'staff-detail' staff.id %}"><i class="fa fa-eye text-warning"></i></a>
+            <a class="d-inline-block" href="{% url 'staff-update' staff.id %}" class="btn btn-primary text-primary"><i class="fa fa-edit"></i></a>
+            <a class="d-inline-block" href="{% url 'staff-delete' staff.id %}" class="btn btn-primary text-danger"><i class="fa fa-trash"></i></a>
+          </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

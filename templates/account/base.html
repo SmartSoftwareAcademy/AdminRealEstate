@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{site_title}} | {{page_title}}</title>
+	<link rel="shortcut icon" href="favicon.png">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap5" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'cms/fonts/icomoon/style.css' %}">
+	<link rel="stylesheet" href="{% static 'cms/fonts/flaticon/font/flaticon.css' %}">
+
+	<link rel="stylesheet" href="{% static 'cms/css/tiny-slider.css' %}">
+	<link rel="stylesheet" href="{% static 'cms/css/aos.css' %}">
+	<link rel="stylesheet" href="{% static 'cms/css/style.css' %}">
+
+	<title>{{page_title}}</title>
+</head>
+<body>
+
+	<div class="site-mobile-menu site-navbar-target">
+		<div class="site-mobile-menu-header">
+			<div class="site-mobile-menu-close">
+				<span class="icofont-close js-menu-toggle"></span>
+			</div>
+		</div>
+		<div class="site-mobile-menu-body"></div>
+	</div>
+
+	<nav class="site-nav">
+		<div class="container">
+			<div class="menu-bg-wrap">
+				<div class="site-navigation">
+					<a href="{% url 'frontpage' %}" class="logo m-0 float-start">
+						{% if site_logo %}
+						<img src="/media/{{site_logo}}"  width="100px" />
+						{% else %}
+						<img src="{% static 'dist/img/logo.jpg' %}"  width="100px" />
+						{% endif %}
+						Fernbrook Apartments
+					</a>
+
+					<ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end">
+						{% if request.user.is_authenticated %}
+						<li class="active"><a href="{% url 'home' %}">Staff Portal</a></li>
+						{% endif %}
+						<li class="active"><a href="{% url 'frontpage' %}">Home</a></li>
+						<li class="has-children">
+							<a href="{% url 'property_page' %}">Properties</a>
+							<ul class="dropdown">
+								<li><a href="#">Buy Property</a></li>
+								<li><a href="#">Sell Property</a></li>
+								<li class="has-children">
+									<a href="#">More</a>
+									<ul class="dropdown">
+										<li><a href="#">...</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><a href="{% url 'services' %}">Services</a></li>
+						<li><a href="{% url 'about' %}">About Us</a></li>
+						<li><a href="{% url 'contact' %}">Contact Us</a></li>
+						<li class="has-children">
+							<a href="#">Account</a>
+							<ul class="dropdown">
+								{% if not request.user.is_authenticated %}
+								<li><a href="{% url 'login' %}">Register</a></li>
+								<li><a href="{% url 'login' %}">Login</a></li>
+								<li class="has-children">
+									<a href="#">Enquiries</a>
+									<ul class="dropdown">
+										<li><a href="{% url 'enquiry' %}">Send an Equiry</a></li>
+										<li><a href="#">Contact Agent</a></li>
+									</ul>
+								</li>
+								{% else %}
+								<li><a href="#"><a href="{% url 'logout' %}">Logout</a></li>
+								<li><a href="#"><a href="#">Profile</a></li>
+								<li class="has-children">
+									<a href="#">More</a>
+									<ul class="dropdown">
+										<li><a href="#">Contact an Agent</a></li>
+										<li><a href="{% url 'testimonial-add' %}">Share Testimony</a></li>
+									</ul>
+								</li>
+								{% endif %}
+							</ul>
+						</li>
+					</ul>
+
+					<a href="#" class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none" data-toggle="collapse" data-target="#main-navbar">
+						<span></span>
+					</a>
+
+				</div>
+			</div>
+			{% if messages %}
+			<div class="container">
+				{% for message in messages %}
+				<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+					{{ message }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+		</div>
+	</nav>
+
+
+	{% block content %}{% endblock content %}
+<!-- JavaScript -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="{% static 'cms/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'cms/js/tiny-slider.js' %}"></script>
+  <script src="{% static 'cms/js/aos.js' %}"></script>
+  <script src="{% static 'cms/js/navbar.js' %}"></script>
+  <script src="{% static 'cms/js/counter.js' %}"></script>
+  <script src="{% static 'cms/js/custom.js' %}"></script>
+  </body>
+  </html>

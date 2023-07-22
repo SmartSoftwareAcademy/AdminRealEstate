@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>Notice Detail</h1>
+    <div class="card">
+      <div class="card-header {% if notice.notice_type == 'vacate' %} bg-warning {% else %} bg-danger {% endif %}">
+        <h5 class="card-title text-uppercase">{{ notice.notice_type }} notice</h5>
+      </div>
+      <div class="card-body">
+        <p>Notice by <strong>{{ notice.user }}</strong> to  <strong>{{ notice.user_to_notify }}</strong></p>
+        <p>Notice Date: {{ notice.notice_date }}</p>
+        <p>Description: {{ notice.description }}</p>
+        <p>Status: {% if notice.read %}Read{% else %}Unread{% endif %}</p>
+      </div>
+    </div>
+
+    <h2>Replies</h2>
+    <div class="list-group">
+      {% for reply in notice.replies.all %}
+        <div class="list-group-item">
+          <p class="mb-1">{{ reply.user }} - {{ reply.notice_date }}</p>
+          <p class="mb-1">{{ reply.reply }}</p>
+        </div>
+      {% empty %}
+        <div class="list-group-item">No replies found.</div>
+      {% endfor %}
+    </div>
+
+
+    <div class="mt-4">
+      <h2>Reply to Notice</h2>
+      <form method="post" action="{% url 'notice-detail' notice.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="reply">Reply:</label>
+          <textarea class="form-control" id="reply" name="reply" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'account/base.html' %}
+{% load static %}
+{% block content %}
+
+	<div class="hero page-inner overlay" style="background-image: url('{% static 'cms/images/hero_bg_3.jpg' %}');">
+
+		<div class="container">
+			<div class="row justify-content-center align-items-center">
+				<div class="col-lg-9 text-center mt-5">
+					<h1 class="heading" data-aos="fade-up">Services</h1>
+
+					<nav aria-label="breadcrumb" data-aos="fade-up" data-aos-delay="200">
+						<ol class="breadcrumb text-center justify-content-center">
+							<li class="breadcrumb-item "><a href="index.html">Home</a></li>
+							<li class="breadcrumb-item active text-white-50" aria-current="page">Services</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% include  'core/parts/services-single.html' %}
+
+	{% include  'core/parts/testimonial-single.html' %}
+{% endblock content %}

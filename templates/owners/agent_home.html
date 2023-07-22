@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="conatiner p-4 m-2">
+  <div class="header bg-secondary rounded p-2">
+    <h1>Tenants</h1>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button type="button" id="add-tenant-btn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTenantModal">
+      Add Tenant
+    </button>
+  </div>
+
+  <table class="table" style="margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for tenant in tenants %}
+        <tr>
+          <td>{{ tenant.user.first_name }}</td>
+          <td>{{ tenant.user.last_name }}</td>
+          <td>{{ tenant.user.email }}</td>
+          <td>{{ tenant.mobile_number }}</td>
+          <td>
+              <a class="dropdown-item d-inline-block" href="{% url 'tenant-detail' tenant.id %}"><i class="fa fa-eye"></i></a>
+              <a class="dropdown-item d-inline-block" href="{% url 'tenant-detail' tenant.id %}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+          </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Tenant Modal -->
+<div class="modal fade" id="addTenantModal" tabindex="-1" role="dialog" aria-labelledby="addTenantModalLabel">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTenantModalLabel">Add Tenant</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <!-- Tenant tab -->
+          <div id="tenant" class="container tab-pane active">
+            <!-- Tenant form fields -->
+            <form method="post" enctype="multipart/form-data" action="{% url 'add-tenant' %}" >
+              {% csrf_token %}
+              {% for field in form %}
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="{{ field.auto_id }}">
+                  {{ field.label }}
+                  {% for error in field.errors %}
+                    <small id="{{ field.auto_id }}" class="text-danger">{{ error }}</small>
+                  {% endfor %}
+                </label>
+                <div class="col-sm-9">
+                  {{ field | add_class:"form-control"}}
+                  {% if field.help_text %}
+                  <small>{{ field.help_text|safe }}</small>
+                  {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+              <button type="submit" class="btn btn-success">Save Record</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block custom_js %}
+<script>
+$(document).ready(function() {
+  // Move to the next tab when Next button is clicked
+  $('.next-tab').click(function() {
+    var currentTab = $(this).closest('.tab-pane');
+    var nextTab = currentTab.next('.tab-pane');
+    var navLink = $(this).closest('.nav-item').next('.nav-item').find('.nav-link');
+
+    currentTab.removeClass('active');
+    nextTab.addClass('active');
+
+    // Update active tab in the navigation
+    $('.nav-link').removeClass('active');
+    navLink.addClass('active');
+  });
+});
+</script>
+{% endblock custom_js %}

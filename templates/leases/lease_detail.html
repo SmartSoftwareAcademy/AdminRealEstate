@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="wrapper p-2 m-2">
+  <div class="row">
+    <div class="col-md-6">
+      <h1 class="mt-4">Lease Detail</h1>
+
+      <!-- Lease Details -->
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title pl-4 ml-2">Property Unit: {{ lease.property_unit }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted d-inline-blockb pl-4 ml-2 mt-1 float-right">Tenant: {{ lease.tenant }}
+            <a href="{% url 'lease-update' lease.id %}" class="btn btn-primary pl-2"><i class="fa fa-edit"></i></a>
+            <a href="{% url 'lease-list' %}" class="btn btn-primary pl-2"><i class="fa fa-list"></i></a>
+          </h6>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Start Date: {{ lease.start_date }}</p>
+          <p class="card-text">End Date: {{ lease.end_date }}</p>
+          <p class="card-text">Status: {% if lease.is_active %}Active{% else %}Inactive{% endif %}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <!-- Lease Terms -->
+      <div class="card mt-4">
+        <div class="card-header">
+          <h4 class="mb-0">Lease Terms</h4>
+        </div>
+        <div class="card-body">
+          {% for term in lease.terms.all %}
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Term Code: {{ term.term_number }}</h5>
+              <p class="card-text">Late rent payment fine: {{ term.late_payment_fine }}</p>
+              <p class="card-text">Start Date: {{ term.term_start_date }}</p>
+              <p class="card-text">End Date: {{ term.term_end_date }}</p>
+              <a href="" class="btn btn-primary">Update</a>
+            </div>
+          </div>
+          {% empty %}
+          <!-- Create Lease Term Form -->
+        <div class="card mt-4">
+            <div class="card-header">
+            <h4 class="mb-0">Create Lease Term</h4>
+            </div>
+            <div class="card-body">
+            <form method="post" action=".">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Create Term</button>
+            </form>
+            </div>
+        </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="wrapper p-2 m-2">
+  <h1 class="mt-4">Leases</h1>
+
+  <!-- Create New Lease Button -->
+  <a href="{% url 'lease-create' %}" class="btn btn-primary mb-3" >
+    Create New Lease
+  </a>
+
+  <!-- Lease List -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Property Unit</th>
+        <th>Tenant</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for lease in leases %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ lease.property_unit }}</td>
+        <td>{{ lease.tenant }}</td>
+        <td>{{ lease.start_date }}</td>
+        <td>{{ lease.end_date }}</td>
+        <td>{% if lease.is_active %}Active{% else %}Inactive{% endif %}</td>
+        <td>
+            <a class="d-inline-block" href="{% url 'lease-detail' lease.id %}"><i class="fa fa-eye text-warning"></i></a>
+            <a class="d-inline-block" href="{% url 'lease-update' lease.id %}"><i class="fa fa-edit text-primary"></i></a>
+            <a class="d-inline-block" href="{% url 'lease-delete' lease.id %}"><i class="fa fa-trash text-danger"></i></a>
+          </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

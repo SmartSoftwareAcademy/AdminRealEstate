@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+  <div class="payslip-header text-center">
+    <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="Real Estate Logo">
+    <h2 class="mt-3">Payslip</h2>
+  </div>
+  <div class="payslip-details">
+    <dl class="row">
+      <dt class="col-sm-4">Staff</dt>
+      <dd class="col-sm-8">{{ staff_payment.staff }}</dd>
+      <dt class="col-sm-4">Month</dt>
+      <dd class="col-sm-8">{{ staff_payment.month }}</dd>
+      <dt class="col-sm-4">Year</dt>
+      <dd class="col-sm-8">{{ staff_payment.year }}</dd>
+      <dt class="col-sm-4">Date</dt>
+      <dd class="col-sm-8">{{ staff_payment.date_of_payment }}</dd>
+      <dt class="col-sm-4">Allowances</dt>
+      <dd class="col-sm-8">{{ staff_payment.allowances }}</dd>
+      <dt class="col-sm-4">Deductions</dt>
+      <dd class="col-sm-8">{{ staff_payment.deductions }}</dd>
+      <dt class="col-sm-4">Net Pay</dt>
+      <dd class="col-sm-8">{{ staff_payment.net_pay }}</dd>
+    </dl>
+  </div>
+  <div class="payslip-footer">
+    <p>&copy; {{ year }} Real Estate. All rights reserved.</p>
+  </div>
+</div>
+{% endblock content %}

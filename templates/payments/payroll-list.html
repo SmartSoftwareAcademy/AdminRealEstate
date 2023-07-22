@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+{% block content %}
+ <div class="container-fluid">
+   <h4>Staff Salary Payments</h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Staff</th>
+        <th>Month</th>
+        <th>Year</th>
+        <th>Date of Payment</th>
+        <th>Net Pay</th>
+        <th>PDF</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for staff_payment in staff_payments %}
+        <tr>
+          <td>{{ staff_payment.staff }}</td>
+          <td>{{ staff_payment.month }}</td>
+          <td>{{ staff_payment.year }}</td>
+           <td>{{ staff_payment.date_of_payment }}</td>
+          <td>{{ staff_payment.net_pay }}</td>
+          <td><a href="{% url 'payslip-pdf' staff_payment.pk %}" class="text-center m-auto text-danger"><i class="fa fa-file-pdf bg-light"></i></a></td>
+          <td>
+            <a href="{% url 'staff-salary-payment-detail' staff_payment.pk %}" class=""><i class="fa fa-eye text-success"></i></a>
+            <a href="{% url 'staff-salary-payment-update' staff_payment.pk %}" class=""><i class="fa fa-pen text-primary"></i></a>
+            <a href="{% url 'staff-salary-payment-update' staff_payment.pk %}" class=""><i class="fa fa-trash text-danger"></i></a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No staff salary payments found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+ </div>
+{% endblock %}

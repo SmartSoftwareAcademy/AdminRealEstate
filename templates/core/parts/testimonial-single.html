@@ -1,0 +1,44 @@
+{% load static %}
+{% load custom_filters %}
+<div class="section sec-testimonials">
+		<div class="container">
+			<div class="row mb-5 align-items-center">
+				<div class="col-md-6">
+					<h2 class="font-weight-bold heading text-primary mb-4 mb-md-0">Customer Says</h2>
+				</div>
+				<div class="col-md-6 text-md-end">
+					<div id="testimonial-nav">
+						<span class="prev" data-controls="prev">Prev</span>
+
+						<span class="next" data-controls="next">Next</span>
+					</div>
+				</div>
+			</div>
+			<div class="testimonial-slider-wrap">
+				<div class="testimonial-slider">
+					{% for t in testimonials %}
+					<div class="item">
+						<div class="testimonial">
+                            {% if t.user.profile_pic.url|length > 0 %}
+                            <img src="{{t.user.profile_pic.url}}" alt="Image" class="img-fluid rounded-circle w-25 mb-4">
+                            {% else %}
+							<img src="{% static 'cms/images/person_1-min.jpg' %}" alt="Image" class="img-fluid rounded-circle w-25 mb-4">
+                            {% endif %}
+							<div class="rate">
+                               {{ t.rating|multiply_html_element:"<span class='icon-star text-warning'></span>"|safe }}
+							</div>
+							<h3 class="h5 text-primary mb-4">{{t.user}}</h3>
+							<blockquote>
+								<p>&ldquo;{{t.content|safe}}&rdquo;</p>
+							</blockquote>
+							<p class="text-black-50">{{t.designation}}</p>
+						</div>
+					</div>
+                    {% empty %}
+                    <p>No testimonials found.</p>
+                    {% endfor %}
+
+				</div>
+			</div>
+		</div>
+	</div>

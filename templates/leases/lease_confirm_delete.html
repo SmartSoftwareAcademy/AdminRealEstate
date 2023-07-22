@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mt-4">Confirm Lease Deletion</h1>
+
+  <p>Are you sure you want to delete the lease "{{lease.tenant}} - {{ lease.property_unit }}"?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'lease-list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

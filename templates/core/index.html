@@ -1,0 +1,401 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block page_title %}{{page_title}}{% endblock page_title %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{total_agents}}</h3>
+
+                        <p>My Agents</p>
+                    </div>
+                    <div class="icon">
+                      <i class="nav-icon fas fa-user-graduate"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{total_tenants}}</h3>
+
+                        <p>My Tenants</p>
+                    </div>
+                    <div class="icon">
+                      <i class="nav-icon fas fa-users"></i>
+                    </div>
+                    <a href="{% url 'tenant-list' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-purple">
+                    <div class="inner">
+                        <h3>{{total_properties}}</h3>
+
+                        <p>My Properties</p>
+                    </div>
+                    <div class="icon">
+                      <i class="nav-icon fas fa-th-list"></i>
+                    </div>
+                    <a href="{% url 'property-list' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>{{total_units}}</h3>
+
+                        <p>Prperty Units</p>
+                    </div>
+                    <div class="icon">
+                      <i class="nav-icon fas fa-book"></i>
+                    </div>
+                    <a href="{% url 'property-list' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <!-- Main row -->
+        <div class="col-lg-12">
+        <h1>{{site_title}} Analytics</h1>
+        <ul class="nav nav-tabs" id="chartTabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link" id="property-tab" data-toggle="tab" href="#property" role="tab" aria-controls="property" aria-selected="false">Property Analysis</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="tenant-tab" data-toggle="tab" href="#tenant" role="tab" aria-controls="tenant" aria-selected="false">Tenant Analysis</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" id="lease-tab" data-toggle="tab" href="#lease" role="tab" aria-controls="lease" aria-selected="true">Lease Analysis</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="false">Payment Analysis</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="deposit-tab" data-toggle="tab" href="#deposit" role="tab" aria-controls="deposit" aria-selected="false">Deposit Analysis</a>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="chartTabContent">
+          <!-- Property Analysis Tab -->
+          <div class="tab-pane fade" id="property" role="tabpanel" aria-labelledby="property-tab">
+             <div class="row">
+              <div class="col-sm-3">
+              <canvas id="propertyDistributionChart"></canvas>
+              </div>
+              <div class="col-sm-3">
+                <canvas id="propertyCountChart"></canvas>
+              </div>
+              <div class="col-sm-4">
+                <canvas id="propertyOccupancyChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tenant Analysis Tab -->
+          <div class="tab-pane fade" id="tenant" role="tabpanel" aria-labelledby="tenant-tab">
+           <div class="row">
+              <div class="col-sm-3">
+              <canvas id="tenantCountChart"></canvas>
+              </div>
+              <div class="col-sm-3">
+                <canvas id="tenantGenderChart"></canvas>
+              </div>
+              <div class="col-sm-4">
+                <canvas id="tenantStatusChart"></canvas>
+              </div>
+          </div>
+          </div>
+
+          <!-- Lease Analysis Tab -->
+          <div class="tab-pane fade show active" id="lease" role="tabpanel" aria-labelledby="lease-tab">
+            <div class="row">
+              <div class="col-sm-4">
+                <canvas id="leaseDurationChart"></canvas>
+              </div>
+                <div class="col-sm-6">
+                  <canvas id="leaseStartDateChart"></canvas>
+                </div>
+                <div class="col-sm-6">
+                  <canvas id="leaseExpirationChart"></canvas>
+                </div>
+            </div>
+          </div>
+
+          <!-- Payment Analysis Tab -->
+          <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+            <div class="row">
+              <div class="col-sm-6">
+                <canvas id="rentPaymentTrendChart"></canvas>
+              </div>
+              <div class="col-sm-3">
+                <canvas id="paymentCollectionRateChart"></canvas>
+              </div>
+              <div class="col-sm-3">
+                <canvas id="outstandingBalancesChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Deposit Analysis Tab -->
+          <div class="tab-pane fade" id="deposit" role="tabpanel" aria-labelledby="deposit-tab">
+            <div class="row">
+              <div class="col-sm-6">
+              <canvas id="depositAmountChart"></canvas>
+              </div>
+             <div class="col-sm-6">
+              <canvas id="depositDescriptionChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+</section>
+{% endblock content %}
+{% block custom_js %}
+<script>
+ // chart-data.js
+  // Property Distribution Chart
+  const propertyDistributionData = {
+    labels: {{property_types|safe}},
+    datasets: [{
+      label: 'Property Distribution',
+      data:{{property_counts}},
+      backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#fd6b19', '#4bc0c0']
+    }]
+  };
+
+  new Chart(document.getElementById('propertyDistributionChart'), {
+    type: 'pie',
+    data: propertyDistributionData,
+    options: {
+    plugins: {
+      chartjsPluginChartJs3d: {
+        enabled: true,
+        angle: 60,
+        depth: 40,
+      },
+    },
+  },
+  });
+
+  // Property Count Chart
+  const propertyCountData = {
+    labels: ['Total Properties'],
+    datasets: [{
+      data: [{{total_properties}}],
+      backgroundColor: ['#4caf50']
+    }]
+  };
+
+  new Chart(document.getElementById('propertyCountChart'), {
+    type: 'doughnut',
+    data: propertyCountData,
+  });
+
+  // Property Occupancy Chart
+  const propertyOccupancyData = {
+    labels: ['Rented Properties', 'Available Properties'],
+    datasets: [{
+      label:'Property Occupancy',
+      data: [{{rented_properties|safe}}, {{available_properties|safe}}],
+      backgroundColor: ['#ff6384', '#36a2eb']
+    }]
+  };
+
+  new Chart(document.getElementById('propertyOccupancyChart'), {
+    type: 'bar',
+    data: propertyOccupancyData
+  });
+
+  // Tenant Count Chart
+  const tenantCountData = {
+    labels: ['Total Tenants'],
+    datasets: [{
+      data: [{{total_tenants|safe}}],
+      backgroundColor: ['#9c27b0']
+    }]
+  };
+
+  new Chart(document.getElementById('tenantCountChart'), {
+    type: 'doughnut',
+    data: tenantCountData
+  });
+
+  // Tenant Gender Chart
+  const tenantGenderData = {
+    labels: {{gender_count_labels|safe}},
+    datasets: [{
+      label: 'Tenant Gender',
+      data: {{gender_count_data}},
+      backgroundColor: ['#2196f3', '#f44336', '#ffc107']
+    }]
+  };
+
+  new Chart(document.getElementById('tenantGenderChart'), {
+    type: 'pie',
+    data: tenantGenderData
+  });
+
+  // Tenant Status Chart
+  const tenantStatusData = {
+    labels: ['Active', 'Inactive'],
+    datasets: [{
+      label: 'Tenant Status',
+      data: [{{active_counts}}, {{inactive_counts}}],
+      backgroundColor: ['#4caf50', '#f44336']
+    }]
+  };
+
+  new Chart(document.getElementById('tenantStatusChart'), {
+    type: 'bar',
+    data: tenantStatusData
+  });
+
+  // Lease Duration Chart
+  const leaseDurationData = {
+    labels: ['Average Duration', 'Median Duration'],
+    datasets: [{
+      label:'Lease Duration',
+      data: [{{average_duration}}, {{median_duration}}],
+      backgroundColor: ['#9c27b0', '#f44336']
+    }]
+  };
+
+  new Chart(document.getElementById('leaseDurationChart'), {
+    type: 'bar',
+    data: leaseDurationData
+  });
+
+  // Lease Start Date Chart
+  const leaseStartDateData = {
+    labels: {{lease_start_dates_lables|safe}},
+    datasets: [{
+      label: 'Lease Start Dates',
+      data: {{lease_start_dates_data|safe}},
+      backgroundColor: '#2196f3'
+    }]
+  };
+
+  new Chart(document.getElementById('leaseStartDateChart'), {
+    type: 'line',
+    data: leaseStartDateData
+  });
+
+  // Lease Expiration Chart
+  const leaseExpirationData = {
+    labels:[{% for expiration in upcoming_expirations %}'{{ expiration.property_unit }}',{% endfor %}],
+    datasets: [{
+      label:'Upcoming | Expired Lease Expirations',
+      data:  [{% for expiration in upcoming_expirations %}new Date('{{ expiration.end_date }}'),{% endfor %}],
+      backgroundColor: '#ff9800'
+    }]
+  };
+
+  new Chart(document.getElementById('leaseExpirationChart'), {
+    type: 'line',
+    data: leaseExpirationData,
+     options: {
+                plugins: {
+                    chart3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
+                }
+            }
+  });
+
+  // Rent Payment Trend Chart
+  const rentPaymentTrendData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    datasets: [{
+      label: 'Rent Payments',
+      data: [1000, 1200, 1100, 1300, 1250],
+      borderColor: '#4caf50',
+      fill: false
+    }]
+  };
+
+  new Chart(document.getElementById('rentPaymentTrendChart'), {
+    type: 'line',
+    data: rentPaymentTrendData
+  });
+
+  // Payment Collection Rate Chart
+  const paymentCollectionRateData = {
+    labels: ['On Time', 'Late'],
+    datasets: [{
+      data: [80, 20],
+      backgroundColor: ['#4caf50', '#f44336']
+    }]
+  };
+
+  new Chart(document.getElementById('paymentCollectionRateChart'), {
+    type: 'pie',
+    data: paymentCollectionRateData,
+
+
+  });
+
+  // Outstanding Balances Chart
+  const outstandingBalancesData = {
+    labels: ['Total Outstanding'],
+    datasets: [{
+      data: [5000],
+      backgroundColor: ['#f44336']
+    }]
+  };
+
+  new Chart(document.getElementById('outstandingBalancesChart'), {
+    type: 'doughnut',
+    data: outstandingBalancesData
+  });
+
+  // Deposit Amount Chart
+  const depositAmountData = {
+    labels: ['Deposit 1', 'Deposit 2', 'Deposit 3', 'Deposit 4'],
+    datasets: [{
+      label:'Deposit Amount',
+      data: [1000, 1500, 1200, 2000],
+      backgroundColor: '#ffc107'
+    }]
+  };
+
+  new Chart(document.getElementById('depositAmountChart'), {
+    type: 'bar',
+    data: depositAmountData
+  });
+
+  // Deposit Description Chart
+  const depositDescriptionData = {
+    labels: ['Commitment Fee', 'Deposit in Full'],
+    datasets: [{
+      label: 'Deposit Description',
+      data: [4, 6],
+      backgroundColor: ['#2196f3', '#f44336']
+    }]
+  };
+
+  new Chart(document.getElementById('depositDescriptionChart'), {
+    type: 'bar',
+    data: depositDescriptionData
+  });
+
+  </script>
+{% endblock custom_js %}

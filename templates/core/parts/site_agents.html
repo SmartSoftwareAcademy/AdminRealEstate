@@ -1,0 +1,41 @@
+{% load static %}
+<div class="section sec-testimonials bg-light">
+		<div class="container">
+			<div class="row mb-5 align-items-center">
+				<div class="col-md-6">
+					<h2 class="font-weight-bold heading text-primary m-auto">The Team</h2>
+					<p class="text-black-50">Welcome to the Agents' Area, your gateway to a world of real estate opportunities and success! This exclusive space is designed specifically for our esteemed agents who are dedicated to providing exceptional service and expertise in the property market.</p>
+				</div>
+				<div class="col-md-6 text-md-end">
+					<div id="testimonial-nav">
+						<span class="prev" data-controls="prev">Prev</span>
+
+						<span class="next" data-controls="next">Next</span>
+					</div>
+				</div>
+			</div>
+			<div class="testimonial-slider-wrap">
+				<div class="testimonial-slider">
+                    {% for agent in site_agents %}
+					<div class="item">
+						<div class="testimonial">
+							<img src="{% static 'cms/images/person_1-min.jpg' %}" alt="Image" class="img-fluid rounded-circle w-25 mb-4">
+							<h3 class="h5 text-primary">{{agent.user}}</h3>
+							<p class="text-black-50">{{agent.user.email}}</p>
+
+							<p>{{agent.mobile_number}}</p>
+
+							<ul class="social list-unstyled list-inline dark-hover">
+								<li class="list-inline-item"><a href="#"><span class="icon-twitter"></span></a></li>
+								<li class="list-inline-item"><a href="#"><span class="icon-facebook"></span></a></li>
+								<li class="list-inline-item"><a href="#"><span class="icon-linkedin"></span></a></li>
+								<li class="list-inline-item"><a href="#"><span class="icon-instagram"></span></a></li>
+							</ul>
+
+						</div>
+					</div>
+                    {% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>

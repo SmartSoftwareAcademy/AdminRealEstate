@@ -1,0 +1,34 @@
+{% load static %}
+<!-- jQuery -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'dist/js/jquery.formset.js' %}"> </script>
+<!-- Bootstrap -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+<!-- overlayScrollbars -->
+<script
+src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.js' %}"></script>
+{% if messages %}
+{% for message in messages %}
+<script type=text/javascript>
+toastr.options.progressBar = true;
+toastr.{{ message.tags }}('{{ message }}')
+</script>
+{% endfor %}
+{% endif %}
+<!-- OPTIONAL SCRIPTS -->
+<script src="{% static 'plugins/Datatables/datatables.min.js' %}"></script>
+<script>
+(function ($) {
+$('.clickable-row').css('cursor', 'pointer');
+$(".clickable-row").click(function () {
+window.location = $(this).data("href");
+});
+})(jQuery)
+
+</script>
+{% block custom_js %} {% endblock custom_js %}
+
