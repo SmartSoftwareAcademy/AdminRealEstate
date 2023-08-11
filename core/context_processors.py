@@ -40,8 +40,7 @@ def site_defaults(request):
         "dormant_lease_count":Lease.objects.filter(is_active=False).count() if len(Lease.objects.all()) > 0 else 0,
         "welcome_note":note if note else [],
         "notices":Notice.objects.filter(Q(read=False) & (Q(notify_specific_user=request.user) | Q(notify_group_of_users=request.user.user_type))).exclude(notice_type="welcome") if len(Notice.objects.all()) > 0 else [],
-        "invoice_count":Invoice.objects.filter(Q(lease__tenant__user=request.user) | Q(lease__leased_by=request.user)).count() if len(Invoice.objects.all()) > 0 else 0,
-
+        "invoice_count":Invoice.objects.filter(Q(lease__tenant__user=request.user) &Q(lease__tenant__user=request.user) | Q(lease__leased_by=request.user) |  Q(lease__leased_by__owners__agents__user=request.user)).count() if len(Invoice.objects.all()) > 0 else 0,
     }
     for val in vals:
         contexts[val.key] = val.value

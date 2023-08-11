@@ -21,7 +21,7 @@ class PropertyList(View):
         elif agent:
             properties = Property.objects.filter(owner__agents=agent).all()
         else:
-            if request.user.is_superuser and (request.user_type != '1' and request.user_type == '2'):
+            if request.user.is_superuser and (request.user.user_type != '1' or request.user.user_type == '2'):
                 properties=Property.objects.all()
         return render(request, 'property/property_list.html', {'properties':properties})
 

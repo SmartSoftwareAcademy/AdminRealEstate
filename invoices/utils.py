@@ -7,7 +7,7 @@ class InvoiceNumberGenerator:
         self.today = datetime.datetime.now()
         self.year = self.today.year
         self.day_of_year = self.today.timetuple().tm_yday
-        self.sequence = 1
+        self.sequence = datetime.datetime.now().microsecond
 
     def generate_invoice_number(self):
         invoice_number = f"{self.year}{self.day_of_year:03d}{self.sequence:08d}"

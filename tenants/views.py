@@ -25,7 +25,7 @@ class TenatList(View):
         elif agent:
             tenants = Tenant.objects.filter(Q(created_by=agent.user) | Q(created_by=agent.owner.user))
         else:
-            if request.user.is_superuser and (request.user_type != '1' and request.user_type == '2'):
+            if request.user.is_superuser and (request.user.user_type != '1' or request.user.user_type == '2'):
                 tenants=Tenant.objects.all()
         return render(request, 'tenants/tenant_list.html', {'tenants':tenants})
 

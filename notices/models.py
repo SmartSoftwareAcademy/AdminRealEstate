@@ -24,7 +24,7 @@ class Notice(models.Model):
                                      <p>It is our pleasure to welcome you to your new home. We hope that you will be very happy here and will try our best to make sure that you are always satisfied.\
                                      <br/>Thankyou for selecting Fernbrook Apartments and we sincerely hope that you find your new home comfortable and enjoyable.\
                                      <br/>If we can be of any assistance to you, please let us know.\
-                                     <br/>I can be reached at + 1(952) 210 0808 at any time. Rosemary can be reached at +1(763)458 6243.\
+                                     <br/>For any assistance contact our system admin Mr. Felix phone 0769620042.\
                                      <br/><br/><strong>Yours sincerely,\
                                      <br/>Wycliffe George/ Director</strong></p>")
     reason=models.CharField(max_length=255,default='Reason here',blank=True,null=True)

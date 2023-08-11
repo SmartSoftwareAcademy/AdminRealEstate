@@ -29,7 +29,7 @@ def analytics_data(request):
         property_counts = Property.objects.filter(owner__agents__in=agent).all()
         property_units=sum(property.units.count() for property in property_counts)
     else:
-        if request.user.is_superuser and (request.user_type != '1' and request.user_type == '2'):
+        if request.user.is_superuser and (request.user.user_type != '1' or request.user.user_type == '2'):
             total_tenants=Tenant.objects.all()
     # Property Analysis
     property_types = Property.PROPERTY_TYPES

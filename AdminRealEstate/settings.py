@@ -132,21 +132,10 @@ TINYMCE_DEFAULT_CONFIG = {
     'menubar': 'file edit view insert format tools table help',
 }
 
-# APScheduler configurations
-SCHEDULER_JOBSTORES = {
-    'default': {
-        'type': 'sqlalchemy',
-        'url': BASE_DIR / 'database.sqlite3'
-    }
-}
-SCHEDULER_EXECUTORS = {
-    'default': {'type': 'threadpool', 'max_workers': 20}
-}
-SCHEDULER_JOB_DEFAULTS = {
-    'coalesce': False,
-    'max_instances': 3
-}
-SCHEDULER_API_ENABLED = False
+# celery
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Use the appropriate broker URL
+CELERY_TIMEZONE = 'Africa/Nairobi'
 
 
 # Password validation

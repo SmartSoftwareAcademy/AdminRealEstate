@@ -20,7 +20,7 @@ class InvoiceListView(ListView):
         invoices= Invoice.objects.all()
         if request.user.user_type == '4':
            invoices = invoices.filter(lease__tenant__user=request.user)
-        elif request.user.is_superuser or (request.user_type != '1' and request.user_type == '2'):
+        elif request.user.is_superuser or (request.user.user_type != '1' or request.user.user_type == '2'):
                invoices = invoices
         return render(request, 'invoices/invoice_list.html', {'invoices':invoices})
 

@@ -28,7 +28,7 @@ class LeaseList(ListView):
         elif agent:
             leases =leases.filter(leased_by=agent.user)
         else:
-            if request.user.is_superuser and (request.user_type != '1' and request.user_type == '2'):
+            if request.user.is_superuser and (request.user.user_type != '1' or request.user.user_type == '2'):
                leases = leases
         return render(request, 'leases/lease_list.html', {'leases':leases})
 
