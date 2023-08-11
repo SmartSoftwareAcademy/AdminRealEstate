@@ -39,7 +39,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
 
         # Url that gets reversed (Permissions can be added)
-        {"name": "Home",  "url": "/", "permissions": ["auth.view_user"]},
+        {"name": "Home",  "url": "/user/home", "permissions": ["auth.view_user"]},
 
         # external url that opens in a new window (Permissions can be added)
         {"name": "Support", "url": "https://bengohub.co.ke", "new_window": True},

@@ -19,7 +19,11 @@
                     {% for agent in site_agents %}
 					<div class="item">
 						<div class="testimonial">
+							{% if agent.user.profile_pic.url|length > 0 %}
+							<img src="{{agent.user.profile_pic.url}}" alt="Image" class="img-fluid rounded-circle w-25 mb-4">
+							{% else %}
 							<img src="{% static 'cms/images/person_1-min.jpg' %}" alt="Image" class="img-fluid rounded-circle w-25 mb-4">
+							{% endif %}
 							<h3 class="h5 text-primary">{{agent.user}}</h3>
 							<p class="text-black-50">{{agent.user.email}}</p>
 

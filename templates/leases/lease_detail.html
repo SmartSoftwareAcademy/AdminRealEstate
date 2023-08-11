@@ -8,7 +8,7 @@
 
       <!-- Lease Details -->
       <div class="card">
-        <div class="card-header">
+        <div class="card-header {% if lease.is_active %} bg-success {% else %} bg-warning {% endif %}">
           <h5 class="card-title pl-4 ml-2">Property Unit: {{ lease.property_unit }}</h5>
           <h6 class="card-subtitle mb-2 text-muted d-inline-blockb pl-4 ml-2 mt-1 float-right">Tenant: {{ lease.tenant }}
             <a href="{% url 'lease-update' lease.id %}" class="btn btn-primary pl-2"><i class="fa fa-edit"></i></a>
@@ -16,9 +16,9 @@
           </h6>
         </div>
         <div class="card-body">
-          <p class="card-text">Start Date: {{ lease.start_date }}</p>
-          <p class="card-text">End Date: {{ lease.end_date }}</p>
-          <p class="card-text">Status: {% if lease.is_active %}Active{% else %}Inactive{% endif %}</p>
+          <p class="card-text">Start Date: <span class="badge badge-info">{{ lease.start_date }}</span></p>
+          <p class="card-text">End Date: <span class="badge badge-info">{{ lease.end_date }}</span></p>
+          <p class="card-text">Status: {% if lease.is_active %}<span class="badge badge-pill badge-success">Active</span>{% else %}<span class="badge badge-pill badge-warning">Inactive</span>{% endif %}</p>
         </div>
       </div>
     </div>

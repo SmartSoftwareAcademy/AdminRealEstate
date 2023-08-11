@@ -38,11 +38,11 @@ class CustomUserManager(UserManager):
 
 
 class CustomUser(AbstractUser):
-    USER_TYPE = ((1, "Admin"),(2, "Agent"),(3,"Tenant"),(4,"Staff"))
+    USER_TYPE = (("1", "Owner"),("2", "Agent"),("3","Staff"),("4","Tenant"))
     GENDER = [("Male", "Male"), ("Female", "Female"), ("Other", "Other")]
     username = models.CharField(max_length=150, unique=True,blank=True,null=True)
     email = models.EmailField(unique=True)
-    user_type = models.CharField(default=1, choices=USER_TYPE, max_length=1)
+    user_type = models.CharField(default=4, choices=USER_TYPE, max_length=1)
     gender = models.CharField(max_length=10, choices=GENDER)
     profile_pic = models.ImageField(upload_to='profiles',blank=True,null=True)
     other_name = models.CharField(max_length=200, blank=True)
@@ -60,7 +60,7 @@ class CustomUser(AbstractUser):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.last_name + ", " + self.first_name
+        return self.first_name + " " + self.last_name
 
 @receiver(post_save, sender=CustomUser)
 def save_user_profile(sender, instance, **kwargs):

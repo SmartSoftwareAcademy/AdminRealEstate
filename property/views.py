@@ -19,7 +19,7 @@ class PropertyList(View):
         if owner:
             properties = Property.objects.filter(owner=owner).all()
         elif agent:
-            properties = Property.objects.filter(owner__agents__in=agent).all()
+            properties = Property.objects.filter(owner__agents=agent).all()
         else:
             if request.user.is_superuser and (request.user_type != '1' and request.user_type == '2'):
                 properties=Property.objects.all()

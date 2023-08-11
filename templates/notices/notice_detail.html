@@ -8,7 +8,7 @@
         <h5 class="card-title text-uppercase">{{ notice.notice_type }} notice</h5>
       </div>
       <div class="card-body">
-        <p>Notice by <strong>{{ notice.user }}</strong> to  <strong>{{ notice.user_to_notify }}</strong></p>
+        <p>Notice by <strong>{{ notice.user }}</strong> to  <strong>{{ notice.notify_specific_user }}</strong></p>
         <p>Notice Date: {{ notice.notice_date }}</p>
         <p>Description: {{ notice.description }}</p>
         <p>Status: {% if notice.read %}Read{% else %}Unread{% endif %}</p>

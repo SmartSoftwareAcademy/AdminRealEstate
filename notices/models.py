@@ -16,10 +16,17 @@ mobile_num_regex = RegexValidator(
 # Create your models here.
 class Notice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    notice_type=models.CharField(max_length=100,choices=(("vacate","Vacate Notice"),("mainatainance","Maintainace")))
-    user_to_notify = models.ForeignKey(User, on_delete=models.CASCADE,related_name='notices')
+    notice_type=models.CharField(max_length=100,choices=(("vacate","Vacate Notice"),("mainatainance","Maintainace"),("welcome","Welcome Notice")))
+    notify_specific_user= models.ForeignKey(User, on_delete=models.CASCADE,related_name='notices',blank=True,null=True,help_text='Leave Blank if not applicable')
+    notify_group_of_users= models.CharField(max_length=50,choices=(("1","Owner"),("2","Agent"),("3","Staff"),("4","Tenant")),blank=True,null=True,help_text='Leave Blank if not applicable')
     notice_date = models.DateField()
-    description = HTMLField()
+    description = HTMLField(default="<h1>WELCOME NEW TENANT</h1><h4>Dear Mr./Mrs./Miss</h4>\
+                                     <p>It is our pleasure to welcome you to your new home. We hope that you will be very happy here and will try our best to make sure that you are always satisfied.\
+                                     <br/>Thankyou for selecting Fernbrook Apartments and we sincerely hope that you find your new home comfortable and enjoyable.\
+                                     <br/>If we can be of any assistance to you, please let us know.\
+                                     <br/>I can be reached at + 1(952) 210 0808 at any time. Rosemary can be reached at +1(763)458 6243.\
+                                     <br/><br/><strong>Yours sincerely,\
+                                     <br/>Wycliffe George/ Director</strong></p>")
     reason=models.CharField(max_length=255,default='Reason here',blank=True,null=True)
     read=models.BooleanField(default=False)
 

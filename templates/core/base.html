@@ -209,7 +209,7 @@
             <a href="{% url 'home' %}" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
-                Landlords
+                Property Owners
                  <i class="fas fa-angle-left right"></i>
                 <span class="right badge badge-danger">{{owner_count}}</span>
               </p>
@@ -259,7 +259,7 @@
               <p>
                 Staff
                  <i class="fas fa-angle-left right"></i>
-                <span class="right badge badge-danger">{{agent_count}}</span>
+                <span class="right badge badge-danger">{{staff_count}}</span>
               </p>
             </a>
             <ul class="nav nav-treeview">
@@ -283,7 +283,7 @@
               <p>
                 Payroll
                  <i class="fas fa-angle-left right"></i>
-                <span class="right badge badge-danger">{{agent_count}}</span>
+                <span class="right badge badge-danger">{{payslip_count}}</span>
               </p>
             </a>
             <ul class="nav nav-treeview">
@@ -382,7 +382,7 @@
           {% endif %}
           <li class="nav-header">MORE</li>
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
                 Gallery
@@ -405,7 +405,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/mailbox/compose.html" class="nav-link">
+                <a href="/admin/notices/enquiries/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Enquiries <span class="badge badge-info right">{{enquiry_count}}</span></p>
                 </a>
@@ -422,158 +422,39 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              {% if request.user.user_type == '1' or request.user.user_type == '2' %}
               <li class="nav-item">
-                <a href="pages/examples/invoice.html" class="nav-link">
+                <a href="{% url 'invoice-list' %}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Invoice</p>
+                  <p>Invoices <span class="badge badge-info right">{{invoice_count}}</span></p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="pages/examples/profile.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Payments</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/contact-us.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Contact us</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-plus-square"></i>
-              <p>
-                Extras
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>
-                    Authentication
-                    <i class="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="pages/examples/login.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Login</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/register.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Register</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/forgot-password.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Forgot Password</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/recover-password.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Recover Password</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/lockscreen.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Lockscreen</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/legacy-user-menu.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Legacy User Menu</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/language-menu.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Language Menu</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/404.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Error 404</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/500.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Error 500</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/pace.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Pace</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/blank.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Blank Page</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="starter.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Front CMS</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-search"></i>
-              <p>
-                Search
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/search/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Simple Search</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/search/enhanced.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Enhanced</p>
-                </a>
-              </li>
+                {% endif %}
+                {% if request.user.user_type == '4' %}
+                <li class="nav-item">
+                  <a href="{% url 'invoice-list' %}" class="nav-link">
+                    <i class="fa fa-file-pdf nav-icon"></i>
+                    <p>My Invoices <span class="badge badge-info right">{{invoice_count}}</span></p>
+                  </a>
+                </li>
+                {% endif %}
             </ul>
           </li>
           <li class="nav-header">MISCELLANEOUS</li>
           <li class="nav-item">
-                <a href="pages/examples/faq.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                <a href="#" class="nav-link">
+                  <i class="fa fa-question nav-icon"></i>
                   <p>FAQ</p>
                 </a>
               </li>
           <li class="nav-item">
-            <a href="iframe.html" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-ellipsis-h"></i>
-              <p>Utitlities</p>
+              <p>Utilities</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="iframe.html" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-ellipsis-h"></i>
               <p>Coming soon</p>
             </a>
@@ -584,12 +465,14 @@
               <p>Reports</p>
             </a>
           </li>
+          {% if request.user.user_type == '1' or request.user.user_type == '2' %}
           <li class="nav-item">
-            <a href="https://adminlte.io/docs/3.1/" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
-              <p>Documentation</p>
+              <p>User Manual</p>
             </a>
           </li>
+          {% endif %}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

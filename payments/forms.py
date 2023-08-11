@@ -1,12 +1,12 @@
 from django import forms
 from .models import *
 
-class RentPaymentForm(forms.ModelForm):
+class PaymentForm(forms.ModelForm):
     class Meta:
-        model = RentPayment
-        fields = '__all__'
+        model = Payment
+        fields = ('invoice','amount','description','payment_method')
 
-class RentDeposit(forms.ModelForm):
+class MpesaNumberForm  (forms.Form):
+    mpesa_number=forms.IntegerField(required=True,widget=forms.NumberInput(attrs={'class':'form-control'}))
     class Meta:
-        model = RentDeposits
-        fields = '__all__'
+        fields = ('mpesa_number')

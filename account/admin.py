@@ -9,7 +9,7 @@ class UserModel(UserAdmin):
     search_fields = ['username', 'email']
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
-        ('Personal Info', {'fields': ('first_name', 'last_name', 'gender', 'profile_pic')}),
+        ('Personal Info', {'fields': ('first_name', 'last_name','user_type','gender', 'profile_pic')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important Dates', {'fields': ('last_login', 'date_joined')}),
     )

@@ -1,16 +1,45 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
 from django.views import View
+from .models import Payment
 from .forms import *
-from .models import *
-# Rent Payment views
-class RentPaymentCreate(View):
-    def get(self, request):
-        form = RentPaymentForm()
-        return render(request, 'rent_payments/rent_payment_create.html', {'form': form})
+from django.contrib import messages
+from django.urls import reverse_lazy
+from .utils import MpesaPayment,CashPayment
 
-    def post(self, request):
-        form = RentPaymentForm(request.POST)
+class PaymentCreateView(View):
+    template_name = 'payments/payment_create.html'
+    form_class = PaymentForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
         if form.is_valid():
-            rent_payment = form.save()
-            return redirect(rent_payment)
-        return render(request, 'rent_payments/rent_payment_create.html', {'form': form})
+            # Process payment based on payment method
+            if form.cleaned_data['payment_method'] == 'cash':
+                CashPayment(request).cashpay()  # Replace with your cash payment method
+            elif  form.cleaned_data['payment_method'] == 'mobile':
+                # Redirect to mobile payment page
+                return redirect('mobile_payment', data=form.data)
+            # elif form.cleaned_data['payment_method']  == 'bank':
+            #     # Redirect to bank payment page
+            #     return redirect('bank_payment')
+            return redirect('invoice-list')
+
+        return render(request, self.template_name, {'form': form})
+
+class MobilePaymentView(View):
+    template_name = 'payments/mobile_payment.html'  # Create this HTML template
+    form_class = MpesaNumberForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial={'mpesa_number': 254743793901})
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            pass
+        return render(request, self.template_name, {'form': form})

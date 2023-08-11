@@ -9,12 +9,12 @@ from django.db.models import Q
 class NoticeView(View):
     def get(self, request):
         form = NoticeRequestForm()
-        notices=Notice.objects.filter(Q(user_to_notify=request.user) | Q(user=request.user))
+        notices=Notice.objects.filter(Q(read=False) & (Q(notify_specific_user=request.user) | Q(notify_group_of_users=request.user.user_type)))
         return render(request, 'notices/notice_home.html', {'form': form,'notices':notices,'page_title':'New Notification'})
 
     def post(self, request):
         form = NoticeRequestForm(request.POST)
-        notices=Notice.objects.filter(Q(user_to_notify=request.user) | Q(user=request.user))
+        notices=Notice.objects.filter(Q(notify_specific_user=request.user) | Q(user=request.user))
         if form.is_valid():
             notice = form.save(commit=False)
             notice.user=request.user

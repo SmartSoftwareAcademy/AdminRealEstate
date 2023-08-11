@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Invoice Detail</h2>
+  <p><strong>ID:</strong> {{ invoice.id }}</p>
+  <p><strong>Lease:</strong> {{ invoice.lease }}</p>
+  <p><strong>Invoice Type:</strong> {{ invoice.invoice_type }}</p>
+  <p><strong>Amount:</strong> {{ invoice.amount }}</p>
+  <p><strong>Due Date:</strong> {{ invoice.due_date }}</p>
+  <p><strong>Description:</strong> {{ invoice.description }}</p>
+  <p><strong>Is Paid:</strong> {{ invoice.is_paid }}</p>
+  <p><strong>Created At:</strong> {{ invoice.created_at }}</p>
+  <p><strong>Updated At:</strong> {{ invoice.updated_at }}</p>
+</div>
+{% endblock %}

@@ -6,12 +6,12 @@
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
+          {% if request.user.user_type == '1' %}
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
                         <h3>{{total_agents}}</h3>
-
                         <p>My Agents</p>
                     </div>
                     <div class="icon">
@@ -21,6 +21,8 @@
 
                 </div>
             </div>
+          {% endif %}
+          {% if request.user.user_type == '1' or  request.user.user_type == '2' %}
             <!-- ./col -->
             <div class="col-lg-3 col-6">
                 <!-- small box -->
@@ -43,7 +45,7 @@
                     <div class="inner">
                         <h3>{{total_properties}}</h3>
 
-                        <p>My Properties</p>
+                        <p>Properties</p>
                     </div>
                     <div class="icon">
                       <i class="nav-icon fas fa-th-list"></i>
@@ -58,7 +60,7 @@
                     <div class="inner">
                         <h3>{{total_units}}</h3>
 
-                        <p>Prperty Units</p>
+                        <p>Property Units</p>
                     </div>
                     <div class="icon">
                       <i class="nav-icon fas fa-book"></i>
@@ -67,103 +69,242 @@
                 </div>
             </div>
             <!-- ./col -->
+            {% endif %}
+            {% if request.user.user_type == '3' %}
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-purple">
+                    <div class="inner">
+                        <h3>{{total_properties}}</h3>
+
+                        <p>Total Salary Paid</p>
+                    </div>
+                    <div class="icon">
+                      <i class="nav-icon fas fa-th-list"></i>
+                    </div>
+                    <a href="{% url 'property-list' %}" class="small-box-footer">Payments since <i class="fas fa-arrow-circle-right"></i> {{request.user.date_joined}}</a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>{{total_units}}</h3>
+
+                        <p>Salary Owed</p>
+                    </div>
+                    <div class="icon">
+                      <i class="nav-icon fas fa-book"></i>
+                    </div>
+                    <a href="{% url 'property-list' %}" class="small-box-footer">Month <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>{{total_units}}</h3>
+                        <p>Payslips</p>
+                    </div>
+                    <div class="icon">
+                      <i class="nav-icon fas fa-book"></i>
+                    </div>
+                    <a href="{% url 'property-list' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            {% endif %}
+            {% if request.user.user_type == '4' %}
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-purple">
+                    <div class="inner">
+                        <h3>{{actual_rent_paid}}</h3>
+
+                        <p>Total Rent Paid</p>
+                    </div>
+                    <div class="icon">
+                      <i class="nav-icon fas fa-th-list"></i>
+                    </div>
+                    <a href="{% url 'property-list' %}" class="small-box-footer">Payments since <i class="fas fa-arrow-circle-right"></i> {{request.user.date_joined}}</a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>{{actual_rent_owed}}</h3>
+
+                        <p>Rent Owed</p>
+                    </div>
+                    <div class="icon">
+                      <i class="nav-icon fas fa-book"></i>
+                    </div>
+                    <a href="{% url 'property-list' %}" class="small-box-footer">Month <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+             <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{invoice_count}}</h3>
+                        <p>My Invoices</p>
+                    </div>
+                    <div class="icon">
+                      <i class="nav-icon fas fa-book"></i>
+                    </div>
+                    <a href="{% url 'invoice-list' %}" class="small-box-footer">Explore <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            {% endif %}
         </div>
         <!-- /.row -->
         <!-- Main row -->
+        {% if request.user.user_type == '1' or request.user.user_type == '2' %}
         <div class="col-lg-12">
-        <h1>{{site_title}} Analytics</h1>
-        <ul class="nav nav-tabs" id="chartTabs" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link" id="property-tab" data-toggle="tab" href="#property" role="tab" aria-controls="property" aria-selected="false">Property Analysis</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="tenant-tab" data-toggle="tab" href="#tenant" role="tab" aria-controls="tenant" aria-selected="false">Tenant Analysis</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" id="lease-tab" data-toggle="tab" href="#lease" role="tab" aria-controls="lease" aria-selected="true">Lease Analysis</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="false">Payment Analysis</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="deposit-tab" data-toggle="tab" href="#deposit" role="tab" aria-controls="deposit" aria-selected="false">Deposit Analysis</a>
-          </li>
-        </ul>
-
-        <div class="tab-content" id="chartTabContent">
-          <!-- Property Analysis Tab -->
-          <div class="tab-pane fade" id="property" role="tabpanel" aria-labelledby="property-tab">
-             <div class="row">
-              <div class="col-sm-3">
-              <canvas id="propertyDistributionChart"></canvas>
-              </div>
-              <div class="col-sm-3">
-                <canvas id="propertyCountChart"></canvas>
-              </div>
-              <div class="col-sm-4">
-                <canvas id="propertyOccupancyChart"></canvas>
+          <h1>{{site_title}} Analytics</h1>
+          <ul class="nav nav-tabs" id="chartTabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link" id="property-tab" data-toggle="tab" href="#property" role="tab" aria-controls="property" aria-selected="false">Property Analysis</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="tenant-tab" data-toggle="tab" href="#tenant" role="tab" aria-controls="tenant" aria-selected="false">Tenant Analysis</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" id="lease-tab" data-toggle="tab" href="#lease" role="tab" aria-controls="lease" aria-selected="true">Lease Analysis</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-selected="false">Payment Analysis</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="deposit-tab" data-toggle="tab" href="#deposit" role="tab" aria-controls="deposit" aria-selected="false">Deposit Analysis</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="chartTabContent">
+            <!-- Property Analysis Tab -->
+            <div class="tab-pane fade" id="property" role="tabpanel" aria-labelledby="property-tab">
+              <div class="row">
+                <div class="col-sm-3">
+                <canvas id="propertyDistributionChart"></canvas>
+                </div>
+                <div class="col-sm-3">
+                  <canvas id="propertyCountChart"></canvas>
+                </div>
+                <div class="col-sm-4">
+                  <canvas id="propertyOccupancyChart"></canvas>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Tenant Analysis Tab -->
-          <div class="tab-pane fade" id="tenant" role="tabpanel" aria-labelledby="tenant-tab">
-           <div class="row">
-              <div class="col-sm-3">
-              <canvas id="tenantCountChart"></canvas>
-              </div>
-              <div class="col-sm-3">
-                <canvas id="tenantGenderChart"></canvas>
-              </div>
-              <div class="col-sm-4">
-                <canvas id="tenantStatusChart"></canvas>
-              </div>
-          </div>
-          </div>
-
-          <!-- Lease Analysis Tab -->
-          <div class="tab-pane fade show active" id="lease" role="tabpanel" aria-labelledby="lease-tab">
+            <!-- Tenant Analysis Tab -->
+            <div class="tab-pane fade" id="tenant" role="tabpanel" aria-labelledby="tenant-tab">
             <div class="row">
-              <div class="col-sm-4">
-                <canvas id="leaseDurationChart"></canvas>
-              </div>
-                <div class="col-sm-6">
-                  <canvas id="leaseStartDateChart"></canvas>
+                <div class="col-sm-3">
+                <canvas id="tenantCountChart"></canvas>
                 </div>
-                <div class="col-sm-6">
-                  <canvas id="leaseExpirationChart"></canvas>
+                <div class="col-sm-3">
+                  <canvas id="tenantGenderChart"></canvas>
+                </div>
+                <div class="col-sm-4">
+                  <canvas id="tenantStatusChart"></canvas>
                 </div>
             </div>
-          </div>
+            </div>
 
-          <!-- Payment Analysis Tab -->
-          <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
-            <div class="row">
-              <div class="col-sm-6">
-                <canvas id="rentPaymentTrendChart"></canvas>
-              </div>
-              <div class="col-sm-3">
-                <canvas id="paymentCollectionRateChart"></canvas>
-              </div>
-              <div class="col-sm-3">
-                <canvas id="outstandingBalancesChart"></canvas>
+            <!-- Lease Analysis Tab -->
+            <div class="tab-pane fade show active" id="lease" role="tabpanel" aria-labelledby="lease-tab">
+              <div class="row">
+                <div class="col-sm-4">
+                  <canvas id="leaseDurationChart"></canvas>
+                </div>
+                  <div class="col-sm-6">
+                    <canvas id="leaseStartDateChart"></canvas>
+                  </div>
+                  <div class="col-sm-6">
+                    <canvas id="leaseExpirationChart"></canvas>
+                  </div>
               </div>
             </div>
-          </div>
 
-          <!-- Deposit Analysis Tab -->
-          <div class="tab-pane fade" id="deposit" role="tabpanel" aria-labelledby="deposit-tab">
-            <div class="row">
-              <div class="col-sm-6">
-              <canvas id="depositAmountChart"></canvas>
-              </div>
-             <div class="col-sm-6">
-              <canvas id="depositDescriptionChart"></canvas>
+            <!-- Payment Analysis Tab -->
+            <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+              <div class="row">
+                <div class="col-sm-6">
+                  <canvas id="PaymentTrendChart"></canvas>
+                </div>
+                <div class="col-sm-3">
+                  <canvas id="paymentCollectionRateChart"></canvas>
+                </div>
+                <div class="col-sm-3">
+                  <canvas id="outstandingBalancesChart"></canvas>
+                </div>
               </div>
             </div>
+
+            <!-- Deposit Analysis Tab -->
+            <div class="tab-pane fade" id="deposit" role="tabpanel" aria-labelledby="deposit-tab">
+              <div class="row">
+                <div class="col-sm-8">
+                <canvas id="depositAmountChart"></canvas>
+                </div>
+            </div>
+
           </div>
         </div>
-      </div>
+        {% endif %}
+        {% if request.user.user_type == '4' or request.user.user_type == '3' %}
+        <h2 class="title ">Notice Board</h2>
+        <div class="row">
+          {% if welcome_note %}
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-header bg-info">
+              <p class="title text-uppercase">{{welcome_note.notice_type}}</p>
+              </div>
+              <div class="col-sm-12">
+                <p>{{welcome_note.description|safe}}</p>
+              </div>
+              <div class="row pl-2 ml-2 mb-2">
+                <form method="post" action="{% url 'hide_welcome' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="pk" value="{{welcome_note.id}}" />
+                  <button type="submit" class="badge badge-warning bg-warning">Hide?</button>
+                </form>
+             </div>
+            </div>
+          </div>
+          {% endif %}
+          <div class="col-sm-6">
+          {% for notice in notices %}
+            <div class="col-sm-12">
+              <div class="card">
+                <div class="card-header {% if notice.notice_type == 'mainatainance' %} bg-warning {% else %} bg-info {% endif %}">
+                  <p class="title text-uppercase">{{notice.notice_type}}</p>
+                </div>
+                <div class="col-sm-12">
+                  <p>{{notice.description|safe}}</p>
+                </div>
+                <div class="row pl-2 ml-2 mb-2">
+                  <form method="post" action="{% url 'hide_welcome' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="pk" value="{{notice.id}}" />
+                    <button type="submit" class="badge badge-warning bg-warning">Mark as read?</button>
+                  </form>
+                 </div>
+                </div>
+              </div>
+            </div>
+           </div>
+           {% empty %}
+          <p>No unread notices yet!</p>
+          {% endfor %}
+        </div>
+        {% endif %}
     </div><!-- /.container-fluid -->
 </section>
 {% endblock content %}
@@ -322,26 +463,26 @@
   });
 
   // Rent Payment Trend Chart
-  const rentPaymentTrendData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+  const PaymentTrendData = {
+    labels: {{months|safe}},
     datasets: [{
-      label: 'Rent Payments',
-      data: [1000, 1200, 1100, 1300, 1250],
+      label: "Monthly Rent Payments analytics for the year {% now 'Y' %}",
+      data: {{month_totals|safe}},
       borderColor: '#4caf50',
       fill: false
     }]
   };
 
-  new Chart(document.getElementById('rentPaymentTrendChart'), {
+  new Chart(document.getElementById('PaymentTrendChart'), {
     type: 'line',
-    data: rentPaymentTrendData
+    data: PaymentTrendData
   });
 
   // Payment Collection Rate Chart
   const paymentCollectionRateData = {
     labels: ['On Time', 'Late'],
     datasets: [{
-      data: [80, 20],
+      data: [{{on_time_payments|safe}}, {{late_payments|safe}}],
       backgroundColor: ['#4caf50', '#f44336']
     }]
   };
@@ -357,7 +498,7 @@
   const outstandingBalancesData = {
     labels: ['Total Outstanding'],
     datasets: [{
-      data: [5000],
+      data: [{{total_outstanding|safe}}],
       backgroundColor: ['#f44336']
     }]
   };
@@ -369,11 +510,11 @@
 
   // Deposit Amount Chart
   const depositAmountData = {
-    labels: ['Deposit 1', 'Deposit 2', 'Deposit 3', 'Deposit 4'],
+    labels: ['Min Deposit', 'Max Deposit', 'Avg Deposit', 'Total Deposit'],
     datasets: [{
-      label:'Deposit Amount',
-      data: [1000, 1500, 1200, 2000],
-      backgroundColor: '#ffc107'
+      label:'Deposit Analytics',
+      data: {{deposit_data|safe}},
+      backgroundColor: ['#9c27b0', '#f44336', '#e14fb0', '#f40331']
     }]
   };
 
@@ -382,20 +523,6 @@
     data: depositAmountData
   });
 
-  // Deposit Description Chart
-  const depositDescriptionData = {
-    labels: ['Commitment Fee', 'Deposit in Full'],
-    datasets: [{
-      label: 'Deposit Description',
-      data: [4, 6],
-      backgroundColor: ['#2196f3', '#f44336']
-    }]
-  };
-
-  new Chart(document.getElementById('depositDescriptionChart'), {
-    type: 'bar',
-    data: depositDescriptionData
-  });
 
   </script>
 {% endblock custom_js %}

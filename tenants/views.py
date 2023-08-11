@@ -23,7 +23,7 @@ class TenatList(View):
         if owner:
             tenants = Tenant.objects.filter(created_by=owner.user).all()
         elif agent:
-            tenants = Tenant.objects.filter(Q(created_by=agent) | Q(created_by__in=agent.owner.user))
+            tenants = Tenant.objects.filter(Q(created_by=agent.user) | Q(created_by=agent.owner.user))
         else:
             if request.user.is_superuser and (request.user_type != '1' and request.user_type == '2'):
                 tenants=Tenant.objects.all()

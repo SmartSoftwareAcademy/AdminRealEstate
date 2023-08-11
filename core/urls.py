@@ -13,4 +13,5 @@ urlpatterns = [
     path('property/<int:pk>/', PropertyDetailView.as_view(), name='home_property-detail'),
     path('unit/<int:pk>/', UnitDetailView.as_view(), name='home_unit-detail'),
     path('add_testimonial/', TestimonialCreateView.as_view(), name='testimonial-add'),
+    path('note/read/',hide_welcome,name='hide_welcome'),
 ]

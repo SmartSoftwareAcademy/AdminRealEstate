@@ -3,7 +3,7 @@ from .models import *
 
 @admin.register(Notice)
 class MaintenanceRequestAdmin(admin.ModelAdmin):
-    list_display = ('notice_type','user', 'user_to_notify', 'notice_date')
+    list_display = ('notice_type','user', 'notice_date')
     list_filter = ('notice_date',)
     search_fields = ('tenant__user__username', 'property__address')
 

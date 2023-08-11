@@ -1,8 +1,14 @@
 from django import forms
+from django.forms.widgets import DateInput, TextInput
+from django.forms import widgets
 from django.forms.models import inlineformset_factory
 from .models import Staff, StaffSalary
 
 class StaffForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(StaffForm, self).__init__(*args, **kwargs)
+        self.fields["date_of_joining"].widget = widgets.DateInput(attrs={"type": "date","class":"form-control"})
+
     class Meta:
         model = Staff
         fields = '__all__'

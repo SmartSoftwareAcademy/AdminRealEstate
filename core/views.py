@@ -6,7 +6,7 @@ from landlords.models import *
 from payments.models import *
 from property.models import *
 from django.db.models import Q
-from django.db.models import Count, Avg, F, ExpressionWrapper, DurationField, Sum
+from django.db.models import Count, Avg, F, ExpressionWrapper, DurationField, Sum,Min,Max
 from datetime import datetime
 from django.views.generic import *
 import re
@@ -22,7 +22,13 @@ from django.urls import reverse_lazy
 from .models import *
 from notices.models import Enquiries
 from notices.forms import EnquirytForm
+from notices.models import Notice
+from invoices.models import Invoice
 from .forms import *
+from django.db.models import Sum, F
+from datetime import datetime
+from .utils import tenant_rent_analytics,get_rent_payment_analytics
+
 User=get_user_model()
 
 class Home(View):
@@ -38,21 +44,23 @@ class Home(View):
         total_tenants=None
         # get specifi tenats
         if owner:
-            total_tenants = Tenant.objects.filter(created_by=owner.user).all()
+            print(agent)
+            total_tenants = Tenant.objects.filter(Q(created_by=owner.user) | Q(leases__property_unit__unit_code__in=[o.units.values('unit_code') for o in owner.properties.all()])).distinct()
             property_counts = Property.objects.filter(owner=owner).all()
             property_units=sum(property.units.count() for property in property_counts)
             agents=owner.agents.count()
         elif agent:
-            total_tenants = Tenant.objects.filter(Q(created_by=agent) | Q(created_by__in=agent.owner.user))
-            property_counts = Property.objects.filter(owner__agents__in=agent).all()
+            total_tenants = Tenant.objects.filter(Q(created_by=agent.user) | Q(leases__property_unit__unit_code__in=[a.units.values('unit_code') for a in agent.owner.properties.all()])).distinct()
+            print(agent)
+            property_counts = Property.objects.filter(owner__agents=agent).all()
             property_units=sum(property.units.count() for property in property_counts)
         else:
-            if request.user.is_superuser and (request.user_type != '1' and request.user_type == '2'):
+            if request.user.is_superuser or (request.user.user_type != '1' or request.user.user_type == '2'):
                 total_tenants=Tenant.objects.all()
         # Property Analysis
         property_types = sorted(Property.PROPERTY_TYPES)
-        total_properties =property_counts.count()
-        property_type_counts=property_counts.values('property_type').annotate(count=Count('id')).order_by('property_type')
+        total_properties =property_counts.count() if property_counts else 0
+        property_type_counts=property_counts.values('property_type').annotate(count=Count('id')).order_by('property_type') if property_counts else []
         # Create a dictionary to store the counts
         property_type_count_dict = {property_type[0]: 0 for property_type in property_types}
         # Update the counts with the actual values
@@ -68,7 +76,7 @@ class Home(View):
 
         # Tenant Analysis
         gender_counts = total_tenants.values('user__gender').annotate(count=Count('id')).order_by('user__gender')
-        gender_count_labels=['Female' if label['user__gender'] == 'F' else 'Male'  for label in gender_counts]
+        gender_count_labels=['Female' if 'F' in label['user__gender'] else 'Male'  for label in gender_counts]
         gender_count_data=[d['count'] for d in gender_counts]
         active_counts = total_tenants.values('current_status').filter(current_status='active').count()
         inactive_counts = total_tenants.values('current_status').filter(current_status='inactive').count()
@@ -94,32 +102,50 @@ class Home(View):
             exp_data=[f"{d.tenant.user.username}-{d.property_unit.unit_code}" for d in upcoming_expirations]
 
         # Payment Analysis
-        on_time_payments=[]
+        on_time_payments=0
         rent_payments=[]
         total_payments=0
         collection_rate=0
-        total_outstanding=0
-        total_payments_minus_on_time_payments=0
-        rent_payments=RentPayment.objects.all()
+        total_outstanding=2000
+        late_payments=0
+        actual_rent_paid, actual_rent_owed=0,0
+        rent_payments=Payment.objects.all()
         if len(rent_payments) > 0:
-            rent_payments = rent_payments.filter(description='rent_installment').order_by('date_paid')
-            on_time_payments = rent_payments.filter(date_paid__lte=F('lease__start_date')).count()
+            rent_payments = rent_payments.filter(invoice__invoice_type='rent').order_by('date_paid')
+            #print(rent_payments)
+            on_time_payments = rent_payments.filter(date_paid__lte=F('invoice__lease__start_date')).count()
             total_payments = rent_payments.count()
-            total_payments_minus_on_time_payments=total_payments-on_time_payments
+            late_payments=total_payments-on_time_payments
             if total_payments == 0:
                 collection_rate = 0
             else:
                 collection_rate = (on_time_payments / total_payments) * 100
-            total_outstanding = rent_payments.aggregate(total=Sum('outstanding_balance'))
+            total_outstanding = rent_payments.values("invoice__balance","invoice__amount","invoice__lease__tenant").distinct().aggregate(total=Sum('invoice__balance'))['total']
+        #print("outstanding=>",total_outstanding)
+        if request.user.user_type=='4':
+           actual_rent_paid, actual_rent_owed = tenant_rent_analytics(request.user)
+
+        #yearly by month rent analytics
+        year = int(request.GET.get('year', datetime.now().year))
+        analytics = get_rent_payment_analytics(year)
+        months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"]
+        month_totals=[]
+        for i in analytics:
+            month_totals.append(float(i['total_payments']))
+        #print(months,month_totals)
 
         # Deposit Analysis
-        deposit_descriptions=[]
-        deposit_amounts=[]
-        deposit_amounts=RentDeposits.objects.all()
-        if len(deposit_amounts)>0:
-            deposit_amounts = RentDeposits.objects.values('amount').annotate(count=Count('id'))
-            deposit_descriptions = RentDeposits.objects.values('description').annotate(count=Count('id'))
-
+        # Calculate average, minimum, maximum, and total security deposit amounts
+        deposit_data=[1000,10,10,10]
+        if len(Lease.objects.all())>0:
+            average_security_deposit = Lease.objects.aggregate(Avg('security_deposit'))['security_deposit__avg']
+            minimum_security_deposit = Lease.objects.aggregate(Min('security_deposit'))['security_deposit__min']
+            maximum_security_deposit = Lease.objects.aggregate(Max('security_deposit'))['security_deposit__max']
+            total_security_deposit = Lease.objects.aggregate(Sum('security_deposit'))['security_deposit__sum']
+            deposit_data=[float(f"{minimum_security_deposit:.2f}"),float(f"{maximum_security_deposit:.2f}"),float(f"{average_security_deposit:.2f}"),float(f"{total_security_deposit:.2f}")]
+        #print("====>",deposit_data)
         context = {
             'page_title': "Administrative Dashboard",
             'property_types': property_types,
@@ -146,37 +172,23 @@ class Home(View):
             'total_payments': total_payments,
             'collection_rate': collection_rate,
             'total_outstanding': total_outstanding,
-            'deposit_amounts': deposit_amounts,
-            'deposit_descriptions': deposit_descriptions,
+            'deposit_data':deposit_data,
             'available_properties':available_properties,
-            'total_payments_minus_on_time_payments':total_payments_minus_on_time_payments,
+            'late_payments':late_payments,
+            'actual_rent_paid': actual_rent_paid,
+            'actual_rent_owed': actual_rent_owed,
+            'months': months,
+            'month_totals': month_totals,
         }
         return render(request,"core/index.html",context)
 
-
-def send_email(request, subject, body, to, attachments=[]):
-    try:
-        config = Setup.objects.first()
-        backend = EmailBackend(host=config.email_host, port=config.email_port, username=config.support_reply_email,
-                               password=config.email_password, use_tls=config.use_tls, fail_silently=config.fail_silently)
-        # replace &nbsp; with space
-        message = re.sub(r'(?<!&nbsp;)&nbsp;', ' ', strip_tags(body))
-        if attachments:
-            email = EmailMessage(
-                subject=subject, body=message, from_email=config.support_reply_email, to=to, connection=backend)
-            for attch in attachments:
-                email.attach(attch.name, attch.read(),
-                             attch.content_type)
-            email.send()
-            messages.success(request, 'Email sent successfully!')
-        else:
-            email = EmailMessage(
-                subject=subject, body=message, from_email=config.support_reply_email, to=to, connection=backend)
-            email.send()
-            messages.success(request, 'Email sent successfully!')
-    except Exception as e:
-        print(e)
-        messages.info(request, "Email send error:{}".format(e))
+def hide_welcome(request):
+    pk=int(request.POST['pk'])
+    note=Notice.objects.get(id=pk)
+    note.read=True
+    note.save()
+    messages.success(request,"Notice marked as read!")
+    return redirect('home')
 
 class FrontPage(ListView):
     def get(self, request):

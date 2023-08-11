@@ -89,3 +89,4 @@ class Services(models.Model):
         verbose_name_plural='Services'
         db_table='services'
         managed=True
+

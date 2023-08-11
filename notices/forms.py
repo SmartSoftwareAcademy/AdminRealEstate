@@ -12,7 +12,7 @@ class NoticeRequestForm(forms.ModelForm):
         self.fields["notice_date"].widget = widgets.DateInput(attrs={"type": "date","class":"form-control"})
     class Meta:
         model = Notice
-        fields = ['notice_type','user_to_notify', 'notice_date', 'description']
+        fields = "__all__"
 
 class EnquirytForm(forms.ModelForm):
     message = forms.CharField(widget=TinyMCE(attrs={'cols': 3, 'rows': 3}))
