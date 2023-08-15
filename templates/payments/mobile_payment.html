@@ -58,7 +58,7 @@
                     if (response.message === 'Accepted') {
                         setTimeout(function() {
                             triggerAjaxRequest();
-                        }, 12000); // Delay of 10 seconds (10000 milliseconds)
+                        }, 15000); // Delay of 10 seconds (10000 milliseconds)
                     } else {
                         showErrorAlert();
                     }
@@ -76,40 +76,42 @@
             // Simulate an AJAX request to the Mpesa callback URL
             $.ajax({
                 url: '{% url 'mpesa_callback' %}',
-                type: 'POST',
-                data: $('#mpesaPaymentForm').serialize(),
+                type: 'GET',
+                //data:{'ResultCode':1},
                 success: function(response) {
+                     console.log(response);
                     $('#loadingSpinner').hide();
-                    $('#submitBtn').attr('disabled', false);
-
-                    if (response.success) {
-                        showSuccessAlert();
+                    //$('#submitBtn').attr('disabled', false);
+                    if (response.status==200) {
+                        console.log(response);
+                        showSuccessAlert(response.message);
                     } else {
-                        showErrorAlert();
+                        showErrorAlert(response.message);
                     }
                 },
-                error: function() {
-                    showErrorAlert();
+                error: function(response) {
+                    console.log(response.responseJSON);
+                    showErrorAlert(response.responseJSON.message);
                 }
             });
         }
 
-        function showSuccessAlert() {
+        function showSuccessAlert(message) {
             Swal.fire({
                 icon: 'success',
                 title: 'Payment Successful!',
-                text: 'Your payment was successful.',
+                text: message,
             });
         }
 
-        function showErrorAlert() {
+        function showErrorAlert(message) {
             $('#loadingSpinner').hide();
             $('#submitBtn').attr('disabled', false);
 
             Swal.fire({
                 icon: 'error',
                 title: 'Payment Failed',
-                text: 'Payment failed. Please try again.',
+                text: message,
             });
         }
     });
