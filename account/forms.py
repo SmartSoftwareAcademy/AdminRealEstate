@@ -15,6 +15,7 @@ class FormSettings(forms.ModelForm):
 class CustomUserForm(FormSettings):
     email = forms.EmailField(required=True)
     gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female')])
+    user_type = forms.ChoiceField(choices=[("1", "Owner"),("2", "Agent"),("3","Staff"),("4","Tenant")])
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     other_name=forms.CharField(required=False)
@@ -53,5 +54,4 @@ class CustomUserForm(FormSettings):
 
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name','other_name', 'email',
-                  'gender',  'password', 'profile_pic', 'address']
+        fields = '__all__'#['first_name', 'last_name','other_name', 'email','password','gender','user_type', 'profile_pic', 'address']

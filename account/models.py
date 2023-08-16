@@ -42,7 +42,7 @@ class CustomUser(AbstractUser):
     GENDER = [("Male", "Male"), ("Female", "Female"), ("Other", "Other")]
     username = models.CharField(max_length=150, unique=True,blank=True,null=True)
     email = models.EmailField(unique=True)
-    user_type = models.CharField(default=4, choices=USER_TYPE, max_length=1)
+    user_type = models.CharField(choices=USER_TYPE, max_length=1)
     gender = models.CharField(max_length=10, choices=GENDER)
     profile_pic = models.ImageField(upload_to='profiles',blank=True,null=True)
     other_name = models.CharField(max_length=200, blank=True)

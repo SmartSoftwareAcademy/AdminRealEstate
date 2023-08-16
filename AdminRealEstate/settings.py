@@ -115,9 +115,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '3306'),
-        'NAME': os.environ.get('DB_NAME', 'realestate'),
-        'USER': os.environ.get('DB_USER', 'root'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'root'),
+        'NAME': os.environ.get('DB_NAME', 'tdbsoft_realestate'),
+        'USER': os.environ.get('DB_USER', 'estateadmin'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', '@EstateAdmin123'),
     }
 }
 
