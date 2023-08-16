@@ -124,7 +124,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'tdbsoft_realestate',
-        'USER': 'estateadmin',
+        'USER': 'tdbsoftc_estateadmin',
         'PASSWORD': '@EstateAdmin123',
         'HOST': 'localhost',  # Usually 'localhost' or '127.0.0.1'
         'PORT': '3306',  # Default MySQL port is 3306
