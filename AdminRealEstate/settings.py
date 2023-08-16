@@ -110,16 +110,33 @@ WSGI_APPLICATION = 'AdminRealEstate.wsgi.application'
 #     }
 # }
 # Database configuration
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'HOST': os.environ.get('DB_HOST', 'localhost'),
+#         'PORT': os.environ.get('DB_PORT', '3306'),
+#         'NAME': os.environ.get('DB_NAME', 'tdbsoft_realestate'),
+#         'USER': os.environ.get('DB_USER', 'estateadmin'),
+#         'PASSWORD': os.environ.get('DB_PASSWORD', '@EstateAdmin123'),
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '3306'),
-        'NAME': os.environ.get('DB_NAME', 'tdbsoft_realestate'),
-        'USER': os.environ.get('DB_USER', 'estateadmin'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', '@EstateAdmin123'),
+        'NAME': 'tdbsoft_realestate',
+        'USER': 'estateadmin',
+        'PASSWORD': '@EstateAdmin123',
+        'HOST': 'localhost',  # Usually 'localhost' or '127.0.0.1'
+        'PORT': '3306',  # Default MySQL port is 3306
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        },
+        'CONN_MAX_AGE': 600,
     }
 }
+
+
 
 TINYMCE_DEFAULT_CONFIG = {
     'height': 400,
