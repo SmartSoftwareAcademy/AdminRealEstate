@@ -10,7 +10,7 @@ environ = os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE", "AdminRealEstate.settings")
 
 application = WhiteNoise(
-    application, root="/home/tdbsoftc/public_html/fernbrook/static/")
+    application, root="/home/tdbsoftc/public_html/realestate/AdminRealEstate/static/")
 
 application.add_files(
-    "/home/tdbsoftc/public_html/fernbrook/static/", prefix="more-files/")
+    "/home/tdbsoftc/public_html/realestate/AdminRealEstate/static/", prefix="more-files/")

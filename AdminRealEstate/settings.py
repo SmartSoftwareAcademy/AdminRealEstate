@@ -123,9 +123,9 @@ WSGI_APPLICATION = 'AdminRealEstate.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
-        'NAME': 'tdbsoft_realestate',
-        'USER': 'tdbsoftc_estateadmin',
-        'PASSWORD': '@EstateAdmin123',
+        'NAME': 'realestate',
+        'USER': 'root',
+        'PASSWORD': 'root',
         'HOST': 'localhost',  # Usually 'localhost' or '127.0.0.1'
         'PORT': '3306',  # Default MySQL port is 3306
         # 'OPTIONS': {

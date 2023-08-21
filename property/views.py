@@ -45,7 +45,8 @@ class PrpertyCreateView(LoginRequiredMixin, CreateView):
         image_formset = context['items']
         with transaction.atomic():
             self.object = form.save(commit=False)
-            self.object.owner=self.request.user.owners
+            owner=PropertyOwner.objects.filter(agents__user=self.request.user).first()
+            self.object.owner=owner
             if image_formset.is_valid():
                 image_formset.instance = self.object
                 image_formset.save()
