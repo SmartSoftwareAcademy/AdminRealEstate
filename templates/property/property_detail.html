@@ -94,7 +94,7 @@
                     <div class="unit">
                       <h6>{{ unit.title }}</h6>
                       <p>Unit Code: {{ unit.unit_code }}</p>
-                      <p>Description: {{ unit.description }}</p>
+                      <p>Description: {{ unit.description|safe }}</p>
                       <!-- Add more unit details as needed -->
                     </div>
                   {% empty %}

@@ -22,7 +22,6 @@ class Property(models.Model):
     country= models.CharField(max_length=255,default='Kenya')
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES,default='apartment')
     property_name = models.CharField(max_length=255,default='amase')
-    units = models.ManyToManyField("Units", blank=True, null=True)
     description = HTMLField()
     amenities = HTMLField()
     property_status = models.CharField(max_length=20, choices=PROPERTY_STATUSES,default='available')
@@ -73,17 +72,18 @@ class PropertyUnitImages(models.Model):
 class Units(models.Model):
     UNIT_TYPES = [
         ('studio', 'Studio'),
+        ('bedseater','BedSeater'),
         ('1br', '1 Bedroom'),
         ('2br', '2 Bedrooms'),
         ('3br', '3 Bedrooms'),
         ('penthouse', 'Penthouse'),
         ('office', 'Office Space'),
     ]
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='units',blank=True,null=True)
     title = models.CharField(max_length=100,default='test')
     unit_code = models.CharField(max_length=100, default='001')
     description = HTMLField()
     rental_price = models.DecimalField(max_digits=8, decimal_places=2)
-    property_unit_images=models.ManyToManyField(PropertyUnitImages, blank=True, null=True)
     square_footage = models.PositiveIntegerField(default=2)
     bedrooms = models.PositiveIntegerField(default=0)
     bathrooms = models.PositiveIntegerField(default=0)
