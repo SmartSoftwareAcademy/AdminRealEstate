@@ -119,6 +119,7 @@ DATABASES = {
         'USER':  'root',
         'PASSWORD': 'root',
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         'HOST': 'localhost',  
         'PORT': '3306', 
         'OPTIONS': {
@@ -126,6 +127,8 @@ DATABASES = {
             'charset': 'utf8mb4',
         },
         'CONN_MAX_AGE': 600,
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     }
