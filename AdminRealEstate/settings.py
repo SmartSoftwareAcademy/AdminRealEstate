@@ -110,22 +110,15 @@ WSGI_APPLICATION = 'AdminRealEstate.wsgi.application'
 #     }
 # }
 # Database configuration
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'HOST': os.environ.get('DB_HOST', 'localhost'),
-#         'PORT': os.environ.get('DB_PORT', '3306'),
-#         'NAME': os.environ.get('DB_NAME', 'tdbsoft_realestate'),
-#         'USER': os.environ.get('DB_USER', 'estateadmin'),
-#         'PASSWORD': os.environ.get('DB_PASSWORD', '@EstateAdmin123'),
-#     }
-# }
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
-        'NAME': 'realestate',
-        'USER': 'root',
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': "localhost",  # Or an IP Address that your DB is hosted on
+        'PORT': '3307',
+        'NAME': 'realestate',    # Database name             
+        'USER':  'root',
         'PASSWORD': 'root',
+<<<<<<< Updated upstream
         'HOST': 'localhost',  
         'PORT': '3306', 
         'OPTIONS': {
@@ -133,8 +126,25 @@ DATABASES = {
             'charset': 'utf8mb4',
         },
         'CONN_MAX_AGE': 600,
+=======
+>>>>>>> Stashed changes
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mysql.connector.django',
+#         'NAME': 'realestate',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',  # Usually 'localhost' or '127.0.0.1'
+#         'PORT': '3306',  # Default MySQL port is 3306
+#         # 'OPTIONS': {
+#         #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         #     'charset': 'utf8mb4',
+#         # }
+#         # 'CONN_MAX_AGE': 600,
+#     }
+# }
 
 
 

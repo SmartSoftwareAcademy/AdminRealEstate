@@ -16,8 +16,8 @@
 
 
 -- Dumping database structure for realestate
-CREATE DATABASE IF NOT EXISTS `tdbsoft_realestate` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `tdbsoft_realestate`;
+-- CREATE DATABASE IF NOT EXISTS `tdbsoft_realestate` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+-- USE `tdbsoft_realestate`;
 
 -- Dumping structure for table realestate.about_content
 DROP TABLE IF EXISTS `about_content`;
