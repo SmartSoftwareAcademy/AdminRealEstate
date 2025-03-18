@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-import dj_database_url
+#import dj_database_url
 import os
 from pathlib import Path
 from .juzmin import JAZZMIN_SETTINGS
@@ -126,13 +126,13 @@ DATABASES = {
         'NAME': 'realestate',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': 'localhost',  # Usually 'localhost' or '127.0.0.1'
-        'PORT': '3306',  # Default MySQL port is 3306
-        # 'OPTIONS': {
-        #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        #     'charset': 'utf8mb4',
-        # },
-        # 'CONN_MAX_AGE': 600,
+        'HOST': 'localhost',  
+        'PORT': '3306', 
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        },
+        'CONN_MAX_AGE': 600,
     }
 }
 
@@ -247,8 +247,8 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-prod_db = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(prod_db)
+#prod_db = dj_database_url.config(conn_max_age=500)
+#DATABASES['default'].update(prod_db)
 
 #added this line
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

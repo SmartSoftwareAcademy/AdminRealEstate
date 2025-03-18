@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `about_content` (
   PRIMARY KEY (`id`),
   KEY `about_content_property_id_5156302e_fk_properties_id` (`property_id`),
   CONSTRAINT `about_content_property_id_5156302e_fk_properties_id` FOREIGN KEY (`property_id`) REFERENCES `properties` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.about_content: ~0 rows (approximately)
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `account_customuser` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.account_customuser: ~2 rows (approximately)
 INSERT IGNORE INTO `account_customuser` (`id`, `password`, `last_login`, `is_superuser`, `first_name`, `last_name`, `is_staff`, `is_active`, `date_joined`, `username`, `email`, `user_type`, `gender`, `profile_pic`, `other_name`, `address`, `fcm_token`, `created_at`, `updated_at`) VALUES
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `account_customuser_groups` (
   KEY `account_customuser_groups_group_id_2be9f6d7_fk_auth_group_id` (`group_id`),
   CONSTRAINT `account_customuser_g_customuser_id_b6c60904_fk_account_c` FOREIGN KEY (`customuser_id`) REFERENCES `account_customuser` (`id`),
   CONSTRAINT `account_customuser_groups_group_id_2be9f6d7_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.account_customuser_groups: ~0 rows (approximately)
 
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `account_customuser_user_permissions` (
   KEY `account_customuser_u_permission_id_f4aec423_fk_auth_perm` (`permission_id`),
   CONSTRAINT `account_customuser_u_customuser_id_03bcc114_fk_account_c` FOREIGN KEY (`customuser_id`) REFERENCES `account_customuser` (`id`),
   CONSTRAINT `account_customuser_u_permission_id_f4aec423_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.account_customuser_user_permissions: ~0 rows (approximately)
 
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `auth_group` (
   `name` varchar(150) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.auth_group: ~0 rows (approximately)
 
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `auth_group_permissions` (
   KEY `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` (`permission_id`),
   CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
   CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.auth_group_permissions: ~0 rows (approximately)
 
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.auth_permission: ~136 rows (approximately)
 INSERT IGNORE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES
@@ -289,7 +289,7 @@ CREATE TABLE IF NOT EXISTS `core_setup` (
   `use_tls` tinyint(1) DEFAULT NULL,
   `code_place_holders` longtext,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.core_setup: ~0 rows (approximately)
 INSERT IGNORE INTO `core_setup` (`id`, `logo`, `support_reply_email_name`, `support_reply_email`, `email_password`, `email_port`, `email_backed`, `email_host`, `fail_silently`, `use_tls`, `code_place_holders`) VALUES
@@ -305,7 +305,7 @@ CREATE TABLE IF NOT EXISTS `core_siteconfig` (
   `picked` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `core_siteconfig_key_b3eafd0e` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.core_siteconfig: ~5 rows (approximately)
 INSERT IGNORE INTO `core_siteconfig` (`id`, `key`, `value`, `config_id`, `picked`) VALUES
@@ -332,7 +332,7 @@ CREATE TABLE IF NOT EXISTS `django_admin_log` (
   CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_account_customuser_id` FOREIGN KEY (`user_id`) REFERENCES `account_customuser` (`id`),
   CONSTRAINT `django_admin_log_chk_1` CHECK ((`action_flag` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.django_admin_log: ~36 rows (approximately)
 INSERT IGNORE INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
@@ -386,7 +386,7 @@ CREATE TABLE IF NOT EXISTS `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.django_content_type: ~34 rows (approximately)
 INSERT IGNORE INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
@@ -433,7 +433,7 @@ CREATE TABLE IF NOT EXISTS `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.django_migrations: ~36 rows (approximately)
 INSERT IGNORE INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
@@ -489,7 +489,7 @@ CREATE TABLE IF NOT EXISTS `django_session` (
   `expire_date` datetime(6) NOT NULL,
   PRIMARY KEY (`session_key`),
   KEY `django_session_expire_date_a5c62663` (`expire_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.django_session: ~4 rows (approximately)
 INSERT IGNORE INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
@@ -506,7 +506,7 @@ CREATE TABLE IF NOT EXISTS `django_site` (
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_site_domain_a2e37b91_uniq` (`domain`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.django_site: ~0 rows (approximately)
 INSERT IGNORE INTO `django_site` (`id`, `domain`, `name`) VALUES
@@ -529,7 +529,7 @@ CREATE TABLE IF NOT EXISTS `invoices_invoice` (
   PRIMARY KEY (`id`),
   KEY `invoices_invoice_lease_id_085c85e7_fk_leases_id` (`lease_id`),
   CONSTRAINT `invoices_invoice_lease_id_085c85e7_fk_leases_id` FOREIGN KEY (`lease_id`) REFERENCES `leases` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.invoices_invoice: ~1 rows (approximately)
 INSERT IGNORE INTO `invoices_invoice` (`id`, `invoice_type`, `amount`, `description`, `due_date`, `created_at`, `updated_at`, `lease_id`, `invoice_id`, `status`, `balance`) VALUES
@@ -549,7 +549,7 @@ CREATE TABLE IF NOT EXISTS `landlords_agent` (
   KEY `landlords_agent_owner_id_10e1af38_fk_landlords_propertyowner_id` (`owner_id`),
   CONSTRAINT `landlords_agent_owner_id_10e1af38_fk_landlords_propertyowner_id` FOREIGN KEY (`owner_id`) REFERENCES `landlords_propertyowner` (`id`),
   CONSTRAINT `landlords_agent_user_id_aec7b0ea_fk_account_customuser_id` FOREIGN KEY (`user_id`) REFERENCES `account_customuser` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.landlords_agent: ~0 rows (approximately)
 INSERT IGNORE INTO `landlords_agent` (`id`, `mobile_number`, `national_id`, `ID_Snapshot`, `owner_id`, `user_id`) VALUES
@@ -566,7 +566,7 @@ CREATE TABLE IF NOT EXISTS `landlords_propertyowner` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `landlords_propertyow_user_id_5dff2206_fk_account_c` FOREIGN KEY (`user_id`) REFERENCES `account_customuser` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.landlords_propertyowner: ~0 rows (approximately)
 INSERT IGNORE INTO `landlords_propertyowner` (`id`, `mobile_number`, `national_id`, `ID_Snapshot`, `user_id`) VALUES
@@ -591,7 +591,7 @@ CREATE TABLE IF NOT EXISTS `leases` (
   CONSTRAINT `leases_leased_by_id_19ba31fe_fk_account_customuser_id` FOREIGN KEY (`leased_by_id`) REFERENCES `account_customuser` (`id`),
   CONSTRAINT `leases_property_unit_id_b8e6c80b_fk_units_id` FOREIGN KEY (`property_unit_id`) REFERENCES `units` (`id`),
   CONSTRAINT `leases_tenant_id_9b3f9a65_fk_tenants_tenant_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenants_tenant` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.leases: ~0 rows (approximately)
 INSERT IGNORE INTO `leases` (`id`, `start_date`, `end_date`, `monthly_rent`, `security_deposit`, `is_active`, `leased_by_id`, `property_unit_id`, `tenant_id`) VALUES
@@ -612,7 +612,7 @@ CREATE TABLE IF NOT EXISTS `lease_terms` (
   KEY `lease_terms_lease_id_c36d5dc4_fk_leases_id` (`lease_id`),
   CONSTRAINT `lease_terms_lease_id_c36d5dc4_fk_leases_id` FOREIGN KEY (`lease_id`) REFERENCES `leases` (`id`),
   CONSTRAINT `lease_terms_chk_1` CHECK ((`term_number` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.lease_terms: ~0 rows (approximately)
 INSERT IGNORE INTO `lease_terms` (`id`, `late_payment_fine`, `uilities_description`, `utilities_amount`, `term_number`, `term_description`, `accepted`, `lease_id`) VALUES
@@ -629,7 +629,7 @@ CREATE TABLE IF NOT EXISTS `notices_enquiries` (
   `message` longtext NOT NULL,
   `read` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.notices_enquiries: ~0 rows (approximately)
 
@@ -650,7 +650,7 @@ CREATE TABLE IF NOT EXISTS `notices_notice` (
   KEY `notices_notice_user_id_62c74e71_fk_account_customuser_id` (`user_id`),
   CONSTRAINT `notices_notice_notify_specific_user_47a381b9_fk_account_c` FOREIGN KEY (`notify_specific_user_id`) REFERENCES `account_customuser` (`id`),
   CONSTRAINT `notices_notice_user_id_62c74e71_fk_account_customuser_id` FOREIGN KEY (`user_id`) REFERENCES `account_customuser` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.notices_notice: ~0 rows (approximately)
 INSERT IGNORE INTO `notices_notice` (`id`, `notice_type`, `notify_group_of_users`, `notice_date`, `description`, `reason`, `read`, `notify_specific_user_id`, `user_id`) VALUES
@@ -670,7 +670,7 @@ CREATE TABLE IF NOT EXISTS `notices_noticefeedback` (
   KEY `notices_noticefeedback_user_id_bf5dd736_fk_account_customuser_id` (`user_id`),
   CONSTRAINT `notices_noticefeedback_notice_id_c9449122_fk_notices_notice_id` FOREIGN KEY (`notice_id`) REFERENCES `notices_notice` (`id`),
   CONSTRAINT `notices_noticefeedback_user_id_bf5dd736_fk_account_customuser_id` FOREIGN KEY (`user_id`) REFERENCES `account_customuser` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.notices_noticefeedback: ~0 rows (approximately)
 
@@ -688,7 +688,7 @@ CREATE TABLE IF NOT EXISTS `payments_payment` (
   PRIMARY KEY (`id`),
   KEY `payments_payment_invoice_id_a1a432c8_fk_invoices_invoice_id` (`invoice_id`),
   CONSTRAINT `payments_payment_invoice_id_a1a432c8_fk_invoices_invoice_id` FOREIGN KEY (`invoice_id`) REFERENCES `invoices_invoice` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.payments_payment: ~2 rows (approximately)
 INSERT IGNORE INTO `payments_payment` (`id`, `amount`, `description`, `date_paid`, `outstanding_balance`, `invoice_id`, `payment_method`, `transaction_code`) VALUES
@@ -722,7 +722,7 @@ CREATE TABLE IF NOT EXISTS `properties` (
   CONSTRAINT `properties_owner_id_f88fce84_fk_landlords_propertyowner_id` FOREIGN KEY (`owner_id`) REFERENCES `landlords_propertyowner` (`id`),
   CONSTRAINT `properties_chk_1` CHECK ((`year_built` >= 0)),
   CONSTRAINT `properties_chk_2` CHECK ((`square_footage` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.properties: ~0 rows (approximately)
 INSERT IGNORE INTO `properties` (`id`, `address`, `city`, `country`, `property_type`, `property_name`, `description`, `amenities`, `property_status`, `year_built`, `square_footage`, `is_featured`, `created_at`, `updated_at`, `owner_id`) VALUES
@@ -739,7 +739,7 @@ CREATE TABLE IF NOT EXISTS `properties_units` (
   KEY `properties_units_units_id_f10de146_fk_units_id` (`units_id`),
   CONSTRAINT `properties_units_property_id_25cf38d5_fk_properties_id` FOREIGN KEY (`property_id`) REFERENCES `properties` (`id`),
   CONSTRAINT `properties_units_units_id_f10de146_fk_units_id` FOREIGN KEY (`units_id`) REFERENCES `units` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.properties_units: ~0 rows (approximately)
 INSERT IGNORE INTO `properties_units` (`id`, `property_id`, `units_id`) VALUES
@@ -754,7 +754,7 @@ CREATE TABLE IF NOT EXISTS `property_images` (
   PRIMARY KEY (`id`),
   KEY `property_images_property_id_16381827_fk_properties_id` (`property_id`),
   CONSTRAINT `property_images_property_id_16381827_fk_properties_id` FOREIGN KEY (`property_id`) REFERENCES `properties` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.property_images: ~2 rows (approximately)
 INSERT IGNORE INTO `property_images` (`id`, `image`, `property_id`) VALUES
@@ -770,7 +770,7 @@ CREATE TABLE IF NOT EXISTS `property_unit_images` (
   PRIMARY KEY (`id`),
   KEY `property_unit_images_property_unit_id_ad2a94d7_fk_units_id` (`property_unit_id`),
   CONSTRAINT `property_unit_images_property_unit_id_ad2a94d7_fk_units_id` FOREIGN KEY (`property_unit_id`) REFERENCES `units` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.property_unit_images: ~2 rows (approximately)
 INSERT IGNORE INTO `property_unit_images` (`id`, `image`, `property_unit_id`) VALUES
@@ -790,7 +790,7 @@ CREATE TABLE IF NOT EXISTS `services` (
   PRIMARY KEY (`id`),
   KEY `services_property_id_b3423874_fk_properties_id` (`property_id`),
   CONSTRAINT `services_property_id_b3423874_fk_properties_id` FOREIGN KEY (`property_id`) REFERENCES `properties` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.services: ~0 rows (approximately)
 
@@ -810,7 +810,7 @@ CREATE TABLE IF NOT EXISTS `staff` (
   KEY `staff_created_by_id_874d75d7_fk_account_customuser_id` (`created_by_id`),
   CONSTRAINT `staff_created_by_id_874d75d7_fk_account_customuser_id` FOREIGN KEY (`created_by_id`) REFERENCES `account_customuser` (`id`),
   CONSTRAINT `staff_user_id_e6242ba6_fk_account_customuser_id` FOREIGN KEY (`user_id`) REFERENCES `account_customuser` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.staff: ~0 rows (approximately)
 
@@ -824,7 +824,7 @@ CREATE TABLE IF NOT EXISTS `staff_deduction` (
   PRIMARY KEY (`id`),
   KEY `staff_deduction_staff_id_517844f1_fk_staff_id` (`staff_id`),
   CONSTRAINT `staff_deduction_staff_id_517844f1_fk_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.staff_deduction: ~0 rows (approximately)
 
@@ -838,7 +838,7 @@ CREATE TABLE IF NOT EXISTS `staff_earning` (
   PRIMARY KEY (`id`),
   KEY `staff_earning_staff_id_9722e4a5_fk_staff_id` (`staff_id`),
   CONSTRAINT `staff_earning_staff_id_9722e4a5_fk_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.staff_earning: ~0 rows (approximately)
 
@@ -856,7 +856,7 @@ CREATE TABLE IF NOT EXISTS `staff_payments` (
   CONSTRAINT `staff_payments_staff_id_89d3aacf_fk_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`),
   CONSTRAINT `staff_payments_chk_1` CHECK ((`month` >= 0)),
   CONSTRAINT `staff_payments_chk_2` CHECK ((`year` >= 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.staff_payments: ~0 rows (approximately)
 
@@ -869,7 +869,7 @@ CREATE TABLE IF NOT EXISTS `staff_salary` (
   PRIMARY KEY (`id`),
   KEY `staff_salary_staff_id_1ff48e83_fk_staff_id` (`staff_id`),
   CONSTRAINT `staff_salary_staff_id_1ff48e83_fk_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.staff_salary: ~0 rows (approximately)
 
@@ -884,7 +884,7 @@ CREATE TABLE IF NOT EXISTS `staff_salary_deductions` (
   KEY `staff_salary_deducti_deduction_id_95b4f40b_fk_staff_ded` (`deduction_id`),
   CONSTRAINT `staff_salary_deducti_deduction_id_95b4f40b_fk_staff_ded` FOREIGN KEY (`deduction_id`) REFERENCES `staff_deduction` (`id`),
   CONSTRAINT `staff_salary_deducti_staffsalary_id_6a44f38d_fk_staff_sal` FOREIGN KEY (`staffsalary_id`) REFERENCES `staff_salary` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.staff_salary_deductions: ~0 rows (approximately)
 
@@ -899,7 +899,7 @@ CREATE TABLE IF NOT EXISTS `staff_salary_earnings` (
   KEY `staff_salary_earnings_earning_id_702ecb72_fk_staff_earning_id` (`earning_id`),
   CONSTRAINT `staff_salary_earnings_earning_id_702ecb72_fk_staff_earning_id` FOREIGN KEY (`earning_id`) REFERENCES `staff_earning` (`id`),
   CONSTRAINT `staff_salary_earnings_staffsalary_id_af1285bf_fk_staff_salary_id` FOREIGN KEY (`staffsalary_id`) REFERENCES `staff_salary` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.staff_salary_earnings: ~0 rows (approximately)
 
@@ -920,7 +920,7 @@ CREATE TABLE IF NOT EXISTS `tenants_tenant` (
   KEY `tenants_tenant_created_by_id_f3e30a24_fk_account_customuser_id` (`created_by_id`),
   CONSTRAINT `tenants_tenant_created_by_id_f3e30a24_fk_account_customuser_id` FOREIGN KEY (`created_by_id`) REFERENCES `account_customuser` (`id`),
   CONSTRAINT `tenants_tenant_user_id_bbceef8a_fk_account_customuser_id` FOREIGN KEY (`user_id`) REFERENCES `account_customuser` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.tenants_tenant: ~0 rows (approximately)
 INSERT IGNORE INTO `tenants_tenant` (`id`, `current_status`, `date_of_birth`, `National_ID`, `date_of_registration`, `mobile_number`, `others`, `created_by_id`, `user_id`) VALUES
@@ -940,7 +940,7 @@ CREATE TABLE IF NOT EXISTS `tenants_tenant_business_details` (
   PRIMARY KEY (`id`),
   KEY `tenants_tenant_busin_tenant_id_e52467fa_fk_tenants_t` (`tenant_id`),
   CONSTRAINT `tenants_tenant_busin_tenant_id_e52467fa_fk_tenants_t` FOREIGN KEY (`tenant_id`) REFERENCES `tenants_tenant` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.tenants_tenant_business_details: ~0 rows (approximately)
 
@@ -958,7 +958,7 @@ CREATE TABLE IF NOT EXISTS `tenants_tenant_employment_details` (
   PRIMARY KEY (`id`),
   KEY `tenants_tenant_emplo_tenant_id_3d07b6ff_fk_tenants_t` (`tenant_id`),
   CONSTRAINT `tenants_tenant_emplo_tenant_id_3d07b6ff_fk_tenants_t` FOREIGN KEY (`tenant_id`) REFERENCES `tenants_tenant` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.tenants_tenant_employment_details: ~0 rows (approximately)
 
@@ -978,7 +978,7 @@ CREATE TABLE IF NOT EXISTS `tenants_tenant_kin` (
   PRIMARY KEY (`id`),
   KEY `tenants_tenant_kin_tenant_id_b15f1153_fk_tenants_tenant_id` (`tenant_id`),
   CONSTRAINT `tenants_tenant_kin_tenant_id_b15f1153_fk_tenants_tenant_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenants_tenant` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.tenants_tenant_kin: ~0 rows (approximately)
 INSERT IGNORE INTO `tenants_tenant_kin` (`id`, `name`, `phone`, `relation`, `emergency_name`, `emergency_phone_number`, `emergency_email`, `emergency_adress`, `emergency_physical_adress`, `tenant_id`) VALUES
@@ -1000,7 +1000,7 @@ CREATE TABLE IF NOT EXISTS `testimonials` (
   KEY `testimonials_user_id_ae44a7e2_fk_account_customuser_id` (`user_id`),
   CONSTRAINT `testimonials_property_id_0143456c_fk_properties_id` FOREIGN KEY (`property_id`) REFERENCES `properties` (`id`),
   CONSTRAINT `testimonials_user_id_ae44a7e2_fk_account_customuser_id` FOREIGN KEY (`user_id`) REFERENCES `account_customuser` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.testimonials: ~1 rows (approximately)
 
@@ -1022,7 +1022,7 @@ CREATE TABLE IF NOT EXISTS `units` (
   CONSTRAINT `units_chk_1` CHECK ((`square_footage` >= 0)),
   CONSTRAINT `units_chk_2` CHECK ((`bedrooms` >= 0)),
   CONSTRAINT `units_chk_3` CHECK ((`bathrooms` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 
 -- Dumping data for table realestate.units: ~0 rows (approximately)
 INSERT IGNORE INTO `units` (`id`, `title`, `unit_code`, `description`, `rental_price`, `square_footage`, `bedrooms`, `bathrooms`, `unit_type`, `is_featured`, `is_available`) VALUES
@@ -1039,7 +1039,7 @@ CREATE TABLE IF NOT EXISTS `units_property_unit_images` (
   KEY `units_property_unit__propertyunitimages_i_a853ea1c_fk_property_` (`propertyunitimages_id`),
   CONSTRAINT `units_property_unit__propertyunitimages_i_a853ea1c_fk_property_` FOREIGN KEY (`propertyunitimages_id`) REFERENCES `property_unit_images` (`id`),
   CONSTRAINT `units_property_unit_images_units_id_113cf4fd_fk_units_id` FOREIGN KEY (`units_id`) REFERENCES `units` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;--COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table realestate.units_property_unit_images: ~0 rows (approximately)
 

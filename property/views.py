@@ -10,6 +10,11 @@ from .models import *
 from .forms import *
 from landlords.models import *
 
+class PropertyFronView(View):
+    def get(self, request):
+        properties = Property.objects.all()
+        return render(request, 'property/properties.html', {'properties':properties})
+
 class PropertyList(View):
     def get(self, request):
         owner=PropertyOwner.objects.filter(user=request.user).first()
@@ -84,7 +89,6 @@ class PropertyUpdateView(LoginRequiredMixin, UpdateView):
             form.save()
             itemsformset.save()
         return super().form_valid(form)
-
 
 
 class PropertyDeleteView(LoginRequiredMixin, DeleteView):

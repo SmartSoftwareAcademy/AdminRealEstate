@@ -27,6 +27,7 @@ urlpatterns = [
     path('lease/',include('leases.urls')),
     path('invoices/',include('invoices.urls')),
     path('notices/',include('notices.urls')),
+    path('owners/',include('landlords.urls')),
     path('property/',include('property.urls')),
     path('payments/',include('payments.urls')),
     path('tenant/',include('tenants.urls')),

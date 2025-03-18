@@ -18,9 +18,9 @@ class PropertyOwnerDetail(View):
 class AgentList(View):
     def get(self, request):
         agents = Agent.objects.all()
-        return render(request, 'agents/agent_list.html', {'agents': agents})
+        return render(request, 'core/agents.html', {'agents': agents})
 
 class AgentDetail(View):
     def get(self, request, pk):
         agent = get_object_or_404(Agent, pk=pk)
-        return render(request, 'agents/agent_detail.html', {'agent': agent})
+        return render(request, 'core/agent_detail.html', {'agent': agent})

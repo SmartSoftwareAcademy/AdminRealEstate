@@ -1,193 +1,346 @@
-{% extends 'account/base.html' %}
+
+{% extends 'core/base_template.html' %}
 {% load static %}
-{% load humanize %}
 {% block content %}
-<div class="container">
-   <div class="hero">
-		<div class="hero-slide">
-			{% for property in featured_properties %}
-			{% for img in property.property_images.all %}
-			<div class="img overlay" style="background-image: url({{img.image.url}})"></div>
-			{% empty %}
-			<div class="img overlay" style="background-image: url('{% static 'cms/images/hero_bg_3.jpg' %}')"></div>
-			<div class="img overlay" style="background-image: url('{% static 'cms/images/hero_bg_2.jpg' %}')"></div>
-			<div class="img overlay" style="background-image: url('{% static 'cms/images/hero_bg_1.jpg' %}')"></div>
-			{% endfor %}
-			{% endfor %}
-		</div>
+  <main class="main">
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+      <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
 
-		<div class="container">
-			<div class="row justify-content-center align-items-center">
-				<div class="col-lg-9 text-center">
-					<h1 class="heading" data-aos="fade-up">Easiest way to find your dream home</h1>
-					<form action="{% url 'property_page' %}" class="narrow-w form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
-						<input type="text" class="form-control px-4" placeholder="Search by property name, city/town, address...">
-						<button type="submit" class="btn btn-primary">Search</button>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="carousel-item active">
+          <img src="{% static 'assets/img/hero-carousel/hero-carousel-1.jpg' %}" alt="">
+          <div class="carousel-container">
+            <div>
+              <p>Doral, Florida</p>
+              <h2><span>204</span> Olive Road Two</h2>
+              <a href="property-single.html" class="btn-get-started">rent | $ 12.000</a>
+            </div>
+          </div>
+        </div><!-- End Carousel Item -->
 
-	<div class="section">
-		<div class="container">
-			<div class="row mb-5 align-items-center">
-				<div class="col-lg-6">
-					<h2 class="font-weight-bold text-primary heading">Popular Properties</h2>
-				</div>
-				<div class="col-lg-6 text-lg-end">
-					<p><a href="{% url 'property_page' %}" target="_blank" class="btn btn-primary text-white py-3 px-4">View all properties</a></p>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12">
-					<div class="property-slider-wrap">
-						<div class="property-slider">
-						{% for unit in featured_units %}
-							<div class="property-item">
-								<a href="{% url 'home_unit-detail' unit.id %}" class="img">
-									{% if unit.unit_images.all|length > 0 %}
-									<img src="{{unit.unit_images.last}}" alt="Image"  class="img-fluid rounded" width="350px" height="350px">
-									{% else %}
-									<img src="{% static 'cms/images/img_1.jpg'  %}" alt="Image" class="img-fluid rounded" width="350px" height="350px">
-									{% endif %}
-								</a>
-								<div class="property-content">
-									<div class="price mb-2"><span>KES {{ unit.rental_price|intcomma }}</span></div>
-									<div>
-										<span class="d-block mb-2 text-black-50">{{unit}}</span>
-										{% for p in unit.property_set.all %}
-										<span class="city d-block mb-3">{{p.city}}, {{p.country}}</span>
-										{% endfor %}
-										<div class="specs d-flex mb-4">
-											<span class="d-block d-flex align-items-center me-3">
-												<span class="icon-bed me-2"></span>
-												<span class="caption">{{unit.bedrooms}} beds</span>
-											</span>
-											<span class="d-block d-flex align-items-center">
-												<span class="icon-bath me-2"></span>
-												<span class="caption">{{unit.bathrooms}} baths</span>
-											</span>
-										</div>
+        <div class="carousel-item">
+          <img src="{% static 'assets/img/hero-carousel/hero-carousel-2.jpg' %}" alt="">
+          <div class="carousel-container">
+            <div>
+              <p>Doral, Florida</p>
+              <h2><span>247</span> Venda Road Five</h2>
+              <a href="property-single.html" class="btn-get-started">sale | $ 356.000</a>
+            </div>
+          </div>
+        </div><!-- End Carousel Item -->
 
-										<a href="{% url 'home_unit-detail' unit.id %}" class="btn btn-primary py-2 px-3">See details</a>
-									</div>
-								</div>
-							</div> <!-- .item -->
-		             	{% endfor %}
-						</div>
+        <div class="carousel-item">
+          <img src="{% static 'assets/img/hero-carousel/hero-carousel-3.jpg' %}" alt="">
+          <div class="carousel-container">
+            <div>
+              <p>Doral, Florida</p>
+              <h2><span>247</span> Vitra Road three</h2>
+              <a href="property-single.html" class="btn-get-started">rent | $ 3.000</a>
+            </div>
+          </div>
+        </div><!-- End Carousel Item -->
 
+        <a class="carousel-control-prev" href="#hero-carousel" role="button" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+        </a>
 
-						<div id="property-nav" class="controls" tabindex="0" aria-label="Carousel Navigation">
-							<span class="prev" data-controls="prev" aria-controls="property" tabindex="-1">Prev</span>
-							<span class="next" data-controls="next" aria-controls="property" tabindex="-1">Next</span>
-						</div>
+        <a class="carousel-control-next" href="#hero-carousel" role="button" data-bs-slide="next">
+          <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+        </a>
 
-					</div>
-				</div>
+        <ol class="carousel-indicators"></ol>
 
-			</div>
-		</div>
-	</div>
+      </div>
 
-	{% include  'core/parts/services-single.html' %}
+    </section><!-- /Hero Section -->
 
-	{% include  'core/parts/testimonial-single.html' %}
+    <!-- Services Section -->
+    <section id="services" class="services section">
 
-	<div class="section section-4 bg-light">
-		<div class="container">
-			<div class="row justify-content-center  text-center mb-5">
-				<div class="col-lg-5">
-					<h2 class="font-weight-bold heading text-primary mb-4">Let's find home that's perfect for you</h2>
-					<p class="text-black-50">Discover Your Dream Home: Your Perfect Haven Awaits!</p>
-				</div>
-			</div>
-			<div class="row justify-content-between mb-5">
-				<div class="col-lg-7 mb-5 mb-lg-0 order-lg-2">
-					<div class="img-about dots">
-						<img src="{% static 'cms/images/img_1.jpg'  %}" alt="Image" class="img-fluid">
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="d-flex feature-h">
-						<span class="wrap-icon me-3">
-							<span class="icon-home2"></span>
-						</span>
-						<div class="feature-text">
-							<h3 class="heading">2M Properties</h3>
-							<p class="text-black-50">We offer Luxurious properties</p>
-						</div>
-					</div>
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Our Services</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+      </div><!-- End Section Title -->
 
-					<div class="d-flex feature-h">
-						<span class="wrap-icon me-3">
-							<span class="icon-person"></span>
-						</span>
-						<div class="feature-text">
-							<h3 class="heading">Top Rated Agents</h3>
-							<p class="text-black-50">This exclusive space is designed specifically for our esteemed agents who are dedicated to providing exceptional service and expertise in the property market.</p>
-						</div>
-					</div>
+      <div class="container">
 
-					<div class="d-flex feature-h">
-						<span class="wrap-icon me-3">
-							<span class="icon-security"></span>
-						</span>
-						<div class="feature-text">
-							<h3 class="heading">Legit Properties</h3>
-							<p class="text-black-50">We offer luxurious living spaces designed with your comfort and style in mind. Our apartments feature modern amenities and high-end finishes to provide you with a sophisticated and elegant living experience.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row section-counter mt-5">
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-					<div class="counter-wrap mb-5 mb-lg-0">
-						<span class="number"><span class="countup text-primary">3298</span></span>
-						<span class="caption text-black-50"># of Buy Properties</span>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
-					<div class="counter-wrap mb-5 mb-lg-0">
-						<span class="number"><span class="countup text-primary">2181</span></span>
-						<span class="caption text-black-50"># of Sell Properties</span>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="500">
-					<div class="counter-wrap mb-5 mb-lg-0">
-						<span class="number"><span class="countup text-primary">9316</span></span>
-						<span class="caption text-black-50"># of All Properties</span>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="600">
-					<div class="counter-wrap mb-5 mb-lg-0">
-						<span class="number"><span class="countup text-primary">7191</span></span>
-						<span class="caption text-black-50"># of Agents</span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="row gy-4">
 
-	<div class="section">
-		<div class="row justify-content-center footer-cta" data-aos="fade-up">
-			<div class="col-lg-7 mx-auto text-center">
-				<h2 class="mb-4 ">Be a part of our growing real state agents</h2>
-				<p><a href="#" target="_blank" class="btn btn-primary text-white py-3 px-4">Apply for Real Estate agent</a></p>
-			</div> <!-- /.col-lg-7 -->
-		</div> <!-- /.row -->
-	</div>
-	{% include 'core/parts/site_agents.html' %}
-	</div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item  position-relative">
+              <div class="icon">
+                <i class="bi bi-activity"></i>
+              </div>
+              <a href="service-details.html" class="stretched-link">
+                <h3>Nesciunt Mete</h3>
+              </a>
+              <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis tempore et consequatur.</p>
+            </div>
+          </div><!-- End Service Item -->
 
-	{% include 'core/parts/footer.html' %}
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="bi bi-broadcast"></i>
+              </div>
+              <a href="service-details.html" class="stretched-link">
+                <h3>Eosle Commodi</h3>
+              </a>
+              <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.</p>
+            </div>
+          </div><!-- End Service Item -->
 
-    <!-- Preloader -->
-    <div id="overlayer"></div>
-    <div class="loader">
-    	<div class="spinner-border" role="status">
-    		<span class="visually-hidden">Loading...</span>
-    	</div>
-  </div>
-</div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="bi bi-easel"></i>
+              </div>
+              <a href="service-details.html" class="stretched-link">
+                <h3>Ledo Markt</h3>
+              </a>
+              <p>Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.</p>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="bi bi-bounding-box-circles"></i>
+              </div>
+              <a href="service-details.html" class="stretched-link">
+                <h3>Asperiores Commodit</h3>
+              </a>
+              <p>Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit provident adipisci neque.</p>
+              <a href="service-details.html" class="stretched-link"></a>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="bi bi-calendar4-week"></i>
+              </div>
+              <a href="service-details.html" class="stretched-link">
+                <h3>Velit Doloremque</h3>
+              </a>
+              <p>Cumque et suscipit saepe. Est maiores autem enim facilis ut aut ipsam corporis aut. Sed animi at autem alias eius labore.</p>
+              <a href="service-details.html" class="stretched-link"></a>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="bi bi-chat-square-text"></i>
+              </div>
+              <a href="service-details.html" class="stretched-link">
+                <h3>Dolori Architecto</h3>
+              </a>
+              <p>Hic molestias ea quibusdam eos. Fugiat enim doloremque aut neque non et debitis iure. Corrupti recusandae ducimus enim.</p>
+              <a href="service-details.html" class="stretched-link"></a>
+            </div>
+          </div><!-- End Service Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Services Section -->
+
+    <!-- Agents Section -->
+    <section id="agents" class="agents section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Our Agents</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-5">
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="member">
+              <div class="pic"><img src="{% static 'assets/img/team/team-1.jpg' %}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Walter White</h4>
+                <span>Chief Executive Officer</span>
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="member">
+              <div class="pic"><img src="{% static 'assets/img/team/team-2.jpg' %}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Sarah Jhonson</h4>
+                <span>Rent Manager</span>
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="member">
+              <div class="pic"><img src="{% static 'assets/img/team/team-3.jpg' %}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>William Anderson</h4>
+                <span>Sale manager<br></span>
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Agents Section -->
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Testimonials</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              },
+              "breakpoints": {
+                "320": {
+                  "slidesPerView": 1,
+                  "spaceBetween": 40
+                },
+                "1200": {
+                  "slidesPerView": 3,
+                  "spaceBetween": 1
+                }
+              }
+            }
+          </script>
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
+                </p>
+                <div class="profile mt-auto">
+                  <img src="{% static 'assets/img/testimonials/testimonials-1.jpg' %}" class="testimonial-img" alt="">
+                  <h3>Saul Goodman</h3>
+                  <h4>Ceo &amp; Founder</h4>
+                </div>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
+                </p>
+                <div class="profile mt-auto">
+                  <img src="{% static 'assets/img/testimonials/testimonials-2.jpg' %}" class="testimonial-img" alt="">
+                  <h3>Sara Wilsson</h3>
+                  <h4>Designer</h4>
+                </div>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
+                </p>
+                <div class="profile mt-auto">
+                  <img src="{% static 'assets/img/testimonials/testimonials-3.jpg' %}" class="testimonial-img" alt="">
+                  <h3>Jena Karlis</h3>
+                  <h4>Store Owner</h4>
+                </div>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
+                </p>
+                <div class="profile mt-auto">
+                  <img src="{% static 'assets/img/testimonials/testimonials-4.jpg' %}" class="testimonial-img" alt="">
+                  <h3>Matt Brandon</h3>
+                  <h4>Freelancer</h4>
+                </div>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
+                </p>
+                <div class="profile mt-auto">
+                  <img src="{% static 'assets/img/testimonials/testimonials-5.jpg' %}" class="testimonial-img" alt="">
+                  <h3>John Larson</h3>
+                  <h4>Entrepreneur</h4>
+                </div>
+              </div>
+            </div><!-- End testimonial item -->
+
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+
+    </section><!-- /Testimonials Section -->
+
+  </main>
 {% endblock content %}
