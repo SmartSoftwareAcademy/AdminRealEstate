@@ -1,1 +1,63 @@
-env
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+
+# Python cache and artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+
+# Django & database
+db.sqlite3
+*.sqlite3
+*.log
+*.pot
+*.pyc
+celerybeat-schedule
+celerybeat.pid
+
+# Environment & secrets
+.env
+.env.*
+*.env
+
+# Static/media outputs
+media/
+staticfiles/
+static_root/
+
+# Build & coverage
+build/
+dist/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# IDE & tooling
+.idea/
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# Operating system
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Local executables & archives
+*.exe
+*.dll
+*.stackdump
+*.bak
+*.tmp
