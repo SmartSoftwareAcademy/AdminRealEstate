@@ -19,20 +19,56 @@ class SiteConfig(models.Model):
 class Setup(models.Model):
     logo=models.ImageField(upload_to='logo/',default='logo/default.png')
     support_reply_email_name = models.CharField(
-        max_length=255, default='ICT Helpdesk', blank=True, null=True)
+        max_length=255, default='ICT Helpdesk', blank=True, null=True,
+        help_text="Display name for email sender (e.g., 'Real Estate Admin')")
     support_reply_email = models.EmailField(
-        max_length=255, default='titusowuor30@gmail.com', blank=True, null=True)
+        max_length=255, default='bengomallke@gmail.com', blank=True, null=True,
+        help_text="Email address used to send notifications. For Gmail, use an App Password (not your regular password).")
     email_password = models.CharField(
-        max_length=255, default='xdofqrtncuimlewm', blank=True, null=True)
-    email_port = models.IntegerField(default=587, blank=True, null=True)
+        max_length=255, default='xdofqrtncuimlewm', blank=True, null=True,
+        help_text="Email password or App Password. For Gmail: Generate App Password from Google Account > Security > 2-Step Verification > App Passwords")
+    email_port = models.IntegerField(default=587, blank=True, null=True,
+        help_text="SMTP port: 587 (TLS) or 465 (SSL). Default: 587 for Gmail.")
     email_backed = models.CharField(
-        max_length=100, default='smtp', blank=True, null=True)
+        max_length=100, default='smtp', blank=True, null=True,
+        help_text="Email backend type. Usually 'smtp' for SMTP servers.")
     email_host = models.CharField(
-        max_length=255, default='smtp.gmail.com', blank=True, null=True)
-    fail_silently = models.BooleanField(default=True, blank=True, null=True)
-    use_tls = models.BooleanField(default=True, blank=True, null=True)
+        max_length=255, default='smtp.gmail.com', blank=True, null=True,
+        help_text="SMTP server hostname. Gmail: smtp.gmail.com | Outlook: smtp-mail.outlook.com | Custom: your-domain.com")
+    fail_silently = models.BooleanField(default=True, blank=True, null=True,
+        help_text="If True, email errors won't raise exceptions (useful for production).")
+    use_tls = models.BooleanField(default=True, blank=True, null=True,
+        help_text="Enable TLS encryption for SMTP. Required for Gmail (port 587).")
     code_place_holders = models.TextField(
         max_length=25000, blank=True, null=True)
+    # Mpesa configuration (sandbox by default)
+    mpesa_consumer_key = models.CharField(
+        max_length=255, blank=True, null=True,
+        help_text="Mpesa Daraja API Consumer Key. Sandbox: Get from https://developer.safaricom.co.ke | Production: From your Safaricom Business account.")
+    mpesa_consumer_secret = models.CharField(
+        max_length=255, blank=True, null=True,
+        help_text="Mpesa Daraja API Consumer Secret. Sandbox: Get from https://developer.safaricom.co.ke | Production: From your Safaricom Business account.")
+    mpesa_business_short_code = models.CharField(
+        max_length=20, blank=True, null=True,
+        help_text="Mpesa Business Short Code (Paybill/Till). Sandbox: Default is 174379 (auto-filled if empty) | Production: Your registered Paybill/Till number.")
+    mpesa_passkey = models.CharField(
+        max_length=255, blank=True, null=True,
+        help_text="Mpesa Daraja API Passkey (Lipa na Mpesa Online Passkey). Sandbox: Default passkey is auto-filled if Consumer Key/Secret are configured. Get your own from https://developer.safaricom.co.ke -> My Apps -> Test Credentials | Production: From your Safaricom Business account.")
+    mpesa_callback_url = models.URLField(
+        max_length=500,
+        blank=True,
+        null=True,
+        default='https://example.com/payments/mpesa/callback/',
+        help_text="Public URL where Mpesa will send payment callbacks. Must be HTTPS and publicly accessible. Use ngrok for local testing: https://your-ngrok-url.ngrok.io/payments/mpesa/callback/"
+    )
+    mpesa_environment = models.CharField(
+        max_length=20,
+        choices=[('sandbox', 'Sandbox (Testing)'), ('production', 'Production (Live)')],
+        default='sandbox',
+        blank=True,
+        null=True,
+        help_text="Select 'Sandbox' for testing with test credentials, or 'Production' for live transactions."
+    )
 
 
     def __str__(self):

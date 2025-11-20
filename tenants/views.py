@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.http import Http404
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from django.db import transaction
@@ -88,6 +90,39 @@ class TenantDetailView(LoginRequiredMixin, DetailView):
         context = super(TenantDetailView, self).get_context_data(**kwargs)
         context["items"] = Tenant_Kin.objects.filter(tenant=self.object)
         return context
+
+
+class TenantSelfDetailView(LoginRequiredMixin, DetailView):
+    """
+    Tenant-facing profile view bound to the currently logged-in tenant.
+    """
+    model = Tenant
+    template_name = 'tenants/tenant_detail.html'
+    context_object_name = 'tenant'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Check if user is a tenant
+        if request.user.user_type != '4':
+            from django.contrib import messages
+            messages.error(request, "This page is only available for tenants.")
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        """
+        Get the Tenant object for the currently logged-in user.
+        Returns 404 if tenant profile doesn't exist.
+        """
+        try:
+            tenant = Tenant.objects.get(user=self.request.user)
+            return tenant
+        except Tenant.DoesNotExist:
+            from django.contrib import messages
+            messages.error(
+                self.request, 
+                "Tenant profile not found. Please contact the administrator to create your tenant profile."
+            )
+            raise Http404("Tenant profile not found for this account. Please contact the administrator.")
 
 
 class TenantUpdateView(LoginRequiredMixin, UpdateView):

@@ -1,0 +1,345 @@
+/**
+ * Modern Table Styles
+ * Responsive, modern table design with action buttons
+ */
+
+/* Modern Table Container */
+.modern-table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  margin-bottom: 30px;
+  overflow-x: auto;
+}
+
+.modern-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.modern-table-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #212529;
+}
+
+.modern-table-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Modern Table Styles */
+.modern-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 0;
+}
+
+.modern-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.modern-table thead th {
+  padding: 15px 12px;
+  font-weight: 600;
+  text-align: left;
+  border: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+.modern-table thead th:first-child {
+  border-radius: 12px 0 0 0;
+}
+
+.modern-table thead th:last-child {
+  border-radius: 0 12px 0 0;
+}
+
+.modern-table thead th .sort-icon {
+  margin-left: 5px;
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+.modern-table tbody tr {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.modern-table tbody tr:hover {
+  background: #f8f9fa;
+  transform: scale(1.01);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.modern-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.modern-table tbody td {
+  padding: 15px 12px;
+  vertical-align: middle;
+  color: #495057;
+  font-size: 0.95rem;
+}
+
+.modern-table tbody td:first-child {
+  font-weight: 500;
+}
+
+/* Action Buttons Container */
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Modern Action Buttons */
+.btn-action {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-action i {
+  font-size: 0.9rem;
+}
+
+.btn-action-view {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-action-view:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  color: white;
+}
+
+.btn-action-edit {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-action-edit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  color: white;
+}
+
+.btn-action-payment {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.btn-action-payment:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4);
+  color: white;
+}
+
+.btn-action-mpesa {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.btn-action-mpesa:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4);
+  color: white;
+}
+
+.btn-action-delete {
+  background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+  color: white;
+}
+
+.btn-action-delete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(235, 51, 73, 0.4);
+  color: white;
+}
+
+.btn-action-cash {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+}
+
+.btn-action-cash:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+  color: white;
+}
+
+/* Badge Styles */
+.badge-modern {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-overdue {
+  background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(235, 51, 73, 0.3);
+}
+
+.badge-paid {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(17, 153, 142, 0.3);
+}
+
+.badge-partial {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(245, 87, 108, 0.3);
+}
+
+.badge-pending {
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(255, 193, 7, 0.3);
+}
+
+/* DataTables Customization */
+.dataTables_wrapper {
+  margin-top: 20px;
+}
+
+.dataTables_filter {
+  margin-bottom: 15px;
+}
+
+.dataTables_filter input {
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 8px 15px;
+  margin-left: 10px;
+}
+
+.dataTables_filter input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  outline: none;
+}
+
+.dataTables_length select {
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin: 0 5px;
+}
+
+.dataTables_paginate .paginate_button {
+  padding: 8px 12px;
+  margin: 0 2px;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+  background: white;
+  color: #667eea;
+  transition: all 0.3s ease;
+}
+
+.dataTables_paginate .paginate_button:hover {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.dataTables_paginate .paginate_button.current {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+}
+
+.dataTables_info {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modern-table-container {
+    padding: 15px;
+  }
+  
+  .modern-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .modern-table {
+    font-size: 0.85rem;
+  }
+  
+  .modern-table thead th,
+  .modern-table tbody td {
+    padding: 10px 8px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn-action {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Hide less important columns on mobile */
+  .modern-table thead th.mobile-hide,
+  .modern-table tbody td.mobile-hide {
+    display: none;
+  }
+}
+
+/* Empty State */
+.table-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6c757d;
+}
+
+.table-empty-state i {
+  font-size: 4rem;
+  color: #dee2e6;
+  margin-bottom: 20px;
+}
+
+.table-empty-state h3 {
+  color: #495057;
+  margin-bottom: 10px;
+}
+
+.table-empty-state p {
+  color: #6c757d;
+  margin: 0;
+}
+

@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-tte--txjsj0f8!c8&ue=@)&-&@rut=5i7i+4=pvtz9-(+v3idl
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Application definition
 
@@ -74,6 +74,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # My Middleware
     'account.middleware.LoginCheckMiddleWare',
+    'account.middleware.DemoDataSeedMiddleware',
     'core.middleware.SiteWideConfigs',
 ]
 

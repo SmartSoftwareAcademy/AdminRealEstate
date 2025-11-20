@@ -33,3 +33,28 @@
 </form>
 </div>
 {% endblock %}
+{% block custom_js %}
+<script>
+  (function($) {
+    $(document).ready(function() {
+      function maybeAutoFillAmount() {
+        var leaseId = $('#id_lease').val();
+        var invoiceType = $('#id_invoice_type').val();
+        if (!leaseId || invoiceType !== 'rent') {
+          return;
+        }
+        var urlTemplate = "{% url 'lease-rent-amount' 0 %}";
+        var url = urlTemplate.replace(/0\/?$/, leaseId + "/");
+        $.getJSON(url, function(data) {
+          if (data.monthly_rent !== undefined) {
+            $('#id_amount').val(data.monthly_rent);
+          }
+        });
+      }
+
+      $('#id_lease').on('change', maybeAutoFillAmount);
+      $('#id_invoice_type').on('change', maybeAutoFillAmount);
+    });
+  })(jQuery);
+</script>
+{% endblock custom_js %}

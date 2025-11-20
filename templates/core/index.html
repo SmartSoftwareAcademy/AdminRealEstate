@@ -1,173 +1,745 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% block page_title %}{{page_title}}{% endblock page_title %}
+{% block custom_css %}
+<style>
+  /* Modern Dashboard Styles */
+  .dashboard-container {
+    padding: 20px;
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Modern Stat Cards */
+  .stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 25px;
+    color: white;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    animation: slideUp 0.6s ease-out;
+    animation-fill-mode: both;
+  }
+  
+  .stat-card:nth-child(1) { animation-delay: 0.1s; }
+  .stat-card:nth-child(2) { animation-delay: 0.2s; }
+  .stat-card:nth-child(3) { animation-delay: 0.3s; }
+  .stat-card:nth-child(4) { animation-delay: 0.4s; }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+  }
+  
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  }
+  
+  .stat-card.bg-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  
+  .stat-card.bg-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  }
+  
+  .stat-card.bg-purple {
+    background: linear-gradient(135deg, #8360c3 0%, #2ebf91 100%);
+  }
+  
+  .stat-card.bg-danger {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+  }
+  
+  .stat-card .inner {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .stat-card h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .stat-card p {
+    font-size: 1rem;
+    opacity: 0.95;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+  
+  .stat-card .icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 4rem;
+    opacity: 0.3;
+    transition: all 0.3s ease;
+  }
+  
+  .stat-card:hover .icon {
+    opacity: 0.5;
+    transform: translateY(-50%) scale(1.1) rotate(5deg);
+  }
+  
+  .stat-card .small-box-footer {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 10px 15px;
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .stat-card .small-box-footer:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(5px);
+    color: white;
+  }
+  
+  /* Quick Actions Section */
+  .quick-actions-section {
+    margin-top: 40px;
+    margin-bottom: 30px;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 15px;
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+  }
+  
+  .action-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  .action-card:hover::before {
+    left: 100%;
+  }
+  
+  .action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    border-color: #667eea;
+  }
+  
+  .action-btn {
+    width: 100%;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 2px solid #667eea;
+    color: #667eea;
+    background: white;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .action-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: #667eea;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+    z-index: 0;
+  }
+  
+  .action-btn:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .action-btn span {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .action-btn:hover {
+    color: white;
+    border-color: #667eea;
+    transform: scale(1.05);
+  }
+  
+  /* Analytics Section */
+  .analytics-section {
+    margin-top: 40px;
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  .nav-tabs {
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 30px;
+  }
+  
+  .nav-tabs .nav-link {
+    border: none;
+    color: #6c757d;
+    font-weight: 600;
+    padding: 15px 25px;
+    margin-right: 10px;
+    border-radius: 10px 10px 0 0;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .nav-tabs .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+  }
+  
+  .nav-tabs .nav-link:hover {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.05);
+  }
+  
+  .nav-tabs .nav-link.active {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+  }
+  
+  .nav-tabs .nav-link.active::after {
+    width: 100%;
+  }
+  
+  .tab-content {
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  /* Notice Board */
+  .notice-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-left: 4px solid #667eea;
+    transition: all 0.3s ease;
+  }
+  
+  .notice-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  .notice-card .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .stat-card h3 {
+      font-size: 2rem;
+    }
+    
+    .stat-card .icon {
+      font-size: 3rem;
+    }
+    
+    .action-btn {
+      padding: 12px 20px;
+      font-size: 0.9rem;
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+    }
+  }
+  
+  /* Loading Animation */
+  .loading-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  /* Chart Container */
+  .chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+  }
+</style>
+{% endblock custom_css %}
 {% block content %}
-<section class="content">
+<section class="content dashboard-container">
     <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
+        <!-- Modern Stat Cards -->
         <div class="row">
           {% if request.user.user_type == '1' %}
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-info">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="stat-card bg-info">
                     <div class="inner">
                         <h3>{{total_agents}}</h3>
-                        <p>My Agents</p>
+                        <p><i class="fas fa-user-graduate mr-2"></i>My Agents</p>
+                        <a href="#" class="small-box-footer">View Details <i class="fas fa-arrow-right ml-2"></i></a>
                     </div>
                     <div class="icon">
-                      <i class="nav-icon fas fa-user-graduate"></i>
+                      <i class="fas fa-user-graduate"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-
                 </div>
             </div>
           {% endif %}
           {% if request.user.user_type == '1' or  request.user.user_type == '2' %}
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-success">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="stat-card bg-success">
                     <div class="inner">
                         <h3>{{total_tenants}}</h3>
-
-                        <p>My Tenants</p>
+                        <p><i class="fas fa-users mr-2"></i>My Tenants</p>
+                        <a href="{% url 'tenant-list' %}" class="small-box-footer">View Details <i class="fas fa-arrow-right ml-2"></i></a>
                     </div>
                     <div class="icon">
-                      <i class="nav-icon fas fa-users"></i>
+                      <i class="fas fa-users"></i>
                     </div>
-                    <a href="{% url 'tenant-list' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-purple">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="stat-card bg-purple">
                     <div class="inner">
                         <h3>{{total_properties}}</h3>
-
-                        <p>Properties</p>
+                        <p><i class="fas fa-building mr-2"></i>Properties</p>
+                        <a href="{% url 'property-list' %}" class="small-box-footer">View Details <i class="fas fa-arrow-right ml-2"></i></a>
                     </div>
                     <div class="icon">
-                      <i class="nav-icon fas fa-th-list"></i>
+                      <i class="fas fa-building"></i>
                     </div>
-                    <a href="{% url 'property-list' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="stat-card bg-danger">
                     <div class="inner">
                         <h3>{{total_units}}</h3>
-
-                        <p>Property Units</p>
+                        <p><i class="fas fa-home mr-2"></i>Property Units</p>
+                        <a href="{% url 'property-list' %}" class="small-box-footer">View Details <i class="fas fa-arrow-right ml-2"></i></a>
                     </div>
                     <div class="icon">
-                      <i class="nav-icon fas fa-book"></i>
+                      <i class="fas fa-home"></i>
                     </div>
-                    <a href="{% url 'property-list' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
             {% endif %}
             {% if request.user.user_type == '3' %}
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-purple">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="stat-card bg-purple">
                     <div class="inner">
                         <h3>{{total_properties}}</h3>
-
-                        <p>Total Salary Paid</p>
+                        <p><i class="fas fa-money-bill-wave mr-2"></i>Total Salary Paid</p>
+                        <a href="{% url 'property-list' %}" class="small-box-footer">View Details <i class="fas fa-arrow-right ml-2"></i></a>
                     </div>
                     <div class="icon">
-                      <i class="nav-icon fas fa-th-list"></i>
+                      <i class="fas fa-money-bill-wave"></i>
                     </div>
-                    <a href="{% url 'property-list' %}" class="small-box-footer">Payments since <i class="fas fa-arrow-circle-right"></i> {{request.user.date_joined}}</a>
                 </div>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="stat-card bg-danger">
                     <div class="inner">
                         <h3>{{total_units}}</h3>
-
-                        <p>Salary Owed</p>
+                        <p><i class="fas fa-exclamation-circle mr-2"></i>Salary Owed</p>
+                        <a href="{% url 'property-list' %}" class="small-box-footer">View Details <i class="fas fa-arrow-right ml-2"></i></a>
                     </div>
                     <div class="icon">
-                      <i class="nav-icon fas fa-book"></i>
+                      <i class="fas fa-exclamation-circle"></i>
                     </div>
-                    <a href="{% url 'property-list' %}" class="small-box-footer">Month <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="stat-card bg-info">
                     <div class="inner">
                         <h3>{{total_units}}</h3>
-                        <p>Payslips</p>
+                        <p><i class="fas fa-file-invoice mr-2"></i>Payslips</p>
+                        <a href="{% url 'property-list' %}" class="small-box-footer">View Details <i class="fas fa-arrow-right ml-2"></i></a>
                     </div>
                     <div class="icon">
-                      <i class="nav-icon fas fa-book"></i>
+                      <i class="fas fa-file-invoice"></i>
                     </div>
-                    <a href="{% url 'property-list' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
             {% endif %}
             {% if request.user.user_type == '4' %}
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-purple">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="stat-card bg-success">
                     <div class="inner">
-                        <h3>{{actual_rent_paid}}</h3>
-
-                        <p>Total Rent Paid</p>
+                        <h3>KES {{actual_rent_paid|default:"0"}}</h3>
+                        <p><i class="fas fa-check-circle mr-2"></i>Total Rent Paid</p>
+                        <a href="{% url 'invoice-list' %}" class="small-box-footer">View History <i class="fas fa-arrow-right ml-2"></i></a>
                     </div>
                     <div class="icon">
-                      <i class="nav-icon fas fa-th-list"></i>
+                      <i class="fas fa-check-circle"></i>
                     </div>
-                    <a href="{% url 'property-list' %}" class="small-box-footer">Payments since <i class="fas fa-arrow-circle-right"></i> {{request.user.date_joined}}</a>
                 </div>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="stat-card bg-danger">
                     <div class="inner">
-                        <h3>{{actual_rent_owed}}</h3>
-
-                        <p>Rent Owed</p>
+                        <h3>KES {{actual_rent_owed|default:"0"}}</h3>
+                        <p><i class="fas fa-exclamation-triangle mr-2"></i>Rent Owed</p>
+                        <a href="{% url 'invoice-list' %}" class="small-box-footer">Pay Now <i class="fas fa-arrow-right ml-2"></i></a>
                     </div>
                     <div class="icon">
-                      <i class="nav-icon fas fa-book"></i>
+                      <i class="fas fa-exclamation-triangle"></i>
                     </div>
-                    <a href="{% url 'property-list' %}" class="small-box-footer">Month <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
-             <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-info">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="stat-card bg-info">
                     <div class="inner">
-                        <h3>{{invoice_count}}</h3>
-                        <p>My Invoices</p>
+                        <h3>{{invoice_count|default:"0"}}</h3>
+                        <p><i class="fas fa-file-invoice-dollar mr-2"></i>My Invoices</p>
+                        <a href="{% url 'invoice-list' %}" class="small-box-footer">View All <i class="fas fa-arrow-right ml-2"></i></a>
                     </div>
                     <div class="icon">
-                      <i class="nav-icon fas fa-book"></i>
+                      <i class="fas fa-file-invoice-dollar"></i>
                     </div>
-                    <a href="{% url 'invoice-list' %}" class="small-box-footer">Explore <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
             {% endif %}
         </div>
-        <!-- /.row -->
-        <!-- Main row -->
+
+        <!-- Quick Actions Section -->
+        <div class="quick-actions-section">
+          {% if request.user.user_type == '1' or request.user.user_type == '2' %}
+          <h2 class="section-title">Quick Actions for Owners &amp; Agents</h2>
+          <div class="row">
+            <div class="col-lg-3 col-md-6 mb-3">
+              <div class="action-card">
+                <a href="{% url 'property-create' %}" class="action-btn">
+                  <span><i class="fas fa-plus-circle mr-2"></i>Add New Property</span>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+              <div class="action-card">
+                <a href="{% url 'lease-create' %}" class="action-btn">
+                  <span><i class="fas fa-file-contract mr-2"></i>Create New Lease</span>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+              <div class="action-card">
+                <a href="{% url 'invoice-create' %}" class="action-btn">
+                  <span><i class="fas fa-file-invoice mr-2"></i>Generate Invoice</span>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+              <div class="action-card">
+                <a href="{% url 'invoice-list' %}" class="action-btn">
+                  <span><i class="fas fa-receipt mr-2"></i>View All Bills &amp; Payments</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% elif request.user.user_type == '3' %}
+          {% if request.user.staff and request.user.staff.position %}
+            {% with role=request.user.staff.position|lower %}
+              {% if 'property manager' in role %}
+              <h2 class="section-title">Quick Actions for Property Manager</h2>
+              <div class="row">
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'invoice-create' %}" class="action-btn">
+                      <span><i class="fas fa-file-invoice mr-2"></i>Generate Invoice</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'invoice-list' %}" class="action-btn">
+                      <span><i class="fas fa-list mr-2"></i>View All Invoices</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'notice_add' %}" class="action-btn">
+                      <span><i class="fas fa-bell mr-2"></i>View Notices &amp; Requests</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'profile' %}" class="action-btn">
+                      <span><i class="fas fa-user-edit mr-2"></i>Update My Profile</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% elif 'facility manager' in role %}
+              <h2 class="section-title">Quick Actions for Facility Manager</h2>
+              <div class="row">
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'invoice-list' %}?maintenance=1" class="action-btn">
+                      <span><i class="fas fa-tools mr-2"></i>View Maintenance Invoices</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'invoice-list' %}" class="action-btn">
+                      <span><i class="fas fa-list mr-2"></i>View All Invoices</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'notice_add' %}" class="action-btn">
+                      <span><i class="fas fa-wrench mr-2"></i>View Maintenance Requests</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'profile' %}" class="action-btn">
+                      <span><i class="fas fa-user-edit mr-2"></i>Update My Profile</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% elif 'caretaker' in role or 'maintenance' in role %}
+              <h2 class="section-title">Quick Actions for Maintenance Technician</h2>
+              <div class="row">
+                <div class="col-lg-4 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'notice_add' %}" class="action-btn">
+                      <span><i class="fas fa-tools mr-2"></i>View Repair Requests</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'staff-salary-payment-list' %}" class="action-btn">
+                      <span><i class="fas fa-money-check-alt mr-2"></i>View Salary Payments</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'profile' %}" class="action-btn">
+                      <span><i class="fas fa-user-edit mr-2"></i>Update My Profile</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% elif 'security' in role or 'groundskeeping' in role %}
+              <h2 class="section-title">Quick Actions for Security &amp; Groundskeeping</h2>
+              <div class="row">
+                <div class="col-lg-4 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'notice_add' %}" class="action-btn">
+                      <span><i class="fas fa-bell mr-2"></i>View Notices</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'staff-salary-payment-list' %}" class="action-btn">
+                      <span><i class="fas fa-money-check-alt mr-2"></i>View Salary Payments</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'profile' %}" class="action-btn">
+                      <span><i class="fas fa-user-edit mr-2"></i>Update My Profile</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <h2 class="section-title">Quick Actions for Staff</h2>
+              <div class="row">
+                <div class="col-lg-4 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'staff-salary-payment-list' %}" class="action-btn">
+                      <span><i class="fas fa-money-check-alt mr-2"></i>View Salary Payments</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'profile' %}" class="action-btn">
+                      <span><i class="fas fa-user-edit mr-2"></i>Update My Profile</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-3">
+                  <div class="action-card">
+                    <a href="{% url 'notice_add' %}" class="action-btn">
+                      <span><i class="fas fa-bell mr-2"></i>View Notices</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            {% endwith %}
+          {% else %}
+          <h2 class="section-title">Quick Actions for Staff</h2>
+          <div class="row">
+            <div class="col-lg-4 col-md-6 mb-3">
+              <div class="action-card">
+                <a href="{% url 'staff-salary-payment-list' %}" class="action-btn">
+                  <span><i class="fas fa-money-check-alt mr-2"></i>View Salary Payments</span>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-3">
+              <div class="action-card">
+                <a href="{% url 'profile' %}" class="action-btn">
+                  <span><i class="fas fa-user-edit mr-2"></i>Update My Profile</span>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-3">
+              <div class="action-card">
+                <a href="{% url 'notice_add' %}" class="action-btn">
+                  <span><i class="fas fa-bell mr-2"></i>View Notices</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% elif request.user.user_type == '4' %}
+          <h2 class="section-title">Quick Actions for Tenants</h2>
+          <div class="row">
+            <div class="col-lg-3 col-md-6 mb-3">
+              <div class="action-card">
+                <a href="{% url 'invoice-list' %}" class="action-btn">
+                  <span><i class="fas fa-file-invoice-dollar mr-2"></i>View My Rent &amp; Utility Bills</span>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+              <div class="action-card">
+                <a href="{% url 'notice_add' %}" class="action-btn">
+                  <span><i class="fas fa-tools mr-2"></i>Request Repairs / Maintenance</span>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+              <div class="action-card">
+                {% if has_tenant_record %}
+                <a href="{% url 'tenant-me' %}" class="action-btn">
+                {% else %}
+                <a href="#" class="action-btn" onclick="alert('Tenant profile not found. Please contact the administrator.'); return false;">
+                {% endif %}
+                  <span><i class="fas fa-user-circle mr-2"></i>My Tenant Profile</span>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+              <div class="action-card">
+                <a href="{% url 'profile' %}" class="action-btn">
+                  <span><i class="fas fa-cog mr-2"></i>Update My Account Details</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <!-- Analytics Section -->
         {% if request.user.user_type == '1' or request.user.user_type == '2' %}
-        <div class="col-lg-12">
-          <h1>{{site_title}} Analytics</h1>
+        <div class="analytics-section">
+          <h2 class="section-title">{{site_title}} Analytics</h2>
           <ul class="nav nav-tabs" id="chartTabs" role="tablist">
             <li class="nav-item">
               <a class="nav-link" id="property-tab" data-toggle="tab" href="#property" role="tab" aria-controls="property" aria-selected="false">Property Analysis</a>
@@ -189,59 +761,83 @@
             <!-- Property Analysis Tab -->
             <div class="tab-pane fade" id="property" role="tabpanel" aria-labelledby="property-tab">
               <div class="row">
-                <div class="col-sm-3">
-                <canvas id="propertyDistributionChart"></canvas>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="chart-container">
+                    <canvas id="propertyDistributionChart"></canvas>
+                  </div>
                 </div>
-                <div class="col-sm-3">
-                  <canvas id="propertyCountChart"></canvas>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="chart-container">
+                    <canvas id="propertyCountChart"></canvas>
+                  </div>
                 </div>
-                <div class="col-sm-4">
-                  <canvas id="propertyOccupancyChart"></canvas>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="chart-container">
+                    <canvas id="propertyOccupancyChart"></canvas>
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Tenant Analysis Tab -->
             <div class="tab-pane fade" id="tenant" role="tabpanel" aria-labelledby="tenant-tab">
-            <div class="row">
-                <div class="col-sm-3">
-                <canvas id="tenantCountChart"></canvas>
+              <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="chart-container">
+                    <canvas id="tenantCountChart"></canvas>
+                  </div>
                 </div>
-                <div class="col-sm-3">
-                  <canvas id="tenantGenderChart"></canvas>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="chart-container">
+                    <canvas id="tenantGenderChart"></canvas>
+                  </div>
                 </div>
-                <div class="col-sm-4">
-                  <canvas id="tenantStatusChart"></canvas>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="chart-container">
+                    <canvas id="tenantStatusChart"></canvas>
+                  </div>
                 </div>
-            </div>
+              </div>
             </div>
 
             <!-- Lease Analysis Tab -->
             <div class="tab-pane fade show active" id="lease" role="tabpanel" aria-labelledby="lease-tab">
               <div class="row">
-                <div class="col-sm-4">
-                  <canvas id="leaseDurationChart"></canvas>
+                <div class="col-lg-6 col-md-12 mb-4">
+                  <div class="chart-container">
+                    <canvas id="leaseDurationChart"></canvas>
+                  </div>
                 </div>
-                  <div class="col-sm-6">
+                <div class="col-lg-6 col-md-12 mb-4">
+                  <div class="chart-container">
                     <canvas id="leaseStartDateChart"></canvas>
                   </div>
-                  <div class="col-sm-6">
+                </div>
+                <div class="col-lg-12 mb-4">
+                  <div class="chart-container">
                     <canvas id="leaseExpirationChart"></canvas>
                   </div>
+                </div>
               </div>
             </div>
 
             <!-- Payment Analysis Tab -->
             <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
               <div class="row">
-                <div class="col-sm-6">
-                  <canvas id="PaymentTrendChart"></canvas>
+                <div class="col-lg-6 col-md-12 mb-4">
+                  <div class="chart-container">
+                    <canvas id="PaymentTrendChart"></canvas>
+                  </div>
                 </div>
-                <div class="col-sm-3">
-                  <canvas id="paymentCollectionRateChart"></canvas>
+                <div class="col-lg-3 col-md-6 mb-4">
+                  <div class="chart-container">
+                    <canvas id="paymentCollectionRateChart"></canvas>
+                  </div>
                 </div>
-                <div class="col-sm-3">
-                  <canvas id="outstandingBalancesChart"></canvas>
+                <div class="col-lg-3 col-md-6 mb-4">
+                  <div class="chart-container">
+                    <canvas id="outstandingBalancesChart"></canvas>
+                  </div>
                 </div>
               </div>
             </div>
@@ -249,60 +845,69 @@
             <!-- Deposit Analysis Tab -->
             <div class="tab-pane fade" id="deposit" role="tabpanel" aria-labelledby="deposit-tab">
               <div class="row">
-                <div class="col-sm-8">
-                <canvas id="depositAmountChart"></canvas>
+                <div class="col-lg-12 mb-4">
+                  <div class="chart-container">
+                    <canvas id="depositAmountChart"></canvas>
+                  </div>
                 </div>
-            </div>
+              </div>
 
           </div>
         </div>
         {% endif %}
         {% if request.user.user_type == '4' or request.user.user_type == '3' %}
-        <h2 class="title ">Notice Board</h2>
-        <div class="row">
-          {% if welcome_note %}
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-header bg-info">
-              <p class="title text-uppercase">{{welcome_note.notice_type}}</p>
-              </div>
-              <div class="col-sm-12">
-                <p>{{welcome_note.description|safe}}</p>
-              </div>
-              <div class="row pl-2 ml-2 mb-2">
-                <form method="post" action="{% url 'hide_welcome' %}">
+        <div class="quick-actions-section">
+          <h2 class="section-title">Notice Board</h2>
+          <div class="row">
+            {% if welcome_note %}
+            <div class="col-lg-6 col-md-12 mb-3">
+              <div class="notice-card">
+                <div class="card-header">
+                  <h5 class="mb-0"><i class="fas fa-bullhorn mr-2"></i>{{welcome_note.notice_type|upper}}</h5>
+                </div>
+                <div class="mt-3">
+                  <p>{{welcome_note.description|safe}}</p>
+                </div>
+                <form method="post" action="{% url 'hide_welcome' %}" class="mt-3">
                   {% csrf_token %}
                   <input type="hidden" name="pk" value="{{welcome_note.id}}" />
-                  <button type="submit" class="badge badge-warning bg-warning">Hide?</button>
+                  <button type="submit" class="btn btn-sm btn-warning">
+                    <i class="fas fa-eye-slash mr-1"></i>Hide Notice
+                  </button>
                 </form>
-             </div>
-            </div>
-          </div>
-          {% endif %}
-          <div class="col-sm-6">
-          {% for notice in notices %}
-            <div class="col-sm-12">
-              <div class="card">
-                <div class="card-header {% if notice.notice_type == 'mainatainance' %} bg-warning {% else %} bg-info {% endif %}">
-                  <p class="title text-uppercase">{{notice.notice_type}}</p>
-                </div>
-                <div class="col-sm-12">
-                  <p>{{notice.description|safe}}</p>
-                </div>
-                <div class="row pl-2 ml-2 mb-2">
-                  <form method="post" action="{% url 'hide_welcome' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="pk" value="{{notice.id}}" />
-                    <button type="submit" class="badge badge-warning bg-warning">Mark as read?</button>
-                  </form>
-                 </div>
-                </div>
               </div>
             </div>
-           </div>
-           {% empty %}
-          <p>No unread notices yet!</p>
-          {% endfor %}
+            {% endif %}
+            {% for notice in notices %}
+            <div class="col-lg-6 col-md-12 mb-3">
+              <div class="notice-card">
+                <div class="card-header {% if notice.notice_type == 'mainatainance' %} bg-warning {% endif %}">
+                  <h5 class="mb-0">
+                    <i class="fas fa-{% if notice.notice_type == 'mainatainance' %}tools{% else %}info-circle{% endif %} mr-2"></i>
+                    {{notice.notice_type|upper}}
+                  </h5>
+                </div>
+                <div class="mt-3">
+                  <p>{{notice.description|safe}}</p>
+                </div>
+                <form method="post" action="{% url 'hide_welcome' %}" class="mt-3">
+                  {% csrf_token %}
+                  <input type="hidden" name="pk" value="{{notice.id}}" />
+                  <button type="submit" class="btn btn-sm btn-warning">
+                    <i class="fas fa-check mr-1"></i>Mark as Read
+                  </button>
+                </form>
+              </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+              <div class="notice-card text-center">
+                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No unread notices at the moment!</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
         </div>
         {% endif %}
     </div><!-- /.container-fluid -->
@@ -526,430 +1131,3 @@
 
   </script>
 {% endblock custom_js %}
-
-  <main class="main">
-
-    <!-- Hero Section -->
-    <section id="hero" class="hero section dark-background">
-
-      <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-
-        <div class="carousel-item active">
-          <img src="assets/img/hero-carousel/hero-carousel-1.jpg" alt="">
-          <div class="carousel-container">
-            <div>
-              <p>Doral, Florida</p>
-              <h2><span>204</span> Olive Road Two</h2>
-              <a href="property-single.html" class="btn-get-started">rent | $ 12.000</a>
-            </div>
-          </div>
-        </div><!-- End Carousel Item -->
-
-        <div class="carousel-item">
-          <img src="assets/img/hero-carousel/hero-carousel-2.jpg" alt="">
-          <div class="carousel-container">
-            <div>
-              <p>Doral, Florida</p>
-              <h2><span>247</span> Venda Road Five</h2>
-              <a href="property-single.html" class="btn-get-started">sale | $ 356.000</a>
-            </div>
-          </div>
-        </div><!-- End Carousel Item -->
-
-        <div class="carousel-item">
-          <img src="assets/img/hero-carousel/hero-carousel-3.jpg" alt="">
-          <div class="carousel-container">
-            <div>
-              <p>Doral, Florida</p>
-              <h2><span>247</span> Vitra Road three</h2>
-              <a href="property-single.html" class="btn-get-started">rent | $ 3.000</a>
-            </div>
-          </div>
-        </div><!-- End Carousel Item -->
-
-        <a class="carousel-control-prev" href="#hero-carousel" role="button" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
-        </a>
-
-        <a class="carousel-control-next" href="#hero-carousel" role="button" data-bs-slide="next">
-          <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
-        </a>
-
-        <ol class="carousel-indicators"></ol>
-
-      </div>
-
-    </section><!-- /Hero Section -->
-
-    <!-- Services Section -->
-    <section id="services" class="services section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Our Services</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-      </div><!-- End Section Title -->
-
-      <div class="container">
-
-        <div class="row gy-4">
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="service-item  position-relative">
-              <div class="icon">
-                <i class="bi bi-activity"></i>
-              </div>
-              <a href="service-details.html" class="stretched-link">
-                <h3>Nesciunt Mete</h3>
-              </a>
-              <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis tempore et consequatur.</p>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="service-item position-relative">
-              <div class="icon">
-                <i class="bi bi-broadcast"></i>
-              </div>
-              <a href="service-details.html" class="stretched-link">
-                <h3>Eosle Commodi</h3>
-              </a>
-              <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.</p>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="service-item position-relative">
-              <div class="icon">
-                <i class="bi bi-easel"></i>
-              </div>
-              <a href="service-details.html" class="stretched-link">
-                <h3>Ledo Markt</h3>
-              </a>
-              <p>Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.</p>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-            <div class="service-item position-relative">
-              <div class="icon">
-                <i class="bi bi-bounding-box-circles"></i>
-              </div>
-              <a href="service-details.html" class="stretched-link">
-                <h3>Asperiores Commodit</h3>
-              </a>
-              <p>Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit provident adipisci neque.</p>
-              <a href="service-details.html" class="stretched-link"></a>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
-            <div class="service-item position-relative">
-              <div class="icon">
-                <i class="bi bi-calendar4-week"></i>
-              </div>
-              <a href="service-details.html" class="stretched-link">
-                <h3>Velit Doloremque</h3>
-              </a>
-              <p>Cumque et suscipit saepe. Est maiores autem enim facilis ut aut ipsam corporis aut. Sed animi at autem alias eius labore.</p>
-              <a href="service-details.html" class="stretched-link"></a>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
-            <div class="service-item position-relative">
-              <div class="icon">
-                <i class="bi bi-chat-square-text"></i>
-              </div>
-              <a href="service-details.html" class="stretched-link">
-                <h3>Dolori Architecto</h3>
-              </a>
-              <p>Hic molestias ea quibusdam eos. Fugiat enim doloremque aut neque non et debitis iure. Corrupti recusandae ducimus enim.</p>
-              <a href="service-details.html" class="stretched-link"></a>
-            </div>
-          </div><!-- End Service Item -->
-
-        </div>
-
-      </div>
-
-    </section><!-- /Services Section -->
-
-    <!-- Agents Section -->
-    <section id="agents" class="agents section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Our Agents</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-      </div><!-- End Section Title -->
-
-      <div class="container">
-
-        <div class="row gy-5">
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/team-1.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Walter White</h4>
-                <span>Chief Executive Officer</span>
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/team-2.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Sarah Jhonson</h4>
-                <span>Rent Manager</span>
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="member">
-              <div class="pic"><img src="assets/img/team/team-3.jpg" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>William Anderson</h4>
-                <span>Sale manager<br></span>
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-        </div>
-
-      </div>
-
-    </section><!-- /Agents Section -->
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Testimonials</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="swiper init-swiper">
-          <script type="application/json" class="swiper-config">
-            {
-              "loop": true,
-              "speed": 600,
-              "autoplay": {
-                "delay": 5000
-              },
-              "slidesPerView": "auto",
-              "pagination": {
-                "el": ".swiper-pagination",
-                "type": "bullets",
-                "clickable": true
-              },
-              "breakpoints": {
-                "320": {
-                  "slidesPerView": 1,
-                  "spaceBetween": 40
-                },
-                "1200": {
-                  "slidesPerView": 3,
-                  "spaceBetween": 1
-                }
-              }
-            }
-          </script>
-          <div class="swiper-wrapper">
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
-                </p>
-                <div class="profile mt-auto">
-                  <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-                  <h3>Saul Goodman</h3>
-                  <h4>Ceo &amp; Founder</h4>
-                </div>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
-                </p>
-                <div class="profile mt-auto">
-                  <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-                  <h3>Sara Wilsson</h3>
-                  <h4>Designer</h4>
-                </div>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
-                </p>
-                <div class="profile mt-auto">
-                  <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-                  <h3>Jena Karlis</h3>
-                  <h4>Store Owner</h4>
-                </div>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
-                </p>
-                <div class="profile mt-auto">
-                  <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-                  <h3>Matt Brandon</h3>
-                  <h4>Freelancer</h4>
-                </div>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
-                </p>
-                <div class="profile mt-auto">
-                  <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-                  <h3>John Larson</h3>
-                  <h4>Entrepreneur</h4>
-                </div>
-              </div>
-            </div><!-- End testimonial item -->
-
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
-
-      </div>
-
-    </section><!-- /Testimonials Section -->
-
-  </main>
-
-  <footer id="footer" class="footer light-background">
-
-    <div class="container">
-      <div class="row gy-3">
-        <div class="col-lg-3 col-md-6 d-flex">
-          <i class="bi bi-geo-alt icon"></i>
-          <div class="address">
-            <h4>Address</h4>
-            <p>A108 Adam Street</p>
-            <p>New York, NY 535022</p>
-            <p></p>
-          </div>
-
-        </div>
-
-        <div class="col-lg-3 col-md-6 d-flex">
-          <i class="bi bi-telephone icon"></i>
-          <div>
-            <h4>Contact</h4>
-            <p>
-              <strong>Phone:</strong> <span>+1 5589 55488 55</span><br>
-              <strong>Email:</strong> <span>info@example.com</span><br>
-            </p>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 d-flex">
-          <i class="bi bi-clock icon"></i>
-          <div>
-            <h4>Opening Hours</h4>
-            <p>
-              <strong>Mon-Sat:</strong> <span>11AM - 23PM</span><br>
-              <strong>Sunday</strong>: <span>Closed</span>
-            </p>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-          <h4>Follow Us</h4>
-          <div class="social-links d-flex">
-            <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">EstateAgency</strong> <span>All Rights Reserved</span></p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-    </div>
-
-  </footer>
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
-  <div id="preloader"></div>
-
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
-
-</body>
-
-</html>
