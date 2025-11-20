@@ -26,6 +26,11 @@ def site_defaults(request):
     note=Notice.objects.filter(Q(notice_type="welcome") & Q(read=False) & (Q(notify_specific_user=request.user) | Q(notify_group_of_users=request.user.user_type))).first()
     if note:
        note.description=note.description.replace("Dear Mr./Mrs./Miss",f"Dear Mr./Mrs./Miss <b>{request.user},</b>")
+    # Check if user has tenant record (for tenant users)
+    has_tenant_record = False
+    if request.user.user_type == '4':
+        has_tenant_record = Tenant.objects.filter(user=request.user).exists()
+    
     contexts = {
         "site_logo":logo,
         "tenant_count":Tenant.objects.count() if len(Tenant.objects.all()) > 0 else 0,
@@ -41,6 +46,7 @@ def site_defaults(request):
         "welcome_note":note if note else [],
         "notices":Notice.objects.filter(Q(read=False) & (Q(notify_specific_user=request.user) | Q(notify_group_of_users=request.user.user_type))).exclude(notice_type="welcome") if len(Notice.objects.all()) > 0 else [],
         "invoice_count":Invoice.objects.filter(Q(lease__tenant__user=request.user) &Q(lease__tenant__user=request.user) | Q(lease__leased_by=request.user) |  Q(lease__leased_by__owners__agents__user=request.user)).count() if len(Invoice.objects.all()) > 0 else 0,
+        "has_tenant_record": has_tenant_record,  # Check if tenant user has a Tenant record
     }
     for val in vals:
         contexts[val.key] = val.value

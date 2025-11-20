@@ -1,46 +1,93 @@
 {% extends 'core/base.html' %}
-{% load widget_tweaks %}
+{% load static %}
 {% block content %}
-<div class="conatiner p-4 m-2">
-  <div class="header bg-secondary rounded p-2">
-    <h1>Tenants</h1>
+<div class="modern-table-container">
+  <div class="modern-table-header">
+    <h2><i class="fas fa-users mr-2"></i>Tenants</h2>
+    <div class="modern-table-actions">
+      <a href="{% url 'tenant-create' %}" class="btn btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+        <i class="fas fa-plus mr-1"></i>Add Tenant
+      </a>
+    </div>
   </div>
 
-  <div style="margin-top: 20px;">
-    <a href="{% url 'tenant-create' %}" class="btn btn-primary">
-      Add Tenant
-    </a>
-  </div>
-
-  <table class="table" style="margin-top: 20px;">
+  {% if tenants %}
+  <table id="tenantTable" class="modern-table">
     <thead>
       <tr>
-        <th>First name</th>
-        <th>Last name</th>
+        <th>First Name</th>
+        <th>Last Name</th>
         <th>Email</th>
         <th>Phone</th>
+        <th>Status</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-        {% for tenant in tenants %}
-        <tr>
-          <td>{{ tenant.user.first_name }}</td>
-          <td>{{ tenant.user.last_name }}</td>
-          <td>{{ tenant.user.email }}</td>
-          <td>{{ tenant.mobile_number }}</td>
-          <td>
-              <a class="d-inline-block" href="{% url 'tenant-detail' tenant.id %}"><i class="fa fa-eye text-warning"></i></a>
-              <a class="d-inline-block" href="{% url 'tenant-update' tenant.id %}"><i class="fa fa-edit text-primary"></i></a>
-              <a class="d-inline-block" href="{% url 'tenant-delete' tenant.id %}"><i class="fa fa-trash text-danger"></i></a>
-          </td>
-        </tr>
-         {% empty %}
-        <div class="list-group-item">No records found.</div>
-        {% endfor %}
+      {% for tenant in tenants %}
+      <tr>
+        <td><strong>{{ tenant.user.first_name }}</strong></td>
+        <td><strong>{{ tenant.user.last_name }}</strong></td>
+        <td>{{ tenant.user.email }}</td>
+        <td>{{ tenant.mobile_number|default:"Not provided" }}</td>
+        <td>
+          <span class="badge-modern {% if tenant.current_status == 'active' %}badge-paid{% else %}badge-overdue{% endif %}">
+            {{ tenant.current_status|title }}
+          </span>
+        </td>
+        <td>
+          <div class="action-buttons">
+            <a href="{% url 'tenant-detail' tenant.id %}" class="btn-action btn-action-view" title="View Tenant">
+              <i class="fas fa-eye"></i>
+              <span class="d-none d-md-inline">View</span>
+            </a>
+            <a href="{% url 'tenant-update' tenant.id %}" class="btn-action btn-action-edit" title="Edit Tenant">
+              <i class="fas fa-edit"></i>
+              <span class="d-none d-md-inline">Edit</span>
+            </a>
+            <a href="{% url 'tenant-delete' tenant.id %}" class="btn-action btn-action-delete" title="Delete Tenant" onclick="return confirm('Are you sure you want to delete this tenant?');">
+              <i class="fas fa-trash"></i>
+              <span class="d-none d-md-inline">Delete</span>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
   </table>
+  {% else %}
+  <div class="table-empty-state">
+    <i class="fas fa-users"></i>
+    <h3>No Tenants Found</h3>
+    <p>There are no tenants registered yet.</p>
+  </div>
+  {% endif %}
 </div>
+
+<script>
+  $(document).ready(function() {
+    $('#tenantTable').DataTable({
+      paging: true,
+      searching: true,
+      pageLength: 10,
+      lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      language: {
+        search: "",
+        searchPlaceholder: "Search tenants...",
+        lengthMenu: "Show _MENU_ entries",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+        paginate: {
+          previous: "<i class='fas fa-chevron-left'></i>",
+          next: "<i class='fas fa-chevron-right'></i>"
+        }
+      },
+      columnDefs: [
+        { orderable: false, targets: [5] } // Disable sorting on Actions column
+      ],
+      responsive: true
+    });
+  });
+</script>
 {% endblock content %}
 {% block custom_js %}
 <script>

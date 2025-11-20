@@ -74,6 +74,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # My Middleware
     'account.middleware.LoginCheckMiddleWare',
+    'account.middleware.DemoDataSeedMiddleware',
     'core.middleware.SiteWideConfigs',
 ]
 

@@ -29,12 +29,17 @@ class CustomUserForm(FormSettings):
         super(CustomUserForm, self).__init__(*args, **kwargs)
 
         if kwargs.get('instance'):
-            instance = kwargs.get('instance').__dict__
+            instance = kwargs.get('instance')
             self.fields['password'].required = False
             for field in CustomUserForm.Meta.fields:
-                self.fields[field].initial = instance.get(field)
+                if hasattr(instance, field):
+                    try:
+                        self.fields[field].initial = getattr(instance, field, None)
+                    except (AttributeError, KeyError):
+                        pass
             if self.instance.pk is not None:
                 self.fields['password'].widget.attrs['placeholder'] = "Fill this only if you wish to update password"
+                self.fields['password'].help_text = "Leave blank to keep current password"
 
     def clean_email(self, *args, **kwargs):
         formEmail = self.cleaned_data['email'].lower()
@@ -54,4 +59,4 @@ class CustomUserForm(FormSettings):
 
     class Meta:
         model = CustomUser
-        fields = '__all__'#['first_name', 'last_name','other_name', 'email','password','gender','user_type', 'profile_pic', 'address']
+        fields = ['first_name', 'last_name', 'other_name', 'email', 'password', 'gender', 'user_type', 'profile_pic', 'address']

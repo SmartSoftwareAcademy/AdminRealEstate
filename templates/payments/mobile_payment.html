@@ -11,7 +11,10 @@
                 <div class="card-body">
                     <div class="text-center">
                         <img src="{% static 'mobilepay/lipanampesa.png' %}" alt="Mpesa Logo" class="img-fluid mb-1">
-                        <p class="text-muted mb-4">You will receive an STK push request on your Mpesa number. Please confirm the payment.</p>
+                        <p class="text-muted mb-2">
+                          You will receive an STK push request on your Mpesa number (default: 0743&nbsp;793&nbsp;901 for sandbox testing).
+                          You can change the number below before confirming the payment. Leave blank to use default.
+                        </p>
                          <!-- SVG icon mimicking mobile payment -->
                          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16">
                             <path d="M10.5 0a.5.5 0 0 1 .5.5V4h-2a.5.5 0 0 1-.5-.5V0zM5 8a3 3 0 0 1 3-3h2a.5.5 0 0 1 0 1H8a2 2 0 0 0-2 2v1h2a.5.5 0 0 1 0 1H6a3 3 0 0 1-3-3zm8 0a3 3 0 0 0-3 3v1H8a.5.5 0 0 1 0-1h2a2 2 0 0 0 2-2v-1h-2a.5.5 0 0 1 0-1h2zM.5 12a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H.5z"/>

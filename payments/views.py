@@ -15,7 +15,7 @@ from django.http import HttpResponse
 from .models import *
 from invoices.models import Invoice
 from invoices.utils import *
-from . mpesa_credentials import MpesaAccessToken, LipanaMpesaPpassword
+from . mpesa_credentials import MpesaAccessToken, LipanaMpesaPpassword, MpesaStkPushCredential
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import time
@@ -65,8 +65,30 @@ class MobilePaymentView(View):
 
     def get(self, request, *args, **kwargs):
         print(request.GET.get('invoice_id'))
-        invoice=Invoice.objects.get(id=int(request.GET.get('invoice_id')))
-        form = self.form_class(initial={'mpesa_number': 254743793901,'amount':request.GET.get('amount'),'invoice_id':invoice.invoice_id,'description':request.GET.get('description')})
+        invoice = Invoice.objects.get(id=int(request.GET.get('invoice_id')))
+        # Prefer the tenant's registered mobile number; fall back to sandbox demo line
+        default_msisdn = None
+        if hasattr(invoice.lease, 'tenant') and invoice.lease.tenant.mobile_number:
+            msisdn = str(invoice.lease.tenant.mobile_number)
+            # Normalise to Safaricom format 2547XXXXXXXX if possible
+            if msisdn.startswith('0'):
+                default_msisdn = int("254" + msisdn[1:])
+            elif msisdn.startswith('+254'):
+                default_msisdn = int(msisdn.replace('+', ''))
+            elif msisdn.startswith('254'):
+                default_msisdn = int(msisdn)
+        if default_msisdn is None:
+            from .mpesa_credentials import MpesaConfig
+            default_msisdn = MpesaConfig.DEFAULT_PHONE_NUMBER
+        # Default Mpesa number for sandbox demo – user can overwrite this in the form
+        form = self.form_class(
+            initial={
+                'mpesa_number': default_msisdn,
+                'amount': request.GET.get('amount'),
+                'invoice_id': invoice.invoice_id,
+                'description': request.GET.get('description'),
+            }
+        )
         return render(request, self.template_name, {'form': form,'amount':request.GET.get('amount'),'invoice_id':invoice.invoice_id})
 
     def post(self, request, *args, **kwargs):
@@ -81,29 +103,61 @@ class MobilePaymentView(View):
             except Invoice.DoesNotExist:
                 return JsonResponse({'message': 'Invoice not found'}, status=400)
 
-            access_token = MpesaAccessToken.validated_mpesa_access_token
-            api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-            headers = {"Authorization": "Bearer %s" % access_token}
-            request_data = {
-                "BusinessShortCode": LipanaMpesaPpassword.Business_short_code,
-                "Password": LipanaMpesaPpassword.decode_password,
-                "Timestamp": LipanaMpesaPpassword.lipa_time,
-                "TransactionType": "CustomerPayBillOnline",
-                "Amount": int(float(body_data['amount'])),
-                "PartyA": body_data['mpesa_number'],
-                "PartyB": LipanaMpesaPpassword.Business_short_code,
-                "PhoneNumber": body_data['mpesa_number'],
-                "CallBackURL": "https://666b-154-159-237-92.ngrok-free.app/payments/mpesa/callback/",
-                "AccountReference": f"Fernbrook Apartments for Rent Invoice #{invoice.invoice_id}",
-                "TransactionDesc": f"Fernbrook Apartments for Rent Invoice #{invoice.invoice_id}"
-            }
+            # Use default phone number if not provided
+            mpesa_number = body_data.get('mpesa_number')
+            if not mpesa_number:
+                from .mpesa_credentials import MpesaConfig
+                mpesa_number = MpesaConfig.DEFAULT_PHONE_NUMBER
+            
+            # Ensure phone number is a string
+            mpesa_number_str = str(mpesa_number)
 
-            response = requests.post(api_url, json=request_data, headers=headers)
-            if response.status_code == 200:
-                # Payment request sent successfully
-                return JsonResponse({'message':'Accepted' },status=200)
-            else:
-                return JsonResponse({'message': 'Failed to submit payment request'}, status=500)
+            try:
+                access_token = MpesaAccessToken.get_access_token()
+                cfg = MpesaConfig.get()
+                # Get STK Push endpoint URL based on environment (sandbox/production)
+                api_url = MpesaStkPushCredential.get_stk_push_url()
+                
+                headers = {"Authorization": f"Bearer {access_token}"}
+                lp_creds = LipanaMpesaPpassword.get_credentials()
+                # Build request data matching Mpesa STK Push API structure
+                # Password is generated fresh for each request (BusinessShortCode + Passkey + Timestamp)
+                request_data = {
+                    "Password": lp_creds["Password"],  # Base64 encoded: BusinessShortCode + Passkey + Timestamp
+                    "BusinessShortCode": lp_creds["BusinessShortCode"],
+                    "Timestamp": lp_creds["Timestamp"],  # Format: YYYYMMDDHHmmss
+                    "TransactionType": "CustomerPayBillOnline",
+                    "Amount": str(int(float(body_data['amount']))),  # Amount as string
+                    "PartyA": mpesa_number_str,  # Customer phone number
+                    "PartyB": lp_creds["BusinessShortCode"],  # Business shortcode
+                    "PhoneNumber": mpesa_number_str,  # Customer phone number
+                    "CallBackURL": lp_creds["CallbackURL"],
+                    "AccountReference": f"Invoice #{invoice.invoice_id}",
+                    "TransactionDesc": f"Payment for Invoice #{invoice.invoice_id}"
+                }
+
+                response = requests.post(api_url, json=request_data, headers=headers, timeout=30)
+                response.raise_for_status()
+                response_data = response.json()
+                
+                if response.status_code == 200:
+                    # Payment request sent successfully
+                    return JsonResponse({
+                        'message': 'STK push sent successfully. Please check your phone and enter your Mpesa PIN.',
+                        'response_code': response_data.get('ResponseCode', '0')
+                    }, status=200)
+                else:
+                    return JsonResponse({
+                        'message': f'Failed to submit payment request: {response_data.get("errorMessage", "Unknown error")}'
+                    }, status=response.status_code)
+            except requests.exceptions.RequestException as e:
+                return JsonResponse({
+                    'message': f'Network error: {str(e)}'
+                }, status=500)
+            except Exception as e:
+                return JsonResponse({
+                    'message': f'Error processing payment: {str(e)}'
+                }, status=500)
 
         return JsonResponse({'message': 'Invalid form data'}, status=400)
 
@@ -144,13 +198,16 @@ class MpesaCallbackView(View):
         except json.JSONDecodeError as e:
             return JsonResponse({'message': str(e)}, status=400)
 
-        result_code = mpesa_payment['Body']['stkCallback']['ResultCode']
+        result_code = mpesa_payment.get('Body', {}).get('stkCallback', {}).get('ResultCode')
         if result_code == 0:
-            message = mpesa_payment['Body']['stkCallback']['ResultDesc']
+            message = mpesa_payment['Body']['stkCallback'].get('ResultDesc', 'Payment successful')
             #msghead = ""
-            print(payinfo)
-            invoice = Invoice.objects.get(invoice_id=payinfo['invoice_id'])
-            print(invoice)
+            if not payinfo:
+                return JsonResponse({'message': 'Payment information not found'}, status=400)
+            try:
+                invoice = Invoice.objects.get(invoice_id=payinfo['invoice_id'])
+            except Invoice.DoesNotExist:
+                return JsonResponse({'message': 'Invoice not found'}, status=404)
             bal=float(invoice.balance)-float(payinfo['amount'])
             mpesa_receipt_number = mpesa_payment['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value']
             transaction_code=mpesa_receipt_number

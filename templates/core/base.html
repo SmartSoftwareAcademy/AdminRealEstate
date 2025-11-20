@@ -7,9 +7,323 @@
   <title>Estate-Admin | Dashboard</title>
 
  {% include 'core/headers.html' %}
- {% block custom_css %} {% endblock custom_css %}
+ {% block custom_css %}
+ <style>
+   /* Modern Top Navigation Bar Styles */
+   .main-header {
+     background: #ffffff !important;
+     border-bottom: 1px solid #e9ecef;
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+     padding: 0.5rem 1rem !important;
+     margin: 0 !important;
+     transition: all 0.3s ease;
+   }
+   
+   body {
+     padding-top: 0 !important;
+     margin-top: 0 !important;
+   }
+   
+   .wrapper {
+     margin-top: 0 !important;
+     padding-top: 0 !important;
+   }
+   
+   .main-header {
+     margin-top: 0 !important;
+     top: 0 !important;
+   }
+   
+   .content-wrapper {
+     margin-top: 0 !important;
+     padding-top: 0 !important;
+   }
+   
+   .main-header .navbar-nav {
+     align-items: center;
+   }
+   
+   /* Hamburger Menu Button */
+   .main-header .navbar-nav .nav-item:first-child .nav-link {
+     padding: 10px 15px;
+     border-radius: 8px;
+     transition: all 0.3s ease;
+     color: #495057;
+   }
+   
+   .main-header .navbar-nav .nav-item:first-child .nav-link:hover {
+     background: #f8f9fa;
+     color: #667eea;
+     transform: scale(1.1);
+   }
+   
+   /* Navigation Links */
+   .main-header .navbar-nav .nav-link {
+     color: #495057;
+     font-weight: 500;
+     padding: 10px 15px;
+     border-radius: 8px;
+     transition: all 0.3s ease;
+     position: relative;
+   }
+   
+   .main-header .navbar-nav .nav-link:hover {
+     color: #667eea;
+     background: #f8f9fa;
+   }
+   
+   .main-header .navbar-nav .nav-link::after {
+     content: '';
+     position: absolute;
+     bottom: 0;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 0;
+     height: 2px;
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+     transition: width 0.3s ease;
+   }
+   
+   .main-header .navbar-nav .nav-link:hover::after {
+     width: calc(100% - 30px);
+   }
+   
+   /* Site Title in Navbar */
+   .main-header h4.nav-item {
+     margin: 0;
+     font-size: 0.95rem;
+     font-weight: 600;
+     color: #495057;
+   }
+   
+   .main-header h4.nav-item .nav-link {
+     color: #495057;
+     padding: 8px 15px;
+   }
+   
+   .main-header marquee {
+     display: none; /* Hide marquee, replace with static text */
+   }
+   
+   /* Modern Search Bar */
+   .navbar-search-block {
+     position: absolute;
+     top: 100%;
+     right: 0;
+     width: 350px;
+     padding: 15px;
+     background: white;
+     border-radius: 12px;
+     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+     border: 1px solid #e9ecef;
+     margin-top: 10px;
+     z-index: 1000;
+     opacity: 0;
+     visibility: hidden;
+     transform: translateY(-10px);
+     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+   }
+   
+   .navbar-search-block.show {
+     opacity: 1;
+     visibility: visible;
+     transform: translateY(0);
+   }
+   
+   .navbar-search-block .form-control-navbar {
+     border: 2px solid #e9ecef;
+     border-radius: 10px;
+     padding: 12px 45px 12px 15px;
+     font-size: 0.95rem;
+     transition: all 0.3s ease;
+   }
+   
+   .navbar-search-block .form-control-navbar:focus {
+     border-color: #667eea;
+     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+     outline: none;
+   }
+   
+   .navbar-search-block .input-group-append {
+     position: absolute;
+     right: 5px;
+     top: 50%;
+     transform: translateY(-50%);
+   }
+   
+   .navbar-search-block .btn-navbar {
+     border: none;
+     background: transparent;
+     color: #6c757d;
+     padding: 8px 12px;
+     border-radius: 8px;
+     transition: all 0.3s ease;
+   }
+   
+   .navbar-search-block .btn-navbar:hover {
+     background: #f8f9fa;
+     color: #667eea;
+   }
+   
+   /* Search Icon Button */
+   .main-header .nav-item[data-widget="navbar-search"] .nav-link {
+     position: relative;
+     padding: 10px 12px;
+   }
+   
+   .main-header .nav-item[data-widget="navbar-search"] .nav-link:hover {
+     background: #f8f9fa;
+   }
+   
+   /* Notification Badges */
+   .navbar-badge {
+     position: absolute;
+     top: 5px;
+     right: 5px;
+     font-size: 0.7rem;
+     font-weight: 600;
+     padding: 3px 6px;
+     border-radius: 10px;
+     min-width: 18px;
+     text-align: center;
+     animation: pulse 2s infinite;
+   }
+   
+   @keyframes pulse {
+     0%, 100% {
+       transform: scale(1);
+     }
+     50% {
+       transform: scale(1.1);
+     }
+   }
+   
+   .navbar-badge.badge-danger {
+     background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+     color: white;
+     box-shadow: 0 2px 8px rgba(235, 51, 73, 0.4);
+   }
+   
+   .navbar-badge.badge-warning {
+     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+     color: white;
+     box-shadow: 0 2px 8px rgba(245, 87, 108, 0.4);
+   }
+   
+   /* Icon Buttons */
+   .main-header .nav-item.dropdown .nav-link,
+   .main-header .nav-item:not(.dropdown) .nav-link {
+     position: relative;
+     padding: 10px 12px;
+     border-radius: 10px;
+     transition: all 0.3s ease;
+   }
+   
+   .main-header .nav-item.dropdown .nav-link:hover,
+   .main-header .nav-item:not(.dropdown) .nav-link:hover {
+     background: #f8f9fa;
+     color: #667eea;
+     transform: translateY(-2px);
+   }
+   
+   .main-header .nav-item.dropdown .nav-link i,
+   .main-header .nav-item:not(.dropdown) .nav-link i {
+     font-size: 1.1rem;
+   }
+   
+   /* Dropdown Menus */
+   .dropdown-menu {
+     border: none;
+     border-radius: 12px;
+     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+     padding: 10px 0;
+     margin-top: 10px;
+     border: 1px solid #e9ecef;
+   }
+   
+   .dropdown-menu .dropdown-item {
+     padding: 12px 20px;
+     transition: all 0.2s ease;
+     color: #495057;
+   }
+   
+   .dropdown-menu .dropdown-item:hover {
+     background: #f8f9fa;
+     color: #667eea;
+     padding-left: 25px;
+   }
+   
+   .dropdown-menu .dropdown-item i {
+     width: 20px;
+     color: #6c757d;
+   }
+   
+   .dropdown-menu .dropdown-item:hover i {
+     color: #667eea;
+   }
+   
+   .dropdown-menu .dropdown-header {
+     font-weight: 600;
+     color: #495057;
+     padding: 12px 20px;
+     background: #f8f9fa;
+     border-bottom: 1px solid #e9ecef;
+   }
+   
+   .dropdown-menu .dropdown-divider {
+     margin: 8px 0;
+     border-color: #e9ecef;
+   }
+   
+   .dropdown-menu .dropdown-footer {
+     text-align: center;
+     font-weight: 600;
+     color: #667eea;
+     padding: 12px 20px;
+     background: #f8f9fa;
+   }
+   
+   /* User Profile Dropdown Enhancement */
+   .main-header .nav-item.dropdown .nav-link i.fa-user {
+     font-size: 1.2rem;
+   }
+   
+   /* Fullscreen and Control Sidebar Icons */
+   .main-header .nav-item[data-widget="fullscreen"] .nav-link:hover,
+   .main-header .nav-item[data-widget="control-sidebar"] .nav-link:hover {
+     background: #f8f9fa;
+     color: #667eea;
+   }
+   
+   /* Responsive Design */
+   @media (max-width: 991px) {
+     .navbar-search-block {
+       width: calc(100% - 30px);
+       right: 15px;
+     }
+     
+     .main-header h4.nav-item {
+       display: none;
+     }
+   }
+   
+   /* Smooth Transitions */
+   .main-header * {
+     transition: all 0.3s ease;
+   }
+   
+   /* Fix navbar spacing */
+   body.hold-transition {
+     padding-top: 0 !important;
+   }
+   
+   .main-header.navbar {
+     margin-bottom: 0 !important;
+   }
+ </style>
+ {% endblock custom_css %}
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" style="padding-top: 0; margin-top: 0;">
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -36,8 +350,11 @@
         <a href="/admin" class="nav-link">Admin Site</a>
       </li>
       {% endif %}
-        <h4 class="nav-item d-none d-sm-inline-block m-auto">
-          <marquee><a href="#" class="nav-link"> {{ site_title }} - {{ site_addres }}</a></h4></marquee>
+        <li class="nav-item d-none d-md-inline-block">
+          <span class="nav-link text-muted" style="cursor: default;">
+            <i class="fas fa-map-marker-alt mr-1"></i>{{ site_title }} - {{ site_addres }}
+          </span>
+        </li>
     </ul>
 
     <!-- Right navbar links -->
@@ -152,13 +469,15 @@
 
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background: linear-gradient(180deg, #212529 0%, #1a1d23 100%);">
     <!-- Brand Logo -->
-    <a href="{% url 'home' %}" class="brand-link bg-gradient">
+    <a href="{% url 'home' %}" class="brand-link" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1rem;">
        {% if site_logo %}
-      <img src="/media/{{site_logo}}" alt="AdminLTE Logo" class="" width="100%" height="100" style="opacity: .8">
+      <img src="/media/{{site_logo}}" alt="AdminLTE Logo" class="" width="100%" height="100" style="opacity: .9; border-radius: 8px;">
     {% else %}
-      <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="" width="100%" height="100" style="opacity: .8">
+      <div style="color: white; font-weight: 700; font-size: 1.5rem; text-align: center; padding: 1rem 0;">
+        <i class="fas fa-building mr-2"></i>Estate Admin
+      </div>
     {% endif %}
     </a>
 
@@ -481,18 +800,18 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="background-color: #f8f9fa;">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <div class="content-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem 1rem; margin-bottom: 1.5rem; border-radius: 0;">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0" style="color: white; font-weight: 700;">Dashboard</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
+            <ol class="breadcrumb float-sm-right" style="background: transparent; padding: 0; margin: 0;">
+              <li class="breadcrumb-item"><a href="#" style="color: rgba(255,255,255,0.8);">Home</a></li>
+              <li class="breadcrumb-item active" style="color: white;">Dashboard</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -506,11 +825,13 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; {% now 'Y' %} <a href="https://codevertextitsolutions.com">NTM IT Solutions</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.2.0
+  <footer class="main-footer" style="background: white; border-top: 1px solid #e9ecef; padding: 1rem 0;">
+    <div class="container-fluid">
+      <strong style="color: #495057;">Copyright &copy; {% now 'Y' %} <a href="https://codevertextitsolutions.com" style="color: #667eea;">NTM IT Solutions</a>.</strong>
+      <span style="color: #6c757d;">All rights reserved.</span>
+      <div class="float-right d-none d-sm-inline-block">
+        <span style="color: #6c757d;"><b>Version</b> 3.2.0</span>
+      </div>
     </div>
   </footer>
 
@@ -522,6 +843,41 @@
 </div>
 <!-- ./wrapper -->
 {% include 'core/scripts.html' %}
-{% block custom_js %} {% endblock custom_js %}
+{% block custom_js %}
+<script>
+  // Enhanced Search Bar Toggle
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchToggle = document.querySelector('[data-widget="navbar-search"]');
+    const searchBlock = document.querySelector('.navbar-search-block');
+    const searchClose = searchBlock ? searchBlock.querySelector('[data-widget="navbar-search"]') : null;
+    
+    if (searchToggle && searchBlock) {
+      searchToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        searchBlock.classList.toggle('show');
+        if (searchBlock.classList.contains('show')) {
+          setTimeout(function() {
+            searchBlock.querySelector('.form-control-navbar').focus();
+          }, 100);
+        }
+      });
+      
+      if (searchClose) {
+        searchClose.addEventListener('click', function(e) {
+          e.preventDefault();
+          searchBlock.classList.remove('show');
+        });
+      }
+      
+      // Close search when clicking outside
+      document.addEventListener('click', function(e) {
+        if (searchBlock && !searchBlock.contains(e.target) && !searchToggle.contains(e.target)) {
+          searchBlock.classList.remove('show');
+        }
+      });
+    }
+  });
+</script>
+{% endblock custom_js %}
 </body>
 </html>

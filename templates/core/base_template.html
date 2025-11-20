@@ -26,6 +26,237 @@
 
   <!-- Main CSS File -->
   <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+  
+  <!-- Unified Theme CSS -->
+  <link href="{% static 'css/theme.css' %}" rel="stylesheet">
+  
+  <!-- Custom Navigation Styles -->
+  <style>
+    /* User Profile Dropdown Styles */
+    .user-profile-dropdown {
+      margin-left: auto;
+      position: relative;
+    }
+    
+    .user-profile-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 15px;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    .user-profile-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      flex-shrink: 0;
+    }
+    
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .avatar-initials {
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+    
+    .user-name {
+      font-weight: 500;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    
+    .user-dropdown-menu {
+      min-width: 280px;
+      padding: 0;
+      margin-top: 10px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      z-index: 1000;
+      background: #fff;
+    }
+    
+    .user-dropdown-menu.dropdown-active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .dropdown-header {
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+    }
+    
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .user-name-bold {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    
+    .user-email {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+    
+    .user-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+    }
+    
+    .badge-owner {
+      background: rgba(255, 193, 7, 0.3);
+      color: #ffc107;
+    }
+    
+    .badge-agent {
+      background: rgba(0, 123, 255, 0.3);
+      color: #007bff;
+    }
+    
+    .badge-staff {
+      background: rgba(40, 167, 69, 0.3);
+      color: #28a745;
+    }
+    
+    .badge-tenant {
+      background: rgba(108, 117, 125, 0.3);
+      color: #6c757d;
+    }
+    
+    .dropdown-divider {
+      height: 1px;
+      background: #e9ecef;
+      margin: 8px 0;
+      border: none;
+      list-style: none;
+    }
+    
+    .user-dropdown-menu li a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      color: #495057;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    
+    .user-dropdown-menu li a i {
+      width: 18px;
+      font-size: 16px;
+      color: #6c757d;
+    }
+    
+    .user-dropdown-menu li a:hover {
+      background: #f8f9fa;
+      color: #667eea;
+      padding-left: 24px;
+    }
+    
+    .user-dropdown-menu li a:hover i {
+      color: #667eea;
+    }
+    
+    .logout-link {
+      color: #dc3545 !important;
+    }
+    
+    .logout-link:hover {
+      background: #fff5f5 !important;
+      color: #dc3545 !important;
+    }
+    
+    .logout-link i {
+      color: #dc3545 !important;
+    }
+    
+    /* Login button for guests */
+    .btn-login {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff !important;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      margin-left: 10px;
+    }
+    
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      color: #fff !important;
+    }
+    
+    /* Navigation icons */
+    .navmenu ul li a i {
+      margin-right: 6px;
+      font-size: 16px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 991px) {
+      .user-profile-link {
+        padding: 8px 12px;
+      }
+      
+      .user-name {
+        display: none;
+      }
+      
+      .user-dropdown-menu {
+        min-width: 100%;
+      }
+    }
+    
+    /* Active state for nav items */
+    .navmenu ul li a.active {
+      color: #667eea;
+      font-weight: 600;
+    }
+  </style>
 </head>
 
 <body class="starter-page-page">
@@ -33,7 +264,7 @@
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-      <a href="{% url 'home' %}" class="logo d-flex align-items-center">
+      <a href="{% if user.is_authenticated %}{% url 'home' %}{% else %}{% url 'frontpage' %}{% endif %}" class="logo d-flex align-items-center">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="{% static 'assets/img/logo.png' %}" alt=""> -->
         <h1 class="sitename">Estate<span>Agency</span></h1>
@@ -41,33 +272,99 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="{% url 'frontpage' %}">Home</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
-          <li><a href="{% url 'services' %}">Services</a></li>
-          <li><a href="{% url 'properties' %}">Properties</a></li>
-          <li><a href="{% url 'agent-list' %}">Agents</a></li>
-          <li><a href="{% url 'contact' %}">Contact</a></li>
-          <li class="dropdown"><a href="#"><span>Property Marketplace</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li class="dropdown"><a href="#"><span>Buy/Sell</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Sell Property</a></li>
-                  <li><a href="#">Buy Property2</a></li>
-                  
-                </ul>
-              </li>
-              <li><a href="#">Rent Property</a></li>
-            </ul>
-          </li>
-          <li class="dropdown"><a href="#"><span>Account</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              {% if user.is_authenticated %}
-              <li><a href="{% url 'logout' %}">Log Out</a></li>
-              {% else %}
-              <li><a href="{% url 'login' %}">Log In</a></li>
-              {% endif %}
-            </ul>
-          </li>
+          {% if user.is_authenticated %}
+            <!-- Dashboard link for logged-in users -->
+            <li><a href="{% url 'home' %}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+            
+            <!-- Role-specific navigation items -->
+            {% if user.user_type == '1' or user.user_type == '2' %}
+              <!-- Owner/Agent navigation -->
+              <li><a href="{% url 'property-list' %}"><i class="bi bi-building"></i> Properties</a></li>
+              <li><a href="{% url 'tenant-list' %}"><i class="bi bi-people"></i> Tenants</a></li>
+              <li><a href="{% url 'invoice-list' %}"><i class="bi bi-receipt"></i> Invoices</a></li>
+            {% elif user.user_type == '3' %}
+              <!-- Staff navigation -->
+              <li><a href="{% url 'property-list' %}"><i class="bi bi-building"></i> Properties</a></li>
+              <li><a href="#"><i class="bi bi-cash-coin"></i> Payroll</a></li>
+            {% elif user.user_type == '4' %}
+              <!-- Tenant navigation -->
+              <li><a href="{% url 'invoice-list' %}"><i class="bi bi-receipt"></i> My Bills</a></li>
+              <li><a href="{% url 'notice_add' %}"><i class="bi bi-tools"></i> Maintenance</a></li>
+            {% endif %}
+            
+            <!-- User Profile Dropdown -->
+            <li class="dropdown user-profile-dropdown">
+              <a href="#" class="user-profile-link">
+                <span class="user-avatar">
+                  {% if user.profile_pic %}
+                    <img src="{{ user.profile_pic.url }}" alt="{{ user.get_full_name }}" class="avatar-img">
+                  {% else %}
+                    <span class="avatar-initials">{{ user.first_name|first }}{{ user.last_name|first }}</span>
+                  {% endif %}
+                </span>
+                <span class="user-name">{{ user.get_full_name|default:user.email }}</span>
+                <i class="bi bi-chevron-down toggle-dropdown"></i>
+              </a>
+              <ul class="user-dropdown-menu">
+                <li class="dropdown-header">
+                  <div class="user-info">
+                    <div class="user-name-bold">{{ user.get_full_name|default:user.email }}</div>
+                    <div class="user-email">{{ user.email }}</div>
+                    {% if user.user_type == '1' %}
+                      <span class="user-badge badge-owner">Owner</span>
+                    {% elif user.user_type == '2' %}
+                      <span class="user-badge badge-agent">Agent</span>
+                    {% elif user.user_type == '3' %}
+                      <span class="user-badge badge-staff">Staff</span>
+                    {% elif user.user_type == '4' %}
+                      <span class="user-badge badge-tenant">Tenant</span>
+                    {% endif %}
+                  </div>
+                </li>
+                <li class="dropdown-divider"></li>
+                <li><a href="{% url 'home' %}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                <li><a href="{% url 'profile' %}"><i class="bi bi-person"></i> My Profile</a></li>
+                
+                {% if user.user_type == '4' %}
+                  {% if has_tenant_record %}
+                    <li><a href="{% url 'tenant-me' %}"><i class="bi bi-person-badge"></i> Tenant Details</a></li>
+                  {% endif %}
+                  <li><a href="{% url 'invoice-list' %}"><i class="bi bi-receipt"></i> Bills &amp; Invoices</a></li>
+                  <li><a href="{% url 'notice_add' %}"><i class="bi bi-tools"></i> Maintenance Requests</a></li>
+                {% elif user.user_type == '1' or user.user_type == '2' %}
+                  <li><a href="{% url 'property-list' %}"><i class="bi bi-building"></i> Manage Properties</a></li>
+                  <li><a href="{% url 'tenant-list' %}"><i class="bi bi-people"></i> Manage Tenants</a></li>
+                  <li><a href="{% url 'invoice-list' %}"><i class="bi bi-receipt"></i> All Invoices</a></li>
+                {% elif user.user_type == '3' %}
+                  <li><a href="#"><i class="bi bi-cash-coin"></i> Payroll</a></li>
+                  <li><a href="#"><i class="bi bi-bell"></i> Notices</a></li>
+                {% endif %}
+                
+                <li class="dropdown-divider"></li>
+                <li><a href="{% url 'logout' %}" class="logout-link"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <!-- Public navigation for guests -->
+            <li><a href="{% url 'frontpage' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'services' %}">Services</a></li>
+            <li><a href="{% url 'properties' %}">Properties</a></li>
+            <li><a href="{% url 'agent-list' %}">Agents</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li class="dropdown"><a href="#"><span>Property Marketplace</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li class="dropdown"><a href="#"><span>Buy/Sell</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                  <ul>
+                    <li><a href="#">Sell Property</a></li>
+                    <li><a href="#">Buy Property</a></li>
+                  </ul>
+                </li>
+                <li><a href="#">Rent Property</a></li>
+              </ul>
+            </li>
+            <li><a href="{% url 'login' %}" class="btn-login"><i class="bi bi-box-arrow-in-right"></i> Log In</a></li>
+          {% endif %}
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -153,6 +450,42 @@
 
   <!-- Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
+  
+  <!-- Enhanced User Profile Dropdown Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const userProfileDropdown = document.querySelector('.user-profile-dropdown');
+      const userProfileLink = document.querySelector('.user-profile-link');
+      const userDropdownMenu = document.querySelector('.user-dropdown-menu');
+      
+      if (userProfileLink && userDropdownMenu) {
+        // Toggle dropdown on click
+        userProfileLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          userDropdownMenu.classList.toggle('dropdown-active');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!userProfileDropdown.contains(e.target)) {
+            userDropdownMenu.classList.remove('dropdown-active');
+          }
+        });
+        
+        // Close dropdown when clicking on a menu item
+        const menuItems = userDropdownMenu.querySelectorAll('a');
+        menuItems.forEach(item => {
+          item.addEventListener('click', function() {
+            // Don't close if it's a dropdown parent
+            if (!this.nextElementSibling || !this.nextElementSibling.classList.contains('dropdown-active')) {
+              userDropdownMenu.classList.remove('dropdown-active');
+            }
+          });
+        });
+      }
+    });
+  </script>
 
 </body>
 

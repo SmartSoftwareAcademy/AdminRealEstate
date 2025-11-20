@@ -22,13 +22,21 @@ class MailSender:
     def send_email(self):
         try:
             config = Setup.objects.first()
+            if not config:
+                messages.error(self.request, 'Email configuration not found. Please configure email settings in the admin panel.')
+                return
+            
+            if not config.support_reply_email or not config.email_password:
+                messages.warning(self.request, 'Email credentials not configured. Please set email address and password in the admin panel.')
+                return
+            
             backend = EmailBackend(
-                host=config.email_host,
-                port=config.email_port,
+                host=config.email_host or 'smtp.gmail.com',
+                port=config.email_port or 587,
                 username=config.support_reply_email,
                 password=config.email_password,
-                use_tls=config.use_tls,
-                fail_silently=config.fail_silently
+                use_tls=config.use_tls if config.use_tls is not None else True,
+                fail_silently=config.fail_silently if config.fail_silently is not None else True
             )
 
             # Process the email body as HTML

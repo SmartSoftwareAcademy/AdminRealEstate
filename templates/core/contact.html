@@ -1,6 +1,7 @@
 
 {% extends 'core/base_template.html' %}
 {% load static %}
+{% load widget_tweaks %}
 {% block content %}
     <!-- Page Title -->
     <div class="page-title" data-aos="fade">
@@ -17,7 +18,7 @@
       <nav class="breadcrumbs">
         <div class="container">
           <ol>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="{% url 'frontpage' %}">Home</a></li>
             <li class="current">Contact</li>
           </ol>
         </div>
@@ -63,30 +64,31 @@
           </div>
 
           <div class="col-lg-8">
-            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+            <form method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+              {% csrf_token %}
               <div class="row gy-4">
 
                 <div class="col-md-6">
-                  <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+                  {{ form.fullname.errors }}
+                  {{ form.fullname|add_class:"form-control" }}
                 </div>
 
                 <div class="col-md-6 ">
-                  <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+                  {{ form.email.errors }}
+                  {{ form.email|add_class:"form-control" }}
                 </div>
 
                 <div class="col-md-12">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+                  {{ form.mobile_number.errors }}
+                  {{ form.mobile_number|add_class:"form-control" }}
                 </div>
 
                 <div class="col-md-12">
-                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                  {{ form.message.errors }}
+                  {{ form.message|add_class:"form-control" }}
                 </div>
 
                 <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
-
                   <button type="submit">Send Message</button>
                 </div>
 

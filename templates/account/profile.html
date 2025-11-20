@@ -3,21 +3,147 @@
 {% block page_title %}{{page_title}}{% endblock page_title %}
 
 {% block content %}
-
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
-                <!-- general form elements -->
-                <div class="card card-dark">
-                    <div class="card-header">
-                        <h3 class="card-title">{{page_title}}</h3>
+            <!-- Profile Form -->
+            <div class="col-lg-8">
+                <div class="card" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px 12px 0 0;">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-user-edit mr-2"></i>{{page_title}}
+                        </h3>
                     </div>
-
-                    {% include "account/form_template.html" with messages=messages  form=form button_text="Update Profile"%}
+                    <div class="card-body">
+                        {% include "account/form_template.html" with messages=messages form=form button_text="Update Profile" %}
+                    </div>
                 </div>
-                <!-- /.card -->
-
+            </div>
+            
+            <!-- Related Data Sidebar -->
+            <div class="col-lg-4">
+                <!-- User Info Card -->
+                <div class="card mb-3" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px 12px 0 0;">
+                        <h5 class="mb-0"><i class="fas fa-user mr-2"></i>Account Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            {% if user.profile_pic %}
+                                <img src="{{ user.profile_pic.url }}" alt="Profile" class="img-circle" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 3px solid #667eea;">
+                            {% else %}
+                                <div class="img-circle" style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: 700;">
+                                    {{ user.first_name|first }}{{ user.last_name|first }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Full Name:</strong></td>
+                                <td>{{ user.get_full_name }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email:</strong></td>
+                                <td>{{ user.email }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Role:</strong></td>
+                                <td>
+                                    {% if user.user_type == '1' %}
+                                        <span class="badge badge-primary">Owner</span>
+                                    {% elif user.user_type == '2' %}
+                                        <span class="badge badge-info">Agent</span>
+                                    {% elif user.user_type == '3' %}
+                                        <span class="badge badge-success">Staff</span>
+                                    {% elif user.user_type == '4' %}
+                                        <span class="badge badge-warning">Tenant</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender:</strong></td>
+                                <td>{{ user.gender }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Member Since:</strong></td>
+                                <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Related Data Cards -->
+                {% if user.user_type == '4' and tenant %}
+                <div class="card mb-3" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <div class="card-header" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border-radius: 12px 12px 0 0;">
+                        <h5 class="mb-0"><i class="fas fa-home mr-2"></i>Tenant Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Mobile:</strong> {{ tenant.mobile_number|default:"Not provided" }}</p>
+                        <p><strong>Status:</strong> 
+                            <span class="badge {% if tenant.current_status == 'active' %}badge-success{% else %}badge-danger{% endif %}">
+                                {{ tenant.current_status|title }}
+                            </span>
+                        </p>
+                        <p><strong>National ID:</strong> {{ tenant.National_ID|default:"Not provided" }}</p>
+                        {% if has_tenant_record %}
+                        <a href="{% url 'tenant-me' %}" class="btn btn-sm btn-primary btn-block mt-3">
+                            <i class="fas fa-eye mr-1"></i>View Full Tenant Profile
+                        </a>
+                        {% else %}
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-exclamation-triangle mr-1"></i>Tenant profile not found. Please contact the administrator.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% elif user.user_type == '4' and not tenant %}
+                <div class="card mb-3" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <div class="card-header" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); color: white; border-radius: 12px 12px 0 0;">
+                        <h5 class="mb-0"><i class="fas fa-exclamation-triangle mr-2"></i>Tenant Profile Missing</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Your account is registered as a tenant, but no tenant profile has been created yet.</p>
+                        <p class="mb-0"><strong>Please contact the administrator to create your tenant profile.</strong></p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if user.user_type == '3' and staff %}
+                <div class="card mb-3" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <div class="card-header" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border-radius: 12px 12px 0 0;">
+                        <h5 class="mb-0"><i class="fas fa-briefcase mr-2"></i>Staff Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Position:</strong> {{ staff.position|default:"Not specified" }}</p>
+                        <p><strong>Department:</strong> {{ staff.department|default:"Not specified" }}</p>
+                        <p><strong>Employee ID:</strong> {{ staff.employee_id|default:"Not provided" }}</p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if user.user_type == '2' and agent %}
+                <div class="card mb-3" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px 12px 0 0;">
+                        <h5 class="mb-0"><i class="fas fa-user-tie mr-2"></i>Agent Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>License Number:</strong> {{ agent.license_number|default:"Not provided" }}</p>
+                        <p><strong>Commission Rate:</strong> {{ agent.commission_rate|default:"Not specified" }}%</p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if user.user_type == '1' and owner %}
+                <div class="card mb-3" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px 12px 0 0;">
+                        <h5 class="mb-0"><i class="fas fa-building mr-2"></i>Owner Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Properties Owned:</strong> {{ owner.properties.count|default:0 }}</p>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
