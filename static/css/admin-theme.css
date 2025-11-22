@@ -13,6 +13,15 @@
   --danger-gradient: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
   --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   --info-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gray-50: #f8f9fa;
+  --gray-100: #e9ecef;
+  --white: #ffffff;
+  --text-secondary: #495057;
+  --text-muted: #6c757d;
+  --border-color: #e9ecef;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition-base: 0.3s ease;
 }
 
 /* Admin Header */
@@ -299,9 +308,91 @@ input[type="file"] {
   background: white !important;
   border-top: 1px solid #e9ecef !important;
   color: #495057 !important;
+  padding: 1.5rem 0 !important;
 }
 
 .main-footer a {
   color: var(--primary-color) !important;
+  transition: all 0.3s ease !important;
+}
+
+.main-footer a:hover {
+  color: var(--primary-dark) !important;
+  text-decoration: underline !important;
+}
+
+/* Links in Admin */
+#content a {
+  color: var(--primary-color) !important;
+  transition: all 0.3s ease !important;
+}
+
+#content a:hover {
+  color: var(--primary-dark) !important;
+  text-decoration: underline !important;
+}
+
+/* Action Links */
+.object-tools a,
+.addlink,
+.changelink,
+.deletelink {
+  background: var(--primary-gradient) !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  color: white !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+}
+
+.object-tools a:hover,
+.addlink:hover,
+.changelink:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4) !important;
+  color: white !important;
+}
+
+.deletelink {
+  background: var(--danger-gradient) !important;
+}
+
+.deletelink:hover {
+  background: var(--danger-gradient) !important;
+  box-shadow: 0 4px 8px rgba(235, 51, 73, 0.4) !important;
+}
+
+/* Breadcrumbs in Admin */
+.breadcrumbs {
+  background: transparent !important;
+  padding: 0.75rem 0 !important;
+}
+
+.breadcrumbs a {
+  color: var(--primary-color) !important;
+}
+
+.breadcrumbs a:hover {
+  color: var(--primary-dark) !important;
+}
+
+/* Module Links */
+.module h2,
+.module caption {
+  background: var(--primary-gradient) !important;
+  color: white !important;
+  padding: 12px 15px !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.module a {
+  color: var(--primary-color) !important;
+  transition: all 0.3s ease !important;
+}
+
+.module a:hover {
+  color: var(--primary-dark) !important;
+  padding-left: 5px !important;
 }
 

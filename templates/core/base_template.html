@@ -264,10 +264,9 @@
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-      <a href="{% if user.is_authenticated %}{% url 'home' %}{% else %}{% url 'frontpage' %}{% endif %}" class="logo d-flex align-items-center">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="{% static 'assets/img/logo.png' %}" alt=""> -->
-        <h1 class="sitename">Estate<span>Agency</span></h1>
+      <a href="{% if user.is_authenticated %}{% url 'home' %}{% else %}{% url 'frontpage' %}{% endif %}" class="logo d-flex align-items-center gap-2">
+        <img src="{% static 'logo/AdminLTELogo.png' %}" alt="{{ site_title|default:'Estate Admin' }}" class="app-brand-logo" style="max-height:48px;">
+        <span class="sitename text-white font-weight-bold">{{ site_title|default:'Estate Admin' }}</span>
       </a>
 
       <nav id="navmenu" class="navmenu">

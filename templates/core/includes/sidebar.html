@@ -1,0 +1,162 @@
+{% load static %}
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4 app-sidebar">
+  <!-- Brand Logo -->
+  <a href="{% url 'home' %}" class="brand-link app-brand">
+    <img src="{% static 'logo/AdminLTELogo.png' %}" alt="{{ site_title|default:'Estate Admin' }}" class="app-brand-logo">
+    <span class="app-brand-text">{{ site_title|default:'Estate Admin' }}</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel pb-3 mb-3 d-flex">
+      <div class="image align-items-center justify-content-center">
+        {% if request.user.profile_pic  %}
+        <img src="{{request.user.profile_pic.url}}" class="img-circle elevation-2" alt="UserImage">
+        {% else %}
+          <img src="{% static 'images/user.png' %}" class="img-circle elevation-2" style="max-height:48px;object-fit: cover;" alt="User Image">
+        {% endif %}
+      </div>
+      <div class="info text-center align-items-center justify-content-center">
+        <a href="#" class="d-block">{{request.user}}</a>
+      </div>
+    </div>
+
+    <!-- SidebarSearch Form -->
+    <div class="form-inline">
+      <div class="input-group" data-widget="sidebar-search">
+        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-sidebar">
+            <i class="fas fa-search fa-fw"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+        <li class="nav-item menu-open">
+          <a href="{% url 'home' %}" class="nav-link active">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Dashboard
+            </p>
+          </a>
+        </li>
+        {% if request.user.user_type == '1' %}
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-user-tie"></i>
+            <p>
+              Property Owners
+              <span class="badge badge-info right">{{total_owners}}</span>
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-user-graduate"></i>
+            <p>
+              Agents
+              <span class="badge badge-info right">{{total_agents}}</span>
+            </p>
+          </a>
+        </li>
+        {% endif %}
+        {% if request.user.user_type == '1' or request.user.user_type == '2' %}
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-id-badge"></i>
+            <p>
+              Staff
+              <span class="badge badge-info right">{{total_staff}}</span>
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'tenant-list' %}" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+              Tenants
+              <span class="badge badge-info right">{{total_tenants}}</span>
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'property-list' %}" class="nav-link">
+            <i class="nav-icon fas fa-building"></i>
+            <p>
+              Properties
+              <span class="badge badge-info right">{{total_properties}}</span>
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'lease-list' %}" class="nav-link">
+            <i class="nav-icon fas fa-file-contract"></i>
+            <p>
+              Property Lease
+              <span class="badge badge-info right">{{total_leases}}</span>
+            </p>
+          </a>
+        </li>
+        {% endif %}
+        <li class="nav-header">MORE</li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-images"></i>
+            <p>Gallery</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-comments"></i>
+            <p>Message Center</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'notice_add' %}" class="nav-link">
+            <i class="nav-icon fas fa-bell"></i>
+            <p>Notices <span class="badge badge-info right">{{notice_count}}</span></p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-question-circle"></i>
+            <p>Enquiries <span class="badge badge-info right">0</span></p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-dollar-sign"></i>
+            <p>Finances</p>
+          </a>
+        </li>
+        {% if request.user.user_type == '1' or request.user.user_type == '2' %}
+        <li class="nav-item">
+          <a href="{% url 'invoice-list' %}" class="nav-link">
+            <i class="fa fa-file-pdf nav-icon"></i>
+            <p>Invoices <span class="badge badge-info right">{{invoice_count}}</span></p>
+          </a>
+        </li>
+          {% endif %}
+          {% if request.user.user_type == '4' %}
+          <li class="nav-item">
+            <a href="{% url 'invoice-list' %}" class="nav-link">
+              <i class="fa fa-file-pdf nav-icon"></i>
+              <p>My Invoices <span class="badge badge-info right">{{invoice_count}}</span></p>
+            </a>
+          </li>
+          {% endif %}
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>
+

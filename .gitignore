@@ -33,6 +33,11 @@ celerybeat.pid
 media/
 staticfiles/
 static_root/
+docs/diagrams/
+
+# Notebook/analysis artefacts
+.ipynb_checkpoints/
+*.drawio
 
 # Build & coverage
 build/

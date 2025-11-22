@@ -1,139 +1,104 @@
 # AdminRealEstate
 
-AdminRealEstate is a Django-based property management platform that centralizes landlord, tenant, lease, payment, invoicing, and utility workflows. It integrates Celery for scheduled tasks (e.g., nightly invoice generation) and Redis as the task broker.
+AdminRealEstate is a Django-based property management platform that centralizes landlord, tenant, lease, payment, invoicing, and utility workflows. It integrates Celery for scheduled tasks (e.g., nightly invoice generation) and Redis as the task broker, while exposing a modular set of Django apps for day-to-day operations.
 
-## Features
-- Authenticated multi-role access built on a custom `account.CustomUser`.
-- Dashboards and analytics powered by the `core` app.
-- Comprehensive modules for landlords, tenants, property inventory, leases, invoices, notices, payroll, payments (including M-Pesa support), and utilities.
-- Rich text editing through TinyMCE and a themed admin experience via Jazzmin.
-- Background jobs handled with Celery and Redis (e.g., automated invoice generation).
+## Documentation Map
+1. **[Setup Guide](docs/setup.md)** – Windows-first installation, environment configuration, and service orchestration.
+2. **[Implementation Overview](docs/implementation.md)** – Breakdown of Django apps, integrations, and architectural responsibilities.
+3. **[Database Architecture](docs/erd.md)** – Entity relationship narrative covering models, relationships, and connection details.
+4. **[Project Plan](docs/plan.md)** – High-level flows, roadmap ideas, and diagram guidance.
 
-## Prerequisites
-- Python 3.10 or newer
-- MySQL 5.7+ or MariaDB 10.4+
-- Redis 5+ (for Celery broker/result backend)
-- Node/Yarn are **not** required to run the project (static assets are pre-built), but you may add them if you plan to rebuild the frontend assets manually.
+## Key Features
+- Authenticated multi-role access built on `account.CustomUser` (Owners, Agents, Staff, Tenants).
+- Dashboards and shared services delivered through the `core` app, including centralised SMTP & M-Pesa configuration.
+- Property lifecycle management (owner → property → unit → lease) with linked invoicing and payments.
+- Cash and M-Pesa payment capture, including STK push integration and automated callbacks.
+- Background jobs handled via Celery + Redis (e.g., automated invoice generation).
+- TinyMCE for rich text editing and Jazzmin for an enhanced admin UI.
 
-## Initial Setup
-1. **Clone and enter the project**
+## Technology Stack
+- **Backend**: Django 3.2
+- **Database**: MySQL / MariaDB via `mysql-connector-python`
+- **Task Queue**: Celery with Redis broker & result backend
+- **Frontend**: Django templates + static assets (no SPA build toolchain required)
+- **Document/PDF utilities**: `xhtml2pdf`, `pyHanko`, `reportlab`
+- **Messaging**: SMTP email, M-Pesa STK push
+
+## Getting Started (TL;DR)
+> For full instructions, see the [Setup Guide](docs/setup.md).
+
+1. **Clone & enter**
    ```bash
    git clone <repo-url>
    cd AdminRealEstate
    ```
-2. **Create and activate a virtual environment**
+2. **Create venv & install deps**
    ```bash
-   python -m venv env
-   .\env\Scripts\activate  # Windows
-   # source .env/bin/activate  # macOS/Linux
-   ```
-3. **Install dependencies**
-   ```bash
-   pip install --upgrade pip
+   python -m venv .venv
+   ./.venv/Scripts/activate  # Windows PowerShell
+   python -m pip install --upgrade pip
    pip install -r requirements.txt
    ```
-
-## Environment Configuration
-Create a `.env` file in the project root (next to `manage.py`) and supply the required configuration. The project currently reads some values directly from settings; moving them to environment variables is recommended.
-
-```env
-# Django
-SECRET_KEY=change-me
-DEBUG=True
-ALLOWED_HOSTS=127.0.0.1,localhost
-
-# Database (MySQL)
-DB_NAME=realestate
-DB_USER=root
-DB_PASSWORD=your-password
-DB_HOST=127.0.0.1
-DB_PORT=3306
-
-# Email (SMTP)
-EMAIL_ADDRESS=your-smtp-username
-EMAIL_PASSWORD=your-smtp-password
-
-# Celery / Redis
-CELERY_BROKER_URL=redis://127.0.0.1:6379/0
-CELERY_RESULT_BACKEND=redis://127.0.0.1:6379/0
-```
-
-Update `AdminRealEstate/settings.py` (or use `django-environ`) to pull from these environment variables before deploying to production.
-
-## Database Preparation
-1. Create the MySQL database and user:
-   ```sql
-   CREATE DATABASE realestate CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-   CREATE USER 'realestate_user'@'localhost' IDENTIFIED BY 'strong-password';
-   GRANT ALL PRIVILEGES ON realestate.* TO 'realestate_user'@'localhost';
-   FLUSH PRIVILEGES;
-   ```
-2. Optionally seed sample data using the provided `realestate.sql` dump:
-   ```bash
-   mysql -u realestate_user -p realestate < realestate.sql
-   ```
-
-## Running the Project
-1. Apply migrations and create a superuser:
+3. **Configure environment** – Copy `.env` template and update Django secret key, MySQL credentials, SMTP, and Redis URLs.
+4. **Provision database** – Create the `realestate` schema and optional sample data (`realestate.sql`).
+5. **Apply migrations & bootstrap**
    ```bash
    python manage.py migrate
    python manage.py createsuperuser
    ```
-2. Collect static assets (only required for production or when serving via Whitenoise):
-   ```bash
-   python manage.py collectstatic
-   ```
-3. Start the Django development server:
+6. **Run services**
    ```bash
    python manage.py runserver
+   celery -A AdminRealEstate worker -l INFO
+   celery -A AdminRealEstate beat -l INFO
    ```
 
-## Celery Workers & Scheduled Tasks
-Celery is configured in `celery.py` to run nightly invoice generation (`invoices.tasks.generate_invoices`). Ensure Redis is running, then start the worker and beat scheduler in separate shells:
+## Configuration Notes
+- Defaults for MySQL, SMTP, and M-Pesa live in `AdminRealEstate/settings.py` and `core.Setup`; override via environment variables for production.
+- Whitenoise (`CompressedManifestStaticFilesStorage`) powers static file serving; run `python manage.py collectstatic` for deploys.
+- Use the Django admin (`core.Setup`) to store SMTP credentials and M-Pesa keys securely once deployed.
 
-```bash
-celery -A AdminRealEstate worker -l info
-celery -A AdminRealEstate beat -l info
-```
-
-## Static & Media Assets
-- `static/` contains the project's source assets and should remain under version control.
-- `staticfiles/` is the collectstatic output and can be regenerated; it is safe to ignore in VCS.
-- `media/` stores user uploads (avatars, documents, property images) and **must not** be committed.
-
-## Testing
-No automated tests are currently defined. You can start by creating tests within each app's `tests.py`. Run the test suite with:
-
-```bash
-python manage.py test
-```
-
-## Deployment Notes
-- Switch `DEBUG` to `False` and set a unique `SECRET_KEY`.
-- Update `ALLOWED_HOSTS` with your domain.
-- Configure HTTPS (e.g., via a reverse proxy).
-- Ensure `STATIC_ROOT` and `MEDIA_ROOT` directories are writable by the application server.
-- Set up process supervision for the Django app, Celery worker, and Celery beat (e.g., systemd, Supervisor, or Docker).
+## Architecture Snapshot
+- **User hub**: `account.CustomUser` with one-to-one role profiles (owners, agents, staff, tenants).
+- **Property ops**: `property` app manages inventory; `leases` link tenants to units; `invoices` and `payments` close the billing loop.
+- **Notifications**: `core.utils.MailSender` handles email, while `notices` manages in-system announcements.
+- **Automation**: `invoices.tasks.generate_invoices` scheduled nightly via Celery Beat.
+- **Integrations**: Safaricom Daraja API for mobile payments; Redis for async task queueing.
 
 ## Project Structure (abridged)
 ```
 account/         # Custom authentication & user management
-core/            # Dashboard, analytics, and shared utilities
-invoices/        # Invoice models, views, and Celery tasks
-landlords/       # Landlord management
-leases/          # Lease tracking
-payments/        # Payment flows, including Mpesa integration
-property/        # Property and unit inventory
-tenants/         # Tenant profiles and lease links
-utilities/       # Utility billing management
+core/            # Dashboard, context processors, shared utilities, SMTP & M-Pesa config
+invoices/        # Invoice models, Celery tasks, list/detail views
+landlords/       # Owner & agent profiles tied to CustomUser
+leases/          # Lease lifecycle and contractual terms
+payments/        # Cash & M-Pesa payment workflows
+property/        # Properties, units, and media assets
+tenants/         # Tenant metadata (kin, employment, business)
+notices/         # System notices and replies
+payroll/         # Staff earnings, deductions, and salary payments
 templates/       # Django templates grouped by app
 static/          # Source static assets (CSS, JS, images)
+docs/            # Project documentation (setup, implementation, ERD, plan)
 ```
 
+## Testing & Quality
+- No automated tests ship by default; start with per-app `tests.py` and run:
+  ```bash
+  python manage.py test
+  ```
+- Consider adding pytest or Django test factories as the project grows.
+
+## Deployment Checklist
+- Set `DEBUG=False` and provide a strong `SECRET_KEY`.
+- Update `ALLOWED_HOSTS`, configure HTTPS, and provision production SMTP + M-Pesa credentials.
+- Ensure MySQL backups, Redis monitoring, and Celery process supervision (systemd, Supervisor, containers).
+- Configure `STATIC_ROOT`/`MEDIA_ROOT` with appropriate permissions.
+
 ## Troubleshooting
-- **MySQL connection errors**: confirm credentials in `.env`, ensure MySQL is running, and verify the driver (`mysqlclient` or `mysql-connector-python`) is installed.
-- **Celery connection refused**: verify Redis is installed and accessible at the configured host/port.
-- **Static asset issues**: re-run `python manage.py collectstatic` and make sure `STATIC_URL`, `STATIC_ROOT`, and `STATICFILES_DIRS` are set correctly.
-- **Email failures**: confirm SMTP credentials (`EMAIL_ADDRESS`, `EMAIL_PASSWORD`) and enable TLS on the account.
+- **MySQL connection errors** – confirm credentials in `.env`, ensure the driver (`mysqlclient` or `mysql-connector-python`) is installed, and MySQL is running.
+- **Redis/Celery issues** – verify Redis service availability and matching URLs between Django settings and `.env`.
+- **Static asset problems** – run `collectstatic` and verify Whitenoise configuration.
+- **Email failures** – confirm SMTP settings in the admin (`core.Setup`) and ensure TLS/ports align with provider requirements.
 
-
+Refer to the [Project Plan](docs/plan.md) for roadmap suggestions and diagram guidance.
