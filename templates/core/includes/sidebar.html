@@ -2,7 +2,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4 app-sidebar">
   <!-- Brand Logo -->
-  <a href="{% url 'home' %}" class="brand-link app-brand">
+  <a href="{% url 'home' %}" class="brand-link app-brand" title="{{ site_title|default:'Estate Admin' }}">
     <img src="{% static 'logo/AdminLTELogo.png' %}" alt="{{ site_title|default:'Estate Admin' }}" class="app-brand-logo">
     <span class="app-brand-text">{{ site_title|default:'Estate Admin' }}</span>
   </a>
@@ -41,7 +41,7 @@
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
         <li class="nav-item menu-open">
-          <a href="{% url 'home' %}" class="nav-link active">
+          <a href="{% url 'home' %}" class="nav-link active" title="Dashboard">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -50,7 +50,7 @@
         </li>
         {% if request.user.user_type == '1' %}
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="#" class="nav-link" title="Property Owners">
             <i class="nav-icon fas fa-user-tie"></i>
             <p>
               Property Owners
@@ -59,7 +59,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="#" class="nav-link" title="Agents">
             <i class="nav-icon fas fa-user-graduate"></i>
             <p>
               Agents
@@ -70,7 +70,7 @@
         {% endif %}
         {% if request.user.user_type == '1' or request.user.user_type == '2' %}
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="#" class="nav-link" title="Staff">
             <i class="nav-icon fas fa-id-badge"></i>
             <p>
               Staff
@@ -79,7 +79,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="{% url 'tenant-list' %}" class="nav-link">
+          <a href="{% url 'tenant-list' %}" class="nav-link" title="Tenants">
             <i class="nav-icon fas fa-users"></i>
             <p>
               Tenants
@@ -88,7 +88,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="{% url 'property-list' %}" class="nav-link">
+          <a href="{% url 'property-list' %}" class="nav-link" title="Properties">
             <i class="nav-icon fas fa-building"></i>
             <p>
               Properties
@@ -97,7 +97,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="{% url 'lease-list' %}" class="nav-link">
+          <a href="{% url 'lease-list' %}" class="nav-link" title="Property Lease">
             <i class="nav-icon fas fa-file-contract"></i>
             <p>
               Property Lease
@@ -155,6 +155,12 @@
           {% endif %}
       </ul>
     </nav>
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <button id="sidebarCollapseBtn" aria-expanded="true" aria-label="Toggle sidebar" class="btn btn-sm btn-outline-light w-100 d-none d-lg-block" data-widget="pushmenu" title="Toggle sidebar">
+        <i class="fas fa-angle-double-left" aria-hidden="true"></i>
+      </button>
+    </div>
     <!-- /.sidebar-menu -->
   </div>
   <!-- /.sidebar -->

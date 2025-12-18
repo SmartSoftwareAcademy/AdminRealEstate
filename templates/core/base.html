@@ -75,8 +75,110 @@
     sidebarOverlay.className = 'sidebar-overlay';
     document.body.appendChild(sidebarOverlay);
 
-    body.classList.add('sidebar-open');
-    body.classList.remove('sidebar-collapsed');
+    // Initialize sidebar state based on viewport width
+    if (window.innerWidth < 992) {
+      body.classList.remove('sidebar-open');
+      body.classList.add('sidebar-collapsed');
+    } else {
+      body.classList.add('sidebar-open');
+      body.classList.remove('sidebar-collapsed');
+    }
+
+    // Close sidebar on Escape for small screens
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && window.innerWidth < 992) {
+        body.classList.remove('sidebar-open');
+        body.classList.add('sidebar-collapsed');
+      }
+    });
+
+    // Sidebar collapse/tooltip behavior & keyboard accessibility
+    (function() {
+      let bsTooltips = [];
+
+      function initTooltips() {
+        // dispose old first
+        bsTooltips.forEach(t => t.dispose && t.dispose());
+        bsTooltips = [];
+        // initialize for links with title
+        document.querySelectorAll('.sidebar .nav-link[title]').forEach(el => {
+          // attach tooltip but only show when collapsed
+          // Prefer Bootstrap 5 API if available
+          if (window.bootstrap && typeof window.bootstrap.Tooltip === 'function') {
+            el.setAttribute('data-bs-toggle', 'tooltip');
+            el.setAttribute('data-bs-placement', 'right');
+            const tt = new bootstrap.Tooltip(el, { trigger: 'hover focus' });
+            bsTooltips.push(tt);
+          } else if (window.jQuery && typeof jQuery.fn.tooltip === 'function') {
+            // Bootstrap 4 / jQuery tooltip fallback
+            el.setAttribute('data-toggle', 'tooltip');
+            el.setAttribute('data-placement', 'right');
+            jQuery(el).tooltip({ trigger: 'hover focus', placement: 'right' });
+            bsTooltips.push({ dispose: function(){ jQuery(el).tooltip('dispose'); } });
+          } else {
+            // no-js/css-only fallback will handle this
+          }
+        });
+      }
+
+      function destroyTooltips() {
+        bsTooltips.forEach(t => t.dispose && t.dispose());
+        bsTooltips = [];
+        document.querySelectorAll('.sidebar .nav-link[title]').forEach(el => {
+          el.removeAttribute('data-bs-toggle');
+          el.removeAttribute('data-bs-placement');
+          el.removeAttribute('data-toggle');
+          el.removeAttribute('data-placement');
+        });
+      }
+
+      function updateTooltipsOnState() {
+        if (document.body.classList.contains('sidebar-collapsed')) {
+          initTooltips();
+        } else {
+          destroyTooltips();
+        }
+      }
+
+      // initial state
+      updateTooltipsOnState();
+
+      // handle toggle button
+      const btn = document.getElementById('sidebarCollapseBtn');
+      const toggleIcon = btn ? btn.querySelector('i') : null;
+      if (btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.body.classList.toggle('sidebar-collapsed');
+          document.body.classList.toggle('sidebar-open');
+          const expanded = document.body.classList.contains('sidebar-open') && !document.body.classList.contains('sidebar-collapsed');
+          btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+          updateTooltipsOnState();
+        });
+
+        // keyboard support for Enter and Space
+        btn.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            btn.click();
+          }
+        });
+      }
+
+      // Re-evaluate on resize
+      window.addEventListener('resize', function() {
+        // if switching between mobile/desktop, adjust state
+        if (window.innerWidth < 992) {
+          document.body.classList.remove('sidebar-open');
+          document.body.classList.add('sidebar-collapsed');
+        } else {
+          document.body.classList.add('sidebar-open');
+          document.body.classList.remove('sidebar-collapsed');
+        }
+        updateTooltipsOnState();
+      });
+
+    })();
 
     function openSidebar() {
       body.classList.add('sidebar-open');
