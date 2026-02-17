@@ -2,6 +2,10 @@
 
 Follow this walkthrough to install and run AdminRealEstate on a Windows machine. Every command is copy-paste ready and includes context so you always know why you are running it.
 
+For a shorter, scenario-based quickstart (Activate existing environment / Start from scratch), see `docs/quickstart.md`.
+
+For a short project overview and architecture summary, see `docs/overview.md`.
+
 ## 1. Prerequisites
 1. **Python 3.10+** → Download from https://www.python.org/downloads/. During installation tick **“Add Python to PATH”**.
 2. **Visual C++ Build Tools** (if prompted by Python packages) → Install via https://visualstudio.microsoft.com/visual-cpp-build-tools/.
